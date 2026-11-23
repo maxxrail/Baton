@@ -1,4 +1,4 @@
-"""SQLAlchemy models for Baton's own data: conversations, messages and traces.
+"""SQLAlchemy models for Baton's own data: conversations, messages, traces and AOP versions.
 
 Only portable column types are used so the same schema works on SQLite (dev/tests) and
 Postgres (production). Enums are stored as plain strings with a CHECK constraint.
@@ -8,7 +8,17 @@ import enum
 import uuid
 from datetime import UTC, datetime
 
-from sqlalchemy import JSON, CheckConstraint, DateTime, Dialect, ForeignKey, Integer, String, Text
+from sqlalchemy import (
+    JSON,
+    CheckConstraint,
+    DateTime,
+    Dialect,
+    ForeignKey,
+    Integer,
+    String,
+    Text,
+    UniqueConstraint,
+)
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from sqlalchemy.types import TypeDecorator
 
@@ -123,3 +133,29 @@ class Trace(Base):
     created_at: Mapped[datetime] = mapped_column(UTCDateTime(), default=utcnow)
 
     conversation: Mapped[Conversation] = relationship(back_populates="traces")
+
+
+class AOPVersion(Base):
+    """One distinct compiled version of an AOP.
+
+    A row is added only when an AOP's source hash or the step-prompt template version is new,
+    so recompiling unchanged files writes nothing. `version` is the author's frontmatter
+    version; `source_hash` tells apart edits made without bumping it. `compiled` is the full
+    `CompiledAOP` as JSON (step prompts included), so a trace's (aop_id, source_hash,
+    step_prompt_version) replays against exactly what the agent saw.
+    """
+
+    __tablename__ = "aop_versions"
+    __table_args__ = (
+        UniqueConstraint(
+            "aop_id", "source_hash", "step_prompt_version", name="uq_aop_versions_compiled"
+        ),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    aop_id: Mapped[str] = mapped_column(String(64), index=True)
+    version: Mapped[int] = mapped_column(Integer)
+    source_hash: Mapped[str] = mapped_column(String(64))
+    step_prompt_version: Mapped[str] = mapped_column(String(80))
+    compiled: Mapped[dict[str, object]] = mapped_column(JSON)
+    created_at: Mapped[datetime] = mapped_column(UTCDateTime(), default=utcnow)

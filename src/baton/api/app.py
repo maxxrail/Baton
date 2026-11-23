@@ -1,4 +1,4 @@
-"""Baton's HTTP API. Part 00 only has health checks; later parts add routers here.
+"""Baton's HTTP API: health checks and the AOP endpoints; later parts add more routers here.
 
 Run with `uv run uvicorn baton.api.app:app --port 8000`, or via `scripts/dev.py`.
 """
@@ -12,6 +12,9 @@ import structlog
 from fastapi import FastAPI, Request, Response
 
 from baton import __version__
+from baton.aop.compiler import compile_aops
+from baton.aop.models import AOPBundle
+from baton.api import aops
 from baton.api.logging import configure_logging
 from baton.config import Settings, get_settings
 
@@ -28,10 +31,16 @@ def _request_id(incoming: str | None) -> str:
     return uuid.uuid4().hex
 
 
-def create_app(settings: Settings | None = None) -> FastAPI:
+def create_app(settings: Settings | None = None, aop_bundle: AOPBundle | None = None) -> FastAPI:
+    """Build the app. AOPs compile here, so invalid AOPs stop startup with the diagnostics."""
     settings = settings or get_settings()
     configure_logging(settings.log_level)
     app = FastAPI(title="Baton", version=__version__)
+    app.state.settings = settings
+    app.state.aop_bundle = aop_bundle or compile_aops(
+        settings.aops_dir, prompts_dir=settings.prompts_dir
+    )
+    app.include_router(aops.router)
 
     @app.middleware("http")
     async def request_context(

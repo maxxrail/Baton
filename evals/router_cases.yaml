@@ -1,0 +1,107 @@
+# Labeled router cases: which AOP should handle each customer message.
+# `expected` is an AOP id from aops/, or null when no procedure applies (small talk, spam).
+# `history` (optional) lists earlier customer messages, oldest first, for follow-up turns.
+#
+# Used by tests/aop/test_router.py (FakeLLM answers with the label, so the test checks the
+# pre-filter keeps the right AOP and the router parses/validates the answer) and by
+# scripts/eval_router.py (real model, reports accuracy).
+cases:
+  # ---- where_is_my_order
+  - message: Where is my order? I placed it last week and haven't heard anything.
+    expected: where_is_my_order
+  - message: Can you give me the tracking number for NW-10042?
+    expected: where_is_my_order
+  - message: my package says delivered but it is not here
+    expected: where_is_my_order
+  - message: When will my order arrive? It's late.
+    expected: where_is_my_order
+  - message: has my order shipped yet??
+    expected: where_is_my_order
+
+  # ---- return_item
+  - message: I'd like to return the sweater I bought, it doesn't fit.
+    expected: return_item
+  - message: The mug arrived broken. Can I send it back?
+    expected: return_item
+  - message: You sent me the wrong item, I ordered the green one.
+    expected: return_item
+  - message: How do I exchange my boots for a bigger size?
+    expected: return_item
+  - message: Yes, the blue one please.
+    history:
+      - I want to return a jacket from my last order, I got two colors.
+    expected: return_item
+
+  # ---- cancel_order
+  - message: Please cancel my order NW-10077.
+    expected: cancel_order
+  - message: I ordered this by mistake, can you stop it before it ships?
+    expected: cancel_order
+  - message: I changed my mind about my order, I don't want it anymore. Cancel it.
+    expected: cancel_order
+  - message: cancel order pls
+    expected: cancel_order
+  - message: Is it too late to cancel the order I placed this morning?
+    expected: cancel_order
+
+  # ---- change_address
+  - message: I need to change the shipping address on my order.
+    expected: change_address
+  - message: I made a typo in my address, the street number should be 42 not 24.
+    expected: change_address
+  - message: I just moved, can you send my package to my new address instead?
+    expected: change_address
+  - message: Wrong address on order NW-10120, please correct it.
+    expected: change_address
+  - message: Can the package be sent somewhere else? I won't be home.
+    expected: change_address
+
+  # ---- refund_request
+  - message: I want a refund for my order.
+    expected: refund_request
+  - message: I was charged twice for the same order!
+    expected: refund_request
+  - message: One item was missing from my box, I want my money back for it.
+    expected: refund_request
+  - message: Where is my refund? You said it was issued two weeks ago.
+    expected: refund_request
+  - message: I was overcharged on my order, the price was wrong.
+    expected: refund_request
+
+  # ---- manage_subscription
+  - message: I want to pause my coffee subscription for a month.
+    expected: manage_subscription
+  - message: How do I cancel my subscription?
+    expected: manage_subscription
+  - message: When is my next subscription shipment?
+    expected: manage_subscription
+  - message: Please resume my subscription, I paused it last month.
+    expected: manage_subscription
+  - message: stop the recurring auto-ship deliveries
+    expected: manage_subscription
+
+  # ---- loyalty_points
+  - message: How many loyalty points do I have?
+    expected: loyalty_points
+  - message: What rewards tier am I in, and how do I get to gold?
+    expected: loyalty_points
+  - message: My points from my last purchase are missing.
+    expected: loyalty_points
+  - message: what's my rewards balance
+    expected: loyalty_points
+
+  # ---- general_question
+  - message: How long does shipping usually take?
+    expected: general_question
+  - message: What is the sizing like for your jackets? Do they run small?
+    expected: general_question
+  - message: How do I wash the merino wool sweater? Any care instructions?
+    expected: general_question
+  - message: What's your return policy?
+    expected: general_question
+
+  # ---- no procedure
+  - message: hi
+    expected: null
+  - message: What's the weather in Paris tomorrow?
+    expected: null
