@@ -1,6 +1,7 @@
 """PostToolUse hook: auto-format and lint-fix any Python file Claude Code edits.
 
-Reads the hook payload from stdin. Works on Windows, macOS and Linux. Skips quietly until Part 00 has created pyproject.toml.
+Reads the hook payload from stdin. Works on Windows, macOS and Linux.
+Skips quietly until Part 00 has created pyproject.toml.
 Exit code 2 sends remaining lint errors back to Claude so it fixes them.
 """
 

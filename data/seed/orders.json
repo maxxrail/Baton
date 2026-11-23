@@ -1,0 +1,6053 @@
+[
+  {
+    "order_number": "NW-10001",
+    "customer_id": "cus_0001",
+    "status": "delivered",
+    "placed_days_ago": 52,
+    "shipped_days_ago": 50,
+    "delivered_days_ago": 45,
+    "tracking_number": "1ZNW000000000001",
+    "ship_line1": "12 Harbor Ave",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-BLANKET-03",
+        "name": "Merino Throw Blanket",
+        "quantity": 1,
+        "unit_price_cents": 14900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10002",
+    "customer_id": "cus_0001",
+    "status": "delivered",
+    "placed_days_ago": 16,
+    "shipped_days_ago": 14,
+    "delivered_days_ago": 10,
+    "tracking_number": "1ZNW000000000002",
+    "ship_line1": "12 Harbor Ave",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-MUG-01",
+        "name": "Stoneware Mug",
+        "quantity": 2,
+        "unit_price_cents": 2400
+      },
+      {
+        "sku": "NW-COFFEE-05",
+        "name": "Northwind House Coffee, 12oz",
+        "quantity": 1,
+        "unit_price_cents": 1800
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10003",
+    "customer_id": "cus_0001",
+    "status": "processing",
+    "placed_days_ago": 1,
+    "ship_line1": "12 Harbor Ave",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 1,
+        "unit_price_cents": 18900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10004",
+    "customer_id": "cus_0002",
+    "status": "delivered",
+    "placed_days_ago": 20,
+    "shipped_days_ago": 18,
+    "delivered_days_ago": 12,
+    "tracking_number": "1ZNW000000000004",
+    "ship_line1": "400 Congress Ave",
+    "ship_city": "Austin",
+    "ship_state": "TX",
+    "ship_zip": "78701",
+    "items": [
+      {
+        "sku": "NW-KNIFE-08",
+        "name": "Chef's Knife, 8in",
+        "quantity": 1,
+        "unit_price_cents": 12500
+      },
+      {
+        "sku": "NW-BOARD-07",
+        "name": "Walnut Cutting Board",
+        "quantity": 1,
+        "unit_price_cents": 8900
+      }
+    ],
+    "refunds": [
+      {
+        "amount_cents": 4000,
+        "reason": "Cutting board arrived scratched",
+        "days_ago": 8
+      }
+    ],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10005",
+    "customer_id": "cus_0050",
+    "status": "delivered",
+    "placed_days_ago": 36,
+    "shipped_days_ago": 33,
+    "delivered_days_ago": 28,
+    "tracking_number": "1ZNW000000000005",
+    "ship_line1": "1782 Juniper Way",
+    "ship_city": "Denver",
+    "ship_state": "CO",
+    "ship_zip": "80202",
+    "items": [
+      {
+        "sku": "NW-PILLOW-09",
+        "name": "Wool Cushion Cover",
+        "quantity": 2,
+        "unit_price_cents": 5200
+      },
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 1,
+        "unit_price_cents": 18900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10006",
+    "customer_id": "cus_0019",
+    "status": "delivered",
+    "placed_days_ago": 33,
+    "shipped_days_ago": 31,
+    "delivered_days_ago": 28,
+    "tracking_number": "1ZNW000000000006",
+    "ship_line1": "8245 Elm Ct",
+    "ship_city": "Brooklyn",
+    "ship_state": "NY",
+    "ship_zip": "11201",
+    "items": [
+      {
+        "sku": "NW-SOAP-11",
+        "name": "Olive Oil Bar Soap (3-pack)",
+        "quantity": 2,
+        "unit_price_cents": 1600
+      },
+      {
+        "sku": "NW-PLANTER-14",
+        "name": "Terracotta Planter",
+        "quantity": 1,
+        "unit_price_cents": 3900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10007",
+    "customer_id": "cus_0015",
+    "status": "returned",
+    "placed_days_ago": 25,
+    "shipped_days_ago": 23,
+    "delivered_days_ago": 21,
+    "tracking_number": "1ZNW000000000007",
+    "ship_line1": "7727 Harbor Ave",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-PLANTER-14",
+        "name": "Terracotta Planter",
+        "quantity": 2,
+        "unit_price_cents": 3900
+      },
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 1,
+        "unit_price_cents": 18900
+      }
+    ],
+    "refunds": [
+      {
+        "amount_cents": 26700,
+        "reason": "Return received",
+        "days_ago": 14
+      }
+    ],
+    "returns": [
+      {
+        "rma_number": "RMA-00007",
+        "status": "received",
+        "reason": "Arrived damaged",
+        "days_ago": 14
+      }
+    ]
+  },
+  {
+    "order_number": "NW-10008",
+    "customer_id": "cus_0042",
+    "status": "shipped",
+    "placed_days_ago": 2,
+    "shipped_days_ago": 1,
+    "tracking_number": "1ZNW000000000008",
+    "ship_line1": "7381 Juniper Way",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 1,
+        "unit_price_cents": 18900
+      },
+      {
+        "sku": "NW-COFFEE-05",
+        "name": "Northwind House Coffee, 12oz",
+        "quantity": 1,
+        "unit_price_cents": 1800
+      },
+      {
+        "sku": "NW-KNIFE-08",
+        "name": "Chef's Knife, 8in",
+        "quantity": 2,
+        "unit_price_cents": 12500
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10009",
+    "customer_id": "cus_0032",
+    "status": "delivered",
+    "placed_days_ago": 99,
+    "shipped_days_ago": 97,
+    "delivered_days_ago": 91,
+    "tracking_number": "1ZNW000000000009",
+    "ship_line1": "9540 Birch Blvd",
+    "ship_city": "Oakland",
+    "ship_state": "CA",
+    "ship_zip": "94612",
+    "items": [
+      {
+        "sku": "NW-COFFEE-05",
+        "name": "Northwind House Coffee, 12oz",
+        "quantity": 2,
+        "unit_price_cents": 1800
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10010",
+    "customer_id": "cus_0004",
+    "status": "shipped",
+    "placed_days_ago": 7,
+    "shipped_days_ago": 6,
+    "tracking_number": "1ZNW000000000010",
+    "ship_line1": "3367 Juniper Way",
+    "ship_city": "Portland",
+    "ship_state": "OR",
+    "ship_zip": "97205",
+    "items": [
+      {
+        "sku": "NW-MUG-01",
+        "name": "Stoneware Mug",
+        "quantity": 2,
+        "unit_price_cents": 2400
+      },
+      {
+        "sku": "NW-KNIFE-08",
+        "name": "Chef's Knife, 8in",
+        "quantity": 2,
+        "unit_price_cents": 12500
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10011",
+    "customer_id": "cus_0048",
+    "status": "cancelled",
+    "placed_days_ago": 47,
+    "ship_line1": "6387 Juniper Way",
+    "ship_city": "Brooklyn",
+    "ship_state": "NY",
+    "ship_zip": "11201",
+    "items": [
+      {
+        "sku": "NW-KNIFE-08",
+        "name": "Chef's Knife, 8in",
+        "quantity": 1,
+        "unit_price_cents": 12500
+      }
+    ],
+    "refunds": [
+      {
+        "amount_cents": 12500,
+        "reason": "Order cancelled",
+        "days_ago": 47
+      }
+    ],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10012",
+    "customer_id": "cus_0041",
+    "status": "delivered",
+    "placed_days_ago": 130,
+    "shipped_days_ago": 127,
+    "delivered_days_ago": 124,
+    "tracking_number": "1ZNW000000000012",
+    "ship_line1": "6050 Harbor Ave",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-MUG-01",
+        "name": "Stoneware Mug",
+        "quantity": 1,
+        "unit_price_cents": 2400
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10013",
+    "customer_id": "cus_0013",
+    "status": "shipped",
+    "placed_days_ago": 5,
+    "shipped_days_ago": 4,
+    "tracking_number": "1ZNW000000000013",
+    "ship_line1": "9094 Harbor Ave",
+    "ship_city": "Brooklyn",
+    "ship_state": "NY",
+    "ship_zip": "11201",
+    "items": [
+      {
+        "sku": "NW-PLANTER-14",
+        "name": "Terracotta Planter",
+        "quantity": 2,
+        "unit_price_cents": 3900
+      },
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 1,
+        "unit_price_cents": 18900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10014",
+    "customer_id": "cus_0021",
+    "status": "processing",
+    "placed_days_ago": 3,
+    "ship_line1": "3458 Cedar Ln",
+    "ship_city": "Chicago",
+    "ship_state": "IL",
+    "ship_zip": "60601",
+    "items": [
+      {
+        "sku": "NW-TOWEL-02",
+        "name": "Linen Tea Towel (set of 2)",
+        "quantity": 2,
+        "unit_price_cents": 2800
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10015",
+    "customer_id": "cus_0046",
+    "status": "delivered",
+    "placed_days_ago": 86,
+    "shipped_days_ago": 85,
+    "delivered_days_ago": 83,
+    "tracking_number": "1ZNW000000000015",
+    "ship_line1": "5297 Cedar Ln",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-SOAP-11",
+        "name": "Olive Oil Bar Soap (3-pack)",
+        "quantity": 2,
+        "unit_price_cents": 1600
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10016",
+    "customer_id": "cus_0041",
+    "status": "delivered",
+    "placed_days_ago": 132,
+    "shipped_days_ago": 131,
+    "delivered_days_ago": 127,
+    "tracking_number": "1ZNW000000000016",
+    "ship_line1": "3032 Harbor Ave",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-SOAP-11",
+        "name": "Olive Oil Bar Soap (3-pack)",
+        "quantity": 2,
+        "unit_price_cents": 1600
+      },
+      {
+        "sku": "NW-BOARD-07",
+        "name": "Walnut Cutting Board",
+        "quantity": 2,
+        "unit_price_cents": 8900
+      },
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 1,
+        "unit_price_cents": 18900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10017",
+    "customer_id": "cus_0048",
+    "status": "delivered",
+    "placed_days_ago": 166,
+    "shipped_days_ago": 163,
+    "delivered_days_ago": 157,
+    "tracking_number": "1ZNW000000000017",
+    "ship_line1": "5335 Juniper Way",
+    "ship_city": "Brooklyn",
+    "ship_state": "NY",
+    "ship_zip": "11201",
+    "items": [
+      {
+        "sku": "NW-MUG-01",
+        "name": "Stoneware Mug",
+        "quantity": 2,
+        "unit_price_cents": 2400
+      },
+      {
+        "sku": "NW-BOTTLE-10",
+        "name": "Insulated Water Bottle",
+        "quantity": 2,
+        "unit_price_cents": 3200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10018",
+    "customer_id": "cus_0021",
+    "status": "delivered",
+    "placed_days_ago": 68,
+    "shipped_days_ago": 67,
+    "delivered_days_ago": 61,
+    "tracking_number": "1ZNW000000000018",
+    "ship_line1": "2895 Maple St",
+    "ship_city": "Chicago",
+    "ship_state": "IL",
+    "ship_zip": "60601",
+    "items": [
+      {
+        "sku": "NW-PLANTER-14",
+        "name": "Terracotta Planter",
+        "quantity": 1,
+        "unit_price_cents": 3900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10019",
+    "customer_id": "cus_0010",
+    "status": "processing",
+    "placed_days_ago": 2,
+    "ship_line1": "7678 Harbor Ave",
+    "ship_city": "Chicago",
+    "ship_state": "IL",
+    "ship_zip": "60601",
+    "items": [
+      {
+        "sku": "NW-TOWEL-02",
+        "name": "Linen Tea Towel (set of 2)",
+        "quantity": 1,
+        "unit_price_cents": 2800
+      },
+      {
+        "sku": "NW-TEA-06",
+        "name": "Smoky Earl Grey Tea, 50 bags",
+        "quantity": 2,
+        "unit_price_cents": 1400
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10020",
+    "customer_id": "cus_0047",
+    "status": "shipped",
+    "placed_days_ago": 2,
+    "shipped_days_ago": 1,
+    "tracking_number": "1ZNW000000000020",
+    "ship_line1": "8243 Pine Rd",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-TOWEL-02",
+        "name": "Linen Tea Towel (set of 2)",
+        "quantity": 2,
+        "unit_price_cents": 2800
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10021",
+    "customer_id": "cus_0037",
+    "status": "delivered",
+    "placed_days_ago": 162,
+    "shipped_days_ago": 159,
+    "delivered_days_ago": 157,
+    "tracking_number": "1ZNW000000000021",
+    "ship_line1": "2121 Birch Blvd",
+    "ship_city": "Atlanta",
+    "ship_state": "GA",
+    "ship_zip": "30303",
+    "items": [
+      {
+        "sku": "NW-SOAP-11",
+        "name": "Olive Oil Bar Soap (3-pack)",
+        "quantity": 1,
+        "unit_price_cents": 1600
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10022",
+    "customer_id": "cus_0012",
+    "status": "delivered",
+    "placed_days_ago": 119,
+    "shipped_days_ago": 116,
+    "delivered_days_ago": 114,
+    "tracking_number": "1ZNW000000000022",
+    "ship_line1": "9631 Pine Rd",
+    "ship_city": "Denver",
+    "ship_state": "CO",
+    "ship_zip": "80202",
+    "items": [
+      {
+        "sku": "NW-PLANTER-14",
+        "name": "Terracotta Planter",
+        "quantity": 2,
+        "unit_price_cents": 3900
+      },
+      {
+        "sku": "NW-KNIFE-08",
+        "name": "Chef's Knife, 8in",
+        "quantity": 1,
+        "unit_price_cents": 12500
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10023",
+    "customer_id": "cus_0012",
+    "status": "delivered",
+    "placed_days_ago": 34,
+    "shipped_days_ago": 31,
+    "delivered_days_ago": 29,
+    "tracking_number": "1ZNW000000000023",
+    "ship_line1": "7724 Elm Ct",
+    "ship_city": "Denver",
+    "ship_state": "CO",
+    "ship_zip": "80202",
+    "items": [
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 2,
+        "unit_price_cents": 18900
+      },
+      {
+        "sku": "NW-BLANKET-03",
+        "name": "Merino Throw Blanket",
+        "quantity": 1,
+        "unit_price_cents": 14900
+      },
+      {
+        "sku": "NW-BOARD-07",
+        "name": "Walnut Cutting Board",
+        "quantity": 1,
+        "unit_price_cents": 8900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10024",
+    "customer_id": "cus_0004",
+    "status": "delivered",
+    "placed_days_ago": 34,
+    "shipped_days_ago": 32,
+    "delivered_days_ago": 30,
+    "tracking_number": "1ZNW000000000024",
+    "ship_line1": "9942 Cedar Ln",
+    "ship_city": "Portland",
+    "ship_state": "OR",
+    "ship_zip": "97205",
+    "items": [
+      {
+        "sku": "NW-BOARD-07",
+        "name": "Walnut Cutting Board",
+        "quantity": 1,
+        "unit_price_cents": 8900
+      },
+      {
+        "sku": "NW-SOCKS-13",
+        "name": "Alpaca Socks",
+        "quantity": 1,
+        "unit_price_cents": 2200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10025",
+    "customer_id": "cus_0006",
+    "status": "delivered",
+    "placed_days_ago": 92,
+    "shipped_days_ago": 90,
+    "delivered_days_ago": 84,
+    "tracking_number": "1ZNW000000000025",
+    "ship_line1": "1110 Maple St",
+    "ship_city": "Atlanta",
+    "ship_state": "GA",
+    "ship_zip": "30303",
+    "items": [
+      {
+        "sku": "NW-COFFEE-05",
+        "name": "Northwind House Coffee, 12oz",
+        "quantity": 2,
+        "unit_price_cents": 1800
+      },
+      {
+        "sku": "NW-KNIFE-08",
+        "name": "Chef's Knife, 8in",
+        "quantity": 2,
+        "unit_price_cents": 12500
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10026",
+    "customer_id": "cus_0033",
+    "status": "processing",
+    "placed_days_ago": 1,
+    "ship_line1": "3512 Birch Blvd",
+    "ship_city": "Denver",
+    "ship_state": "CO",
+    "ship_zip": "80202",
+    "items": [
+      {
+        "sku": "NW-CANDLE-04",
+        "name": "Cedar & Sage Candle",
+        "quantity": 2,
+        "unit_price_cents": 3600
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10027",
+    "customer_id": "cus_0032",
+    "status": "delivered",
+    "placed_days_ago": 49,
+    "shipped_days_ago": 48,
+    "delivered_days_ago": 44,
+    "tracking_number": "1ZNW000000000027",
+    "ship_line1": "1913 Harbor Ave",
+    "ship_city": "Oakland",
+    "ship_state": "CA",
+    "ship_zip": "94612",
+    "items": [
+      {
+        "sku": "NW-SOCKS-13",
+        "name": "Alpaca Socks",
+        "quantity": 1,
+        "unit_price_cents": 2200
+      },
+      {
+        "sku": "NW-TEA-06",
+        "name": "Smoky Earl Grey Tea, 50 bags",
+        "quantity": 1,
+        "unit_price_cents": 1400
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10028",
+    "customer_id": "cus_0026",
+    "status": "delivered",
+    "placed_days_ago": 83,
+    "shipped_days_ago": 81,
+    "delivered_days_ago": 75,
+    "tracking_number": "1ZNW000000000028",
+    "ship_line1": "5668 Maple St",
+    "ship_city": "Minneapolis",
+    "ship_state": "MN",
+    "ship_zip": "55401",
+    "items": [
+      {
+        "sku": "NW-KNIFE-08",
+        "name": "Chef's Knife, 8in",
+        "quantity": 2,
+        "unit_price_cents": 12500
+      },
+      {
+        "sku": "NW-PILLOW-09",
+        "name": "Wool Cushion Cover",
+        "quantity": 2,
+        "unit_price_cents": 5200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10029",
+    "customer_id": "cus_0004",
+    "status": "shipped",
+    "placed_days_ago": 7,
+    "shipped_days_ago": 6,
+    "tracking_number": "1ZNW000000000029",
+    "ship_line1": "2592 Pine Rd",
+    "ship_city": "Portland",
+    "ship_state": "OR",
+    "ship_zip": "97205",
+    "items": [
+      {
+        "sku": "NW-JOURNAL-15",
+        "name": "Linen-Bound Journal",
+        "quantity": 1,
+        "unit_price_cents": 2600
+      },
+      {
+        "sku": "NW-BOTTLE-10",
+        "name": "Insulated Water Bottle",
+        "quantity": 1,
+        "unit_price_cents": 3200
+      },
+      {
+        "sku": "NW-BLANKET-03",
+        "name": "Merino Throw Blanket",
+        "quantity": 1,
+        "unit_price_cents": 14900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10030",
+    "customer_id": "cus_0041",
+    "status": "processing",
+    "placed_days_ago": 2,
+    "ship_line1": "8529 Harbor Ave",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-BOTTLE-10",
+        "name": "Insulated Water Bottle",
+        "quantity": 1,
+        "unit_price_cents": 3200
+      },
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 1,
+        "unit_price_cents": 18900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10031",
+    "customer_id": "cus_0040",
+    "status": "returned",
+    "placed_days_ago": 115,
+    "shipped_days_ago": 112,
+    "delivered_days_ago": 106,
+    "tracking_number": "1ZNW000000000031",
+    "ship_line1": "7376 Elm Ct",
+    "ship_city": "Oakland",
+    "ship_state": "CA",
+    "ship_zip": "94612",
+    "items": [
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 1,
+        "unit_price_cents": 18900
+      },
+      {
+        "sku": "NW-CANDLE-04",
+        "name": "Cedar & Sage Candle",
+        "quantity": 2,
+        "unit_price_cents": 3600
+      },
+      {
+        "sku": "NW-TOWEL-02",
+        "name": "Linen Tea Towel (set of 2)",
+        "quantity": 1,
+        "unit_price_cents": 2800
+      }
+    ],
+    "refunds": [
+      {
+        "amount_cents": 28900,
+        "reason": "Return received",
+        "days_ago": 97
+      }
+    ],
+    "returns": [
+      {
+        "rma_number": "RMA-00031",
+        "status": "received",
+        "reason": "Arrived damaged",
+        "days_ago": 97
+      }
+    ]
+  },
+  {
+    "order_number": "NW-10032",
+    "customer_id": "cus_0041",
+    "status": "delivered",
+    "placed_days_ago": 130,
+    "shipped_days_ago": 129,
+    "delivered_days_ago": 125,
+    "tracking_number": "1ZNW000000000032",
+    "ship_line1": "1562 Juniper Way",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-CANDLE-04",
+        "name": "Cedar & Sage Candle",
+        "quantity": 2,
+        "unit_price_cents": 3600
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10033",
+    "customer_id": "cus_0048",
+    "status": "shipped",
+    "placed_days_ago": 3,
+    "shipped_days_ago": 2,
+    "tracking_number": "1ZNW000000000033",
+    "ship_line1": "9005 Birch Blvd",
+    "ship_city": "Brooklyn",
+    "ship_state": "NY",
+    "ship_zip": "11201",
+    "items": [
+      {
+        "sku": "NW-CANDLE-04",
+        "name": "Cedar & Sage Candle",
+        "quantity": 1,
+        "unit_price_cents": 3600
+      },
+      {
+        "sku": "NW-PILLOW-09",
+        "name": "Wool Cushion Cover",
+        "quantity": 1,
+        "unit_price_cents": 5200
+      },
+      {
+        "sku": "NW-BOTTLE-10",
+        "name": "Insulated Water Bottle",
+        "quantity": 2,
+        "unit_price_cents": 3200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10034",
+    "customer_id": "cus_0018",
+    "status": "delivered",
+    "placed_days_ago": 176,
+    "shipped_days_ago": 173,
+    "delivered_days_ago": 167,
+    "tracking_number": "1ZNW000000000034",
+    "ship_line1": "8517 Birch Blvd",
+    "ship_city": "Oakland",
+    "ship_state": "CA",
+    "ship_zip": "94612",
+    "items": [
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 1,
+        "unit_price_cents": 18900
+      },
+      {
+        "sku": "NW-KNIFE-08",
+        "name": "Chef's Knife, 8in",
+        "quantity": 1,
+        "unit_price_cents": 12500
+      },
+      {
+        "sku": "NW-PLANTER-14",
+        "name": "Terracotta Planter",
+        "quantity": 1,
+        "unit_price_cents": 3900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10035",
+    "customer_id": "cus_0027",
+    "status": "delivered",
+    "placed_days_ago": 62,
+    "shipped_days_ago": 60,
+    "delivered_days_ago": 55,
+    "tracking_number": "1ZNW000000000035",
+    "ship_line1": "6370 Pine Rd",
+    "ship_city": "Minneapolis",
+    "ship_state": "MN",
+    "ship_zip": "55401",
+    "items": [
+      {
+        "sku": "NW-TEA-06",
+        "name": "Smoky Earl Grey Tea, 50 bags",
+        "quantity": 2,
+        "unit_price_cents": 1400
+      },
+      {
+        "sku": "NW-MUG-01",
+        "name": "Stoneware Mug",
+        "quantity": 1,
+        "unit_price_cents": 2400
+      },
+      {
+        "sku": "NW-PILLOW-09",
+        "name": "Wool Cushion Cover",
+        "quantity": 2,
+        "unit_price_cents": 5200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10036",
+    "customer_id": "cus_0004",
+    "status": "delivered",
+    "placed_days_ago": 61,
+    "shipped_days_ago": 59,
+    "delivered_days_ago": 54,
+    "tracking_number": "1ZNW000000000036",
+    "ship_line1": "7303 Maple St",
+    "ship_city": "Portland",
+    "ship_state": "OR",
+    "ship_zip": "97205",
+    "items": [
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 1,
+        "unit_price_cents": 18900
+      },
+      {
+        "sku": "NW-BOARD-07",
+        "name": "Walnut Cutting Board",
+        "quantity": 2,
+        "unit_price_cents": 8900
+      },
+      {
+        "sku": "NW-CANDLE-04",
+        "name": "Cedar & Sage Candle",
+        "quantity": 2,
+        "unit_price_cents": 3600
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10037",
+    "customer_id": "cus_0028",
+    "status": "delivered",
+    "placed_days_ago": 131,
+    "shipped_days_ago": 128,
+    "delivered_days_ago": 126,
+    "tracking_number": "1ZNW000000000037",
+    "ship_line1": "8295 Juniper Way",
+    "ship_city": "Boston",
+    "ship_state": "MA",
+    "ship_zip": "02108",
+    "items": [
+      {
+        "sku": "NW-SOCKS-13",
+        "name": "Alpaca Socks",
+        "quantity": 1,
+        "unit_price_cents": 2200
+      },
+      {
+        "sku": "NW-TOWEL-02",
+        "name": "Linen Tea Towel (set of 2)",
+        "quantity": 1,
+        "unit_price_cents": 2800
+      },
+      {
+        "sku": "NW-CANDLE-04",
+        "name": "Cedar & Sage Candle",
+        "quantity": 1,
+        "unit_price_cents": 3600
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10038",
+    "customer_id": "cus_0020",
+    "status": "processing",
+    "placed_days_ago": 0,
+    "ship_line1": "6963 Juniper Way",
+    "ship_city": "Austin",
+    "ship_state": "TX",
+    "ship_zip": "78701",
+    "items": [
+      {
+        "sku": "NW-TOWEL-02",
+        "name": "Linen Tea Towel (set of 2)",
+        "quantity": 1,
+        "unit_price_cents": 2800
+      },
+      {
+        "sku": "NW-TEA-06",
+        "name": "Smoky Earl Grey Tea, 50 bags",
+        "quantity": 2,
+        "unit_price_cents": 1400
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10039",
+    "customer_id": "cus_0036",
+    "status": "processing",
+    "placed_days_ago": 3,
+    "ship_line1": "651 Maple St",
+    "ship_city": "Chicago",
+    "ship_state": "IL",
+    "ship_zip": "60601",
+    "items": [
+      {
+        "sku": "NW-SOAP-11",
+        "name": "Olive Oil Bar Soap (3-pack)",
+        "quantity": 1,
+        "unit_price_cents": 1600
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10040",
+    "customer_id": "cus_0040",
+    "status": "shipped",
+    "placed_days_ago": 4,
+    "shipped_days_ago": 3,
+    "tracking_number": "1ZNW000000000040",
+    "ship_line1": "6249 Maple St",
+    "ship_city": "Oakland",
+    "ship_state": "CA",
+    "ship_zip": "94612",
+    "items": [
+      {
+        "sku": "NW-KNIFE-08",
+        "name": "Chef's Knife, 8in",
+        "quantity": 1,
+        "unit_price_cents": 12500
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10041",
+    "customer_id": "cus_0008",
+    "status": "returned",
+    "placed_days_ago": 9,
+    "shipped_days_ago": 8,
+    "delivered_days_ago": 2,
+    "tracking_number": "1ZNW000000000041",
+    "ship_line1": "4018 Maple St",
+    "ship_city": "Chicago",
+    "ship_state": "IL",
+    "ship_zip": "60601",
+    "items": [
+      {
+        "sku": "NW-PILLOW-09",
+        "name": "Wool Cushion Cover",
+        "quantity": 2,
+        "unit_price_cents": 5200
+      },
+      {
+        "sku": "NW-PLANTER-14",
+        "name": "Terracotta Planter",
+        "quantity": 2,
+        "unit_price_cents": 3900
+      },
+      {
+        "sku": "NW-COFFEE-05",
+        "name": "Northwind House Coffee, 12oz",
+        "quantity": 1,
+        "unit_price_cents": 1800
+      }
+    ],
+    "refunds": [
+      {
+        "amount_cents": 20000,
+        "reason": "Return received",
+        "days_ago": 0
+      }
+    ],
+    "returns": [
+      {
+        "rma_number": "RMA-00041",
+        "status": "received",
+        "reason": "Arrived damaged",
+        "days_ago": 0
+      }
+    ]
+  },
+  {
+    "order_number": "NW-10042",
+    "customer_id": "cus_0033",
+    "status": "delivered",
+    "placed_days_ago": 146,
+    "shipped_days_ago": 145,
+    "delivered_days_ago": 140,
+    "tracking_number": "1ZNW000000000042",
+    "ship_line1": "1337 Juniper Way",
+    "ship_city": "Denver",
+    "ship_state": "CO",
+    "ship_zip": "80202",
+    "items": [
+      {
+        "sku": "NW-SOCKS-13",
+        "name": "Alpaca Socks",
+        "quantity": 1,
+        "unit_price_cents": 2200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10043",
+    "customer_id": "cus_0019",
+    "status": "returned",
+    "placed_days_ago": 10,
+    "shipped_days_ago": 9,
+    "delivered_days_ago": 5,
+    "tracking_number": "1ZNW000000000043",
+    "ship_line1": "4293 Birch Blvd",
+    "ship_city": "Brooklyn",
+    "ship_state": "NY",
+    "ship_zip": "11201",
+    "items": [
+      {
+        "sku": "NW-MUG-01",
+        "name": "Stoneware Mug",
+        "quantity": 2,
+        "unit_price_cents": 2400
+      },
+      {
+        "sku": "NW-JOURNAL-15",
+        "name": "Linen-Bound Journal",
+        "quantity": 2,
+        "unit_price_cents": 2600
+      }
+    ],
+    "refunds": [
+      {
+        "amount_cents": 10000,
+        "reason": "Return received",
+        "days_ago": 0
+      }
+    ],
+    "returns": [
+      {
+        "rma_number": "RMA-00043",
+        "status": "received",
+        "reason": "Arrived damaged",
+        "days_ago": 0
+      }
+    ]
+  },
+  {
+    "order_number": "NW-10044",
+    "customer_id": "cus_0049",
+    "status": "delivered",
+    "placed_days_ago": 63,
+    "shipped_days_ago": 60,
+    "delivered_days_ago": 56,
+    "tracking_number": "1ZNW000000000044",
+    "ship_line1": "5492 Pine Rd",
+    "ship_city": "Portland",
+    "ship_state": "OR",
+    "ship_zip": "97205",
+    "items": [
+      {
+        "sku": "NW-CANDLE-04",
+        "name": "Cedar & Sage Candle",
+        "quantity": 1,
+        "unit_price_cents": 3600
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10045",
+    "customer_id": "cus_0023",
+    "status": "delivered",
+    "placed_days_ago": 135,
+    "shipped_days_ago": 133,
+    "delivered_days_ago": 131,
+    "tracking_number": "1ZNW000000000045",
+    "ship_line1": "4418 Elm Ct",
+    "ship_city": "Atlanta",
+    "ship_state": "GA",
+    "ship_zip": "30303",
+    "items": [
+      {
+        "sku": "NW-SOAP-11",
+        "name": "Olive Oil Bar Soap (3-pack)",
+        "quantity": 2,
+        "unit_price_cents": 1600
+      },
+      {
+        "sku": "NW-SOCKS-13",
+        "name": "Alpaca Socks",
+        "quantity": 1,
+        "unit_price_cents": 2200
+      },
+      {
+        "sku": "NW-PILLOW-09",
+        "name": "Wool Cushion Cover",
+        "quantity": 2,
+        "unit_price_cents": 5200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10046",
+    "customer_id": "cus_0030",
+    "status": "delivered",
+    "placed_days_ago": 49,
+    "shipped_days_ago": 48,
+    "delivered_days_ago": 43,
+    "tracking_number": "1ZNW000000000046",
+    "ship_line1": "1890 Juniper Way",
+    "ship_city": "Brooklyn",
+    "ship_state": "NY",
+    "ship_zip": "11201",
+    "items": [
+      {
+        "sku": "NW-MUG-01",
+        "name": "Stoneware Mug",
+        "quantity": 1,
+        "unit_price_cents": 2400
+      },
+      {
+        "sku": "NW-SOCKS-13",
+        "name": "Alpaca Socks",
+        "quantity": 1,
+        "unit_price_cents": 2200
+      },
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 1,
+        "unit_price_cents": 18900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10047",
+    "customer_id": "cus_0012",
+    "status": "delivered",
+    "placed_days_ago": 19,
+    "shipped_days_ago": 16,
+    "delivered_days_ago": 12,
+    "tracking_number": "1ZNW000000000047",
+    "ship_line1": "8344 Pine Rd",
+    "ship_city": "Denver",
+    "ship_state": "CO",
+    "ship_zip": "80202",
+    "items": [
+      {
+        "sku": "NW-MUG-01",
+        "name": "Stoneware Mug",
+        "quantity": 2,
+        "unit_price_cents": 2400
+      },
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 2,
+        "unit_price_cents": 18900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10048",
+    "customer_id": "cus_0023",
+    "status": "delivered",
+    "placed_days_ago": 143,
+    "shipped_days_ago": 140,
+    "delivered_days_ago": 136,
+    "tracking_number": "1ZNW000000000048",
+    "ship_line1": "7708 Elm Ct",
+    "ship_city": "Atlanta",
+    "ship_state": "GA",
+    "ship_zip": "30303",
+    "items": [
+      {
+        "sku": "NW-SOAP-11",
+        "name": "Olive Oil Bar Soap (3-pack)",
+        "quantity": 2,
+        "unit_price_cents": 1600
+      },
+      {
+        "sku": "NW-MUG-01",
+        "name": "Stoneware Mug",
+        "quantity": 2,
+        "unit_price_cents": 2400
+      },
+      {
+        "sku": "NW-COFFEE-05",
+        "name": "Northwind House Coffee, 12oz",
+        "quantity": 2,
+        "unit_price_cents": 1800
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10049",
+    "customer_id": "cus_0003",
+    "status": "processing",
+    "placed_days_ago": 1,
+    "ship_line1": "8697 Juniper Way",
+    "ship_city": "Portland",
+    "ship_state": "OR",
+    "ship_zip": "97205",
+    "items": [
+      {
+        "sku": "NW-PLANTER-14",
+        "name": "Terracotta Planter",
+        "quantity": 2,
+        "unit_price_cents": 3900
+      },
+      {
+        "sku": "NW-COFFEE-05",
+        "name": "Northwind House Coffee, 12oz",
+        "quantity": 1,
+        "unit_price_cents": 1800
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10050",
+    "customer_id": "cus_0047",
+    "status": "cancelled",
+    "placed_days_ago": 101,
+    "ship_line1": "7655 Birch Blvd",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-MUG-01",
+        "name": "Stoneware Mug",
+        "quantity": 2,
+        "unit_price_cents": 2400
+      },
+      {
+        "sku": "NW-BLANKET-03",
+        "name": "Merino Throw Blanket",
+        "quantity": 1,
+        "unit_price_cents": 14900
+      }
+    ],
+    "refunds": [
+      {
+        "amount_cents": 19700,
+        "reason": "Order cancelled",
+        "days_ago": 101
+      }
+    ],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10051",
+    "customer_id": "cus_0034",
+    "status": "cancelled",
+    "placed_days_ago": 53,
+    "ship_line1": "3974 Elm Ct",
+    "ship_city": "Chicago",
+    "ship_state": "IL",
+    "ship_zip": "60601",
+    "items": [
+      {
+        "sku": "NW-SOAP-11",
+        "name": "Olive Oil Bar Soap (3-pack)",
+        "quantity": 1,
+        "unit_price_cents": 1600
+      },
+      {
+        "sku": "NW-TOWEL-02",
+        "name": "Linen Tea Towel (set of 2)",
+        "quantity": 1,
+        "unit_price_cents": 2800
+      }
+    ],
+    "refunds": [
+      {
+        "amount_cents": 4400,
+        "reason": "Order cancelled",
+        "days_ago": 53
+      }
+    ],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10052",
+    "customer_id": "cus_0011",
+    "status": "returned",
+    "placed_days_ago": 37,
+    "shipped_days_ago": 36,
+    "delivered_days_ago": 31,
+    "tracking_number": "1ZNW000000000052",
+    "ship_line1": "2414 Juniper Way",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-JOURNAL-15",
+        "name": "Linen-Bound Journal",
+        "quantity": 1,
+        "unit_price_cents": 2600
+      },
+      {
+        "sku": "NW-TEA-06",
+        "name": "Smoky Earl Grey Tea, 50 bags",
+        "quantity": 1,
+        "unit_price_cents": 1400
+      }
+    ],
+    "refunds": [
+      {
+        "amount_cents": 4000,
+        "reason": "Return received",
+        "days_ago": 24
+      }
+    ],
+    "returns": [
+      {
+        "rma_number": "RMA-00052",
+        "status": "received",
+        "reason": "Arrived damaged",
+        "days_ago": 24
+      }
+    ]
+  },
+  {
+    "order_number": "NW-10053",
+    "customer_id": "cus_0034",
+    "status": "cancelled",
+    "placed_days_ago": 45,
+    "ship_line1": "225 Elm Ct",
+    "ship_city": "Chicago",
+    "ship_state": "IL",
+    "ship_zip": "60601",
+    "items": [
+      {
+        "sku": "NW-JOURNAL-15",
+        "name": "Linen-Bound Journal",
+        "quantity": 1,
+        "unit_price_cents": 2600
+      }
+    ],
+    "refunds": [
+      {
+        "amount_cents": 2600,
+        "reason": "Order cancelled",
+        "days_ago": 45
+      }
+    ],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10054",
+    "customer_id": "cus_0030",
+    "status": "shipped",
+    "placed_days_ago": 7,
+    "shipped_days_ago": 6,
+    "tracking_number": "1ZNW000000000054",
+    "ship_line1": "6688 Harbor Ave",
+    "ship_city": "Brooklyn",
+    "ship_state": "NY",
+    "ship_zip": "11201",
+    "items": [
+      {
+        "sku": "NW-TOWEL-02",
+        "name": "Linen Tea Towel (set of 2)",
+        "quantity": 2,
+        "unit_price_cents": 2800
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10055",
+    "customer_id": "cus_0016",
+    "status": "processing",
+    "placed_days_ago": 1,
+    "ship_line1": "7611 Maple St",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-TEA-06",
+        "name": "Smoky Earl Grey Tea, 50 bags",
+        "quantity": 1,
+        "unit_price_cents": 1400
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10056",
+    "customer_id": "cus_0016",
+    "status": "processing",
+    "placed_days_ago": 2,
+    "ship_line1": "734 Pine Rd",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 2,
+        "unit_price_cents": 18900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10057",
+    "customer_id": "cus_0015",
+    "status": "shipped",
+    "placed_days_ago": 2,
+    "shipped_days_ago": 1,
+    "tracking_number": "1ZNW000000000057",
+    "ship_line1": "9623 Birch Blvd",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-PLANTER-14",
+        "name": "Terracotta Planter",
+        "quantity": 2,
+        "unit_price_cents": 3900
+      },
+      {
+        "sku": "NW-BLANKET-03",
+        "name": "Merino Throw Blanket",
+        "quantity": 1,
+        "unit_price_cents": 14900
+      },
+      {
+        "sku": "NW-KNIFE-08",
+        "name": "Chef's Knife, 8in",
+        "quantity": 1,
+        "unit_price_cents": 12500
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10058",
+    "customer_id": "cus_0013",
+    "status": "returned",
+    "placed_days_ago": 45,
+    "shipped_days_ago": 43,
+    "delivered_days_ago": 41,
+    "tracking_number": "1ZNW000000000058",
+    "ship_line1": "5045 Pine Rd",
+    "ship_city": "Brooklyn",
+    "ship_state": "NY",
+    "ship_zip": "11201",
+    "items": [
+      {
+        "sku": "NW-PLANTER-14",
+        "name": "Terracotta Planter",
+        "quantity": 1,
+        "unit_price_cents": 3900
+      },
+      {
+        "sku": "NW-BOARD-07",
+        "name": "Walnut Cutting Board",
+        "quantity": 2,
+        "unit_price_cents": 8900
+      }
+    ],
+    "refunds": [
+      {
+        "amount_cents": 21700,
+        "reason": "Return received",
+        "days_ago": 33
+      }
+    ],
+    "returns": [
+      {
+        "rma_number": "RMA-00058",
+        "status": "received",
+        "reason": "Arrived damaged",
+        "days_ago": 33
+      }
+    ]
+  },
+  {
+    "order_number": "NW-10059",
+    "customer_id": "cus_0033",
+    "status": "delivered",
+    "placed_days_ago": 180,
+    "shipped_days_ago": 179,
+    "delivered_days_ago": 177,
+    "tracking_number": "1ZNW000000000059",
+    "ship_line1": "9420 Elm Ct",
+    "ship_city": "Denver",
+    "ship_state": "CO",
+    "ship_zip": "80202",
+    "items": [
+      {
+        "sku": "NW-TEA-06",
+        "name": "Smoky Earl Grey Tea, 50 bags",
+        "quantity": 1,
+        "unit_price_cents": 1400
+      },
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 1,
+        "unit_price_cents": 18900
+      },
+      {
+        "sku": "NW-BOTTLE-10",
+        "name": "Insulated Water Bottle",
+        "quantity": 1,
+        "unit_price_cents": 3200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10060",
+    "customer_id": "cus_0025",
+    "status": "shipped",
+    "placed_days_ago": 2,
+    "shipped_days_ago": 1,
+    "tracking_number": "1ZNW000000000060",
+    "ship_line1": "1516 Elm Ct",
+    "ship_city": "Austin",
+    "ship_state": "TX",
+    "ship_zip": "78701",
+    "items": [
+      {
+        "sku": "NW-BLANKET-03",
+        "name": "Merino Throw Blanket",
+        "quantity": 1,
+        "unit_price_cents": 14900
+      },
+      {
+        "sku": "NW-KNIFE-08",
+        "name": "Chef's Knife, 8in",
+        "quantity": 1,
+        "unit_price_cents": 12500
+      },
+      {
+        "sku": "NW-PILLOW-09",
+        "name": "Wool Cushion Cover",
+        "quantity": 2,
+        "unit_price_cents": 5200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10061",
+    "customer_id": "cus_0030",
+    "status": "shipped",
+    "placed_days_ago": 4,
+    "shipped_days_ago": 3,
+    "tracking_number": "1ZNW000000000061",
+    "ship_line1": "2889 Maple St",
+    "ship_city": "Brooklyn",
+    "ship_state": "NY",
+    "ship_zip": "11201",
+    "items": [
+      {
+        "sku": "NW-PILLOW-09",
+        "name": "Wool Cushion Cover",
+        "quantity": 1,
+        "unit_price_cents": 5200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10062",
+    "customer_id": "cus_0007",
+    "status": "delivered",
+    "placed_days_ago": 118,
+    "shipped_days_ago": 117,
+    "delivered_days_ago": 112,
+    "tracking_number": "1ZNW000000000062",
+    "ship_line1": "4757 Elm Ct",
+    "ship_city": "Boston",
+    "ship_state": "MA",
+    "ship_zip": "02108",
+    "items": [
+      {
+        "sku": "NW-MUG-01",
+        "name": "Stoneware Mug",
+        "quantity": 2,
+        "unit_price_cents": 2400
+      },
+      {
+        "sku": "NW-PLANTER-14",
+        "name": "Terracotta Planter",
+        "quantity": 2,
+        "unit_price_cents": 3900
+      },
+      {
+        "sku": "NW-CANDLE-04",
+        "name": "Cedar & Sage Candle",
+        "quantity": 1,
+        "unit_price_cents": 3600
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10063",
+    "customer_id": "cus_0050",
+    "status": "delivered",
+    "placed_days_ago": 43,
+    "shipped_days_ago": 40,
+    "delivered_days_ago": 38,
+    "tracking_number": "1ZNW000000000063",
+    "ship_line1": "291 Birch Blvd",
+    "ship_city": "Denver",
+    "ship_state": "CO",
+    "ship_zip": "80202",
+    "items": [
+      {
+        "sku": "NW-SOAP-11",
+        "name": "Olive Oil Bar Soap (3-pack)",
+        "quantity": 1,
+        "unit_price_cents": 1600
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10064",
+    "customer_id": "cus_0018",
+    "status": "delivered",
+    "placed_days_ago": 140,
+    "shipped_days_ago": 138,
+    "delivered_days_ago": 135,
+    "tracking_number": "1ZNW000000000064",
+    "ship_line1": "3038 Pine Rd",
+    "ship_city": "Oakland",
+    "ship_state": "CA",
+    "ship_zip": "94612",
+    "items": [
+      {
+        "sku": "NW-BOTTLE-10",
+        "name": "Insulated Water Bottle",
+        "quantity": 2,
+        "unit_price_cents": 3200
+      },
+      {
+        "sku": "NW-BOARD-07",
+        "name": "Walnut Cutting Board",
+        "quantity": 2,
+        "unit_price_cents": 8900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10065",
+    "customer_id": "cus_0036",
+    "status": "delivered",
+    "placed_days_ago": 77,
+    "shipped_days_ago": 76,
+    "delivered_days_ago": 74,
+    "tracking_number": "1ZNW000000000065",
+    "ship_line1": "6064 Juniper Way",
+    "ship_city": "Chicago",
+    "ship_state": "IL",
+    "ship_zip": "60601",
+    "items": [
+      {
+        "sku": "NW-TOWEL-02",
+        "name": "Linen Tea Towel (set of 2)",
+        "quantity": 1,
+        "unit_price_cents": 2800
+      },
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 1,
+        "unit_price_cents": 18900
+      },
+      {
+        "sku": "NW-BOTTLE-10",
+        "name": "Insulated Water Bottle",
+        "quantity": 1,
+        "unit_price_cents": 3200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10066",
+    "customer_id": "cus_0027",
+    "status": "cancelled",
+    "placed_days_ago": 114,
+    "ship_line1": "9751 Birch Blvd",
+    "ship_city": "Minneapolis",
+    "ship_state": "MN",
+    "ship_zip": "55401",
+    "items": [
+      {
+        "sku": "NW-TEA-06",
+        "name": "Smoky Earl Grey Tea, 50 bags",
+        "quantity": 1,
+        "unit_price_cents": 1400
+      }
+    ],
+    "refunds": [
+      {
+        "amount_cents": 1400,
+        "reason": "Order cancelled",
+        "days_ago": 114
+      }
+    ],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10067",
+    "customer_id": "cus_0010",
+    "status": "shipped",
+    "placed_days_ago": 3,
+    "shipped_days_ago": 2,
+    "tracking_number": "1ZNW000000000067",
+    "ship_line1": "4301 Harbor Ave",
+    "ship_city": "Chicago",
+    "ship_state": "IL",
+    "ship_zip": "60601",
+    "items": [
+      {
+        "sku": "NW-KNIFE-08",
+        "name": "Chef's Knife, 8in",
+        "quantity": 1,
+        "unit_price_cents": 12500
+      },
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 1,
+        "unit_price_cents": 18900
+      },
+      {
+        "sku": "NW-CANDLE-04",
+        "name": "Cedar & Sage Candle",
+        "quantity": 2,
+        "unit_price_cents": 3600
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10068",
+    "customer_id": "cus_0027",
+    "status": "delivered",
+    "placed_days_ago": 168,
+    "shipped_days_ago": 167,
+    "delivered_days_ago": 165,
+    "tracking_number": "1ZNW000000000068",
+    "ship_line1": "9949 Harbor Ave",
+    "ship_city": "Minneapolis",
+    "ship_state": "MN",
+    "ship_zip": "55401",
+    "items": [
+      {
+        "sku": "NW-BOTTLE-10",
+        "name": "Insulated Water Bottle",
+        "quantity": 2,
+        "unit_price_cents": 3200
+      },
+      {
+        "sku": "NW-BLANKET-03",
+        "name": "Merino Throw Blanket",
+        "quantity": 1,
+        "unit_price_cents": 14900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10069",
+    "customer_id": "cus_0048",
+    "status": "cancelled",
+    "placed_days_ago": 100,
+    "ship_line1": "9030 Harbor Ave",
+    "ship_city": "Brooklyn",
+    "ship_state": "NY",
+    "ship_zip": "11201",
+    "items": [
+      {
+        "sku": "NW-BOTTLE-10",
+        "name": "Insulated Water Bottle",
+        "quantity": 1,
+        "unit_price_cents": 3200
+      }
+    ],
+    "refunds": [
+      {
+        "amount_cents": 3200,
+        "reason": "Order cancelled",
+        "days_ago": 100
+      }
+    ],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10070",
+    "customer_id": "cus_0022",
+    "status": "delivered",
+    "placed_days_ago": 172,
+    "shipped_days_ago": 171,
+    "delivered_days_ago": 165,
+    "tracking_number": "1ZNW000000000070",
+    "ship_line1": "6109 Elm Ct",
+    "ship_city": "Oakland",
+    "ship_state": "CA",
+    "ship_zip": "94612",
+    "items": [
+      {
+        "sku": "NW-SOCKS-13",
+        "name": "Alpaca Socks",
+        "quantity": 2,
+        "unit_price_cents": 2200
+      },
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 2,
+        "unit_price_cents": 18900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10071",
+    "customer_id": "cus_0027",
+    "status": "delivered",
+    "placed_days_ago": 125,
+    "shipped_days_ago": 122,
+    "delivered_days_ago": 120,
+    "tracking_number": "1ZNW000000000071",
+    "ship_line1": "391 Pine Rd",
+    "ship_city": "Minneapolis",
+    "ship_state": "MN",
+    "ship_zip": "55401",
+    "items": [
+      {
+        "sku": "NW-SOAP-11",
+        "name": "Olive Oil Bar Soap (3-pack)",
+        "quantity": 2,
+        "unit_price_cents": 1600
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10072",
+    "customer_id": "cus_0023",
+    "status": "returned",
+    "placed_days_ago": 113,
+    "shipped_days_ago": 112,
+    "delivered_days_ago": 108,
+    "tracking_number": "1ZNW000000000072",
+    "ship_line1": "533 Birch Blvd",
+    "ship_city": "Atlanta",
+    "ship_state": "GA",
+    "ship_zip": "30303",
+    "items": [
+      {
+        "sku": "NW-JOURNAL-15",
+        "name": "Linen-Bound Journal",
+        "quantity": 1,
+        "unit_price_cents": 2600
+      },
+      {
+        "sku": "NW-BOARD-07",
+        "name": "Walnut Cutting Board",
+        "quantity": 2,
+        "unit_price_cents": 8900
+      },
+      {
+        "sku": "NW-CANDLE-04",
+        "name": "Cedar & Sage Candle",
+        "quantity": 2,
+        "unit_price_cents": 3600
+      }
+    ],
+    "refunds": [
+      {
+        "amount_cents": 27600,
+        "reason": "Return received",
+        "days_ago": 102
+      }
+    ],
+    "returns": [
+      {
+        "rma_number": "RMA-00072",
+        "status": "received",
+        "reason": "Arrived damaged",
+        "days_ago": 102
+      }
+    ]
+  },
+  {
+    "order_number": "NW-10073",
+    "customer_id": "cus_0024",
+    "status": "delivered",
+    "placed_days_ago": 78,
+    "shipped_days_ago": 75,
+    "delivered_days_ago": 72,
+    "tracking_number": "1ZNW000000000073",
+    "ship_line1": "9470 Pine Rd",
+    "ship_city": "Boston",
+    "ship_state": "MA",
+    "ship_zip": "02108",
+    "items": [
+      {
+        "sku": "NW-CANDLE-04",
+        "name": "Cedar & Sage Candle",
+        "quantity": 1,
+        "unit_price_cents": 3600
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10074",
+    "customer_id": "cus_0046",
+    "status": "returned",
+    "placed_days_ago": 109,
+    "shipped_days_ago": 108,
+    "delivered_days_ago": 104,
+    "tracking_number": "1ZNW000000000074",
+    "ship_line1": "7985 Birch Blvd",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-MUG-01",
+        "name": "Stoneware Mug",
+        "quantity": 2,
+        "unit_price_cents": 2400
+      },
+      {
+        "sku": "NW-BLANKET-03",
+        "name": "Merino Throw Blanket",
+        "quantity": 2,
+        "unit_price_cents": 14900
+      }
+    ],
+    "refunds": [
+      {
+        "amount_cents": 34600,
+        "reason": "Return received",
+        "days_ago": 94
+      }
+    ],
+    "returns": [
+      {
+        "rma_number": "RMA-00074",
+        "status": "received",
+        "reason": "Arrived damaged",
+        "days_ago": 94
+      }
+    ]
+  },
+  {
+    "order_number": "NW-10075",
+    "customer_id": "cus_0048",
+    "status": "delivered",
+    "placed_days_ago": 120,
+    "shipped_days_ago": 117,
+    "delivered_days_ago": 112,
+    "tracking_number": "1ZNW000000000075",
+    "ship_line1": "9247 Juniper Way",
+    "ship_city": "Brooklyn",
+    "ship_state": "NY",
+    "ship_zip": "11201",
+    "items": [
+      {
+        "sku": "NW-BOTTLE-10",
+        "name": "Insulated Water Bottle",
+        "quantity": 2,
+        "unit_price_cents": 3200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10076",
+    "customer_id": "cus_0024",
+    "status": "shipped",
+    "placed_days_ago": 2,
+    "shipped_days_ago": 1,
+    "tracking_number": "1ZNW000000000076",
+    "ship_line1": "4670 Pine Rd",
+    "ship_city": "Boston",
+    "ship_state": "MA",
+    "ship_zip": "02108",
+    "items": [
+      {
+        "sku": "NW-COFFEE-05",
+        "name": "Northwind House Coffee, 12oz",
+        "quantity": 1,
+        "unit_price_cents": 1800
+      },
+      {
+        "sku": "NW-JOURNAL-15",
+        "name": "Linen-Bound Journal",
+        "quantity": 1,
+        "unit_price_cents": 2600
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10077",
+    "customer_id": "cus_0036",
+    "status": "delivered",
+    "placed_days_ago": 17,
+    "shipped_days_ago": 16,
+    "delivered_days_ago": 14,
+    "tracking_number": "1ZNW000000000077",
+    "ship_line1": "7577 Juniper Way",
+    "ship_city": "Chicago",
+    "ship_state": "IL",
+    "ship_zip": "60601",
+    "items": [
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 1,
+        "unit_price_cents": 18900
+      },
+      {
+        "sku": "NW-COFFEE-05",
+        "name": "Northwind House Coffee, 12oz",
+        "quantity": 2,
+        "unit_price_cents": 1800
+      },
+      {
+        "sku": "NW-SOAP-11",
+        "name": "Olive Oil Bar Soap (3-pack)",
+        "quantity": 1,
+        "unit_price_cents": 1600
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10078",
+    "customer_id": "cus_0020",
+    "status": "delivered",
+    "placed_days_ago": 12,
+    "shipped_days_ago": 11,
+    "delivered_days_ago": 6,
+    "tracking_number": "1ZNW000000000078",
+    "ship_line1": "8772 Cedar Ln",
+    "ship_city": "Austin",
+    "ship_state": "TX",
+    "ship_zip": "78701",
+    "items": [
+      {
+        "sku": "NW-PILLOW-09",
+        "name": "Wool Cushion Cover",
+        "quantity": 2,
+        "unit_price_cents": 5200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10079",
+    "customer_id": "cus_0036",
+    "status": "delivered",
+    "placed_days_ago": 101,
+    "shipped_days_ago": 98,
+    "delivered_days_ago": 94,
+    "tracking_number": "1ZNW000000000079",
+    "ship_line1": "9980 Harbor Ave",
+    "ship_city": "Chicago",
+    "ship_state": "IL",
+    "ship_zip": "60601",
+    "items": [
+      {
+        "sku": "NW-KNIFE-08",
+        "name": "Chef's Knife, 8in",
+        "quantity": 1,
+        "unit_price_cents": 12500
+      },
+      {
+        "sku": "NW-TOWEL-02",
+        "name": "Linen Tea Towel (set of 2)",
+        "quantity": 2,
+        "unit_price_cents": 2800
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10080",
+    "customer_id": "cus_0010",
+    "status": "shipped",
+    "placed_days_ago": 2,
+    "shipped_days_ago": 1,
+    "tracking_number": "1ZNW000000000080",
+    "ship_line1": "6470 Elm Ct",
+    "ship_city": "Chicago",
+    "ship_state": "IL",
+    "ship_zip": "60601",
+    "items": [
+      {
+        "sku": "NW-COFFEE-05",
+        "name": "Northwind House Coffee, 12oz",
+        "quantity": 1,
+        "unit_price_cents": 1800
+      },
+      {
+        "sku": "NW-SOCKS-13",
+        "name": "Alpaca Socks",
+        "quantity": 1,
+        "unit_price_cents": 2200
+      },
+      {
+        "sku": "NW-PLANTER-14",
+        "name": "Terracotta Planter",
+        "quantity": 1,
+        "unit_price_cents": 3900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10081",
+    "customer_id": "cus_0041",
+    "status": "returned",
+    "placed_days_ago": 89,
+    "shipped_days_ago": 88,
+    "delivered_days_ago": 82,
+    "tracking_number": "1ZNW000000000081",
+    "ship_line1": "2742 Elm Ct",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-PLANTER-14",
+        "name": "Terracotta Planter",
+        "quantity": 1,
+        "unit_price_cents": 3900
+      }
+    ],
+    "refunds": [
+      {
+        "amount_cents": 3900,
+        "reason": "Return received",
+        "days_ago": 76
+      }
+    ],
+    "returns": [
+      {
+        "rma_number": "RMA-00081",
+        "status": "received",
+        "reason": "Wrong size",
+        "days_ago": 76
+      }
+    ]
+  },
+  {
+    "order_number": "NW-10082",
+    "customer_id": "cus_0027",
+    "status": "shipped",
+    "placed_days_ago": 5,
+    "shipped_days_ago": 4,
+    "tracking_number": "1ZNW000000000082",
+    "ship_line1": "1473 Elm Ct",
+    "ship_city": "Minneapolis",
+    "ship_state": "MN",
+    "ship_zip": "55401",
+    "items": [
+      {
+        "sku": "NW-CANDLE-04",
+        "name": "Cedar & Sage Candle",
+        "quantity": 1,
+        "unit_price_cents": 3600
+      },
+      {
+        "sku": "NW-TOWEL-02",
+        "name": "Linen Tea Towel (set of 2)",
+        "quantity": 1,
+        "unit_price_cents": 2800
+      },
+      {
+        "sku": "NW-MUG-01",
+        "name": "Stoneware Mug",
+        "quantity": 1,
+        "unit_price_cents": 2400
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10083",
+    "customer_id": "cus_0007",
+    "status": "cancelled",
+    "placed_days_ago": 9,
+    "ship_line1": "3404 Maple St",
+    "ship_city": "Boston",
+    "ship_state": "MA",
+    "ship_zip": "02108",
+    "items": [
+      {
+        "sku": "NW-BLANKET-03",
+        "name": "Merino Throw Blanket",
+        "quantity": 2,
+        "unit_price_cents": 14900
+      },
+      {
+        "sku": "NW-PILLOW-09",
+        "name": "Wool Cushion Cover",
+        "quantity": 1,
+        "unit_price_cents": 5200
+      }
+    ],
+    "refunds": [
+      {
+        "amount_cents": 35000,
+        "reason": "Order cancelled",
+        "days_ago": 9
+      }
+    ],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10084",
+    "customer_id": "cus_0015",
+    "status": "cancelled",
+    "placed_days_ago": 49,
+    "ship_line1": "6195 Birch Blvd",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-KNIFE-08",
+        "name": "Chef's Knife, 8in",
+        "quantity": 2,
+        "unit_price_cents": 12500
+      },
+      {
+        "sku": "NW-JOURNAL-15",
+        "name": "Linen-Bound Journal",
+        "quantity": 2,
+        "unit_price_cents": 2600
+      }
+    ],
+    "refunds": [
+      {
+        "amount_cents": 30200,
+        "reason": "Order cancelled",
+        "days_ago": 49
+      }
+    ],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10085",
+    "customer_id": "cus_0023",
+    "status": "shipped",
+    "placed_days_ago": 3,
+    "shipped_days_ago": 2,
+    "tracking_number": "1ZNW000000000085",
+    "ship_line1": "1374 Pine Rd",
+    "ship_city": "Atlanta",
+    "ship_state": "GA",
+    "ship_zip": "30303",
+    "items": [
+      {
+        "sku": "NW-PILLOW-09",
+        "name": "Wool Cushion Cover",
+        "quantity": 2,
+        "unit_price_cents": 5200
+      },
+      {
+        "sku": "NW-BOTTLE-10",
+        "name": "Insulated Water Bottle",
+        "quantity": 1,
+        "unit_price_cents": 3200
+      },
+      {
+        "sku": "NW-CANDLE-04",
+        "name": "Cedar & Sage Candle",
+        "quantity": 1,
+        "unit_price_cents": 3600
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10086",
+    "customer_id": "cus_0038",
+    "status": "delivered",
+    "placed_days_ago": 56,
+    "shipped_days_ago": 53,
+    "delivered_days_ago": 47,
+    "tracking_number": "1ZNW000000000086",
+    "ship_line1": "5778 Birch Blvd",
+    "ship_city": "Chicago",
+    "ship_state": "IL",
+    "ship_zip": "60601",
+    "items": [
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 1,
+        "unit_price_cents": 18900
+      },
+      {
+        "sku": "NW-BLANKET-03",
+        "name": "Merino Throw Blanket",
+        "quantity": 1,
+        "unit_price_cents": 14900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10087",
+    "customer_id": "cus_0032",
+    "status": "cancelled",
+    "placed_days_ago": 92,
+    "ship_line1": "5302 Elm Ct",
+    "ship_city": "Oakland",
+    "ship_state": "CA",
+    "ship_zip": "94612",
+    "items": [
+      {
+        "sku": "NW-TEA-06",
+        "name": "Smoky Earl Grey Tea, 50 bags",
+        "quantity": 2,
+        "unit_price_cents": 1400
+      },
+      {
+        "sku": "NW-BLANKET-03",
+        "name": "Merino Throw Blanket",
+        "quantity": 1,
+        "unit_price_cents": 14900
+      }
+    ],
+    "refunds": [
+      {
+        "amount_cents": 17700,
+        "reason": "Order cancelled",
+        "days_ago": 92
+      }
+    ],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10088",
+    "customer_id": "cus_0005",
+    "status": "shipped",
+    "placed_days_ago": 5,
+    "shipped_days_ago": 4,
+    "tracking_number": "1ZNW000000000088",
+    "ship_line1": "251 Pine Rd",
+    "ship_city": "Chicago",
+    "ship_state": "IL",
+    "ship_zip": "60601",
+    "items": [
+      {
+        "sku": "NW-BOTTLE-10",
+        "name": "Insulated Water Bottle",
+        "quantity": 1,
+        "unit_price_cents": 3200
+      },
+      {
+        "sku": "NW-TEA-06",
+        "name": "Smoky Earl Grey Tea, 50 bags",
+        "quantity": 1,
+        "unit_price_cents": 1400
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10089",
+    "customer_id": "cus_0005",
+    "status": "delivered",
+    "placed_days_ago": 174,
+    "shipped_days_ago": 173,
+    "delivered_days_ago": 171,
+    "tracking_number": "1ZNW000000000089",
+    "ship_line1": "9650 Birch Blvd",
+    "ship_city": "Chicago",
+    "ship_state": "IL",
+    "ship_zip": "60601",
+    "items": [
+      {
+        "sku": "NW-KNIFE-08",
+        "name": "Chef's Knife, 8in",
+        "quantity": 2,
+        "unit_price_cents": 12500
+      },
+      {
+        "sku": "NW-MUG-01",
+        "name": "Stoneware Mug",
+        "quantity": 2,
+        "unit_price_cents": 2400
+      },
+      {
+        "sku": "NW-PLANTER-14",
+        "name": "Terracotta Planter",
+        "quantity": 2,
+        "unit_price_cents": 3900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10090",
+    "customer_id": "cus_0017",
+    "status": "delivered",
+    "placed_days_ago": 147,
+    "shipped_days_ago": 145,
+    "delivered_days_ago": 139,
+    "tracking_number": "1ZNW000000000090",
+    "ship_line1": "2494 Juniper Way",
+    "ship_city": "Atlanta",
+    "ship_state": "GA",
+    "ship_zip": "30303",
+    "items": [
+      {
+        "sku": "NW-BOARD-07",
+        "name": "Walnut Cutting Board",
+        "quantity": 2,
+        "unit_price_cents": 8900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10091",
+    "customer_id": "cus_0041",
+    "status": "delivered",
+    "placed_days_ago": 121,
+    "shipped_days_ago": 118,
+    "delivered_days_ago": 112,
+    "tracking_number": "1ZNW000000000091",
+    "ship_line1": "1778 Cedar Ln",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-BOTTLE-10",
+        "name": "Insulated Water Bottle",
+        "quantity": 1,
+        "unit_price_cents": 3200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10092",
+    "customer_id": "cus_0041",
+    "status": "returned",
+    "placed_days_ago": 55,
+    "shipped_days_ago": 53,
+    "delivered_days_ago": 47,
+    "tracking_number": "1ZNW000000000092",
+    "ship_line1": "3083 Elm Ct",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-KNIFE-08",
+        "name": "Chef's Knife, 8in",
+        "quantity": 1,
+        "unit_price_cents": 12500
+      },
+      {
+        "sku": "NW-TEA-06",
+        "name": "Smoky Earl Grey Tea, 50 bags",
+        "quantity": 1,
+        "unit_price_cents": 1400
+      }
+    ],
+    "refunds": [
+      {
+        "amount_cents": 13900,
+        "reason": "Return received",
+        "days_ago": 40
+      }
+    ],
+    "returns": [
+      {
+        "rma_number": "RMA-00092",
+        "status": "received",
+        "reason": "Wrong size",
+        "days_ago": 40
+      }
+    ]
+  },
+  {
+    "order_number": "NW-10093",
+    "customer_id": "cus_0006",
+    "status": "processing",
+    "placed_days_ago": 2,
+    "ship_line1": "3872 Elm Ct",
+    "ship_city": "Atlanta",
+    "ship_state": "GA",
+    "ship_zip": "30303",
+    "items": [
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 1,
+        "unit_price_cents": 18900
+      },
+      {
+        "sku": "NW-BOTTLE-10",
+        "name": "Insulated Water Bottle",
+        "quantity": 1,
+        "unit_price_cents": 3200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10094",
+    "customer_id": "cus_0004",
+    "status": "shipped",
+    "placed_days_ago": 4,
+    "shipped_days_ago": 3,
+    "tracking_number": "1ZNW000000000094",
+    "ship_line1": "8543 Pine Rd",
+    "ship_city": "Portland",
+    "ship_state": "OR",
+    "ship_zip": "97205",
+    "items": [
+      {
+        "sku": "NW-SOCKS-13",
+        "name": "Alpaca Socks",
+        "quantity": 1,
+        "unit_price_cents": 2200
+      },
+      {
+        "sku": "NW-SOAP-11",
+        "name": "Olive Oil Bar Soap (3-pack)",
+        "quantity": 1,
+        "unit_price_cents": 1600
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10095",
+    "customer_id": "cus_0005",
+    "status": "delivered",
+    "placed_days_ago": 26,
+    "shipped_days_ago": 25,
+    "delivered_days_ago": 21,
+    "tracking_number": "1ZNW000000000095",
+    "ship_line1": "1869 Birch Blvd",
+    "ship_city": "Chicago",
+    "ship_state": "IL",
+    "ship_zip": "60601",
+    "items": [
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 1,
+        "unit_price_cents": 18900
+      },
+      {
+        "sku": "NW-SOAP-11",
+        "name": "Olive Oil Bar Soap (3-pack)",
+        "quantity": 1,
+        "unit_price_cents": 1600
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10096",
+    "customer_id": "cus_0014",
+    "status": "delivered",
+    "placed_days_ago": 86,
+    "shipped_days_ago": 85,
+    "delivered_days_ago": 83,
+    "tracking_number": "1ZNW000000000096",
+    "ship_line1": "6660 Cedar Ln",
+    "ship_city": "Atlanta",
+    "ship_state": "GA",
+    "ship_zip": "30303",
+    "items": [
+      {
+        "sku": "NW-SOCKS-13",
+        "name": "Alpaca Socks",
+        "quantity": 1,
+        "unit_price_cents": 2200
+      },
+      {
+        "sku": "NW-KNIFE-08",
+        "name": "Chef's Knife, 8in",
+        "quantity": 2,
+        "unit_price_cents": 12500
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10097",
+    "customer_id": "cus_0029",
+    "status": "returned",
+    "placed_days_ago": 151,
+    "shipped_days_ago": 148,
+    "delivered_days_ago": 144,
+    "tracking_number": "1ZNW000000000097",
+    "ship_line1": "7672 Juniper Way",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-BLANKET-03",
+        "name": "Merino Throw Blanket",
+        "quantity": 1,
+        "unit_price_cents": 14900
+      },
+      {
+        "sku": "NW-PLANTER-14",
+        "name": "Terracotta Planter",
+        "quantity": 2,
+        "unit_price_cents": 3900
+      },
+      {
+        "sku": "NW-BOARD-07",
+        "name": "Walnut Cutting Board",
+        "quantity": 1,
+        "unit_price_cents": 8900
+      }
+    ],
+    "refunds": [
+      {
+        "amount_cents": 31600,
+        "reason": "Return received",
+        "days_ago": 134
+      }
+    ],
+    "returns": [
+      {
+        "rma_number": "RMA-00097",
+        "status": "received",
+        "reason": "Wrong size",
+        "days_ago": 134
+      }
+    ]
+  },
+  {
+    "order_number": "NW-10098",
+    "customer_id": "cus_0015",
+    "status": "processing",
+    "placed_days_ago": 1,
+    "ship_line1": "9485 Elm Ct",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-JOURNAL-15",
+        "name": "Linen-Bound Journal",
+        "quantity": 2,
+        "unit_price_cents": 2600
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10099",
+    "customer_id": "cus_0017",
+    "status": "delivered",
+    "placed_days_ago": 7,
+    "shipped_days_ago": 5,
+    "delivered_days_ago": 2,
+    "tracking_number": "1ZNW000000000099",
+    "ship_line1": "5478 Cedar Ln",
+    "ship_city": "Atlanta",
+    "ship_state": "GA",
+    "ship_zip": "30303",
+    "items": [
+      {
+        "sku": "NW-TEA-06",
+        "name": "Smoky Earl Grey Tea, 50 bags",
+        "quantity": 2,
+        "unit_price_cents": 1400
+      },
+      {
+        "sku": "NW-PILLOW-09",
+        "name": "Wool Cushion Cover",
+        "quantity": 1,
+        "unit_price_cents": 5200
+      },
+      {
+        "sku": "NW-COFFEE-05",
+        "name": "Northwind House Coffee, 12oz",
+        "quantity": 2,
+        "unit_price_cents": 1800
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10100",
+    "customer_id": "cus_0004",
+    "status": "delivered",
+    "placed_days_ago": 90,
+    "shipped_days_ago": 89,
+    "delivered_days_ago": 83,
+    "tracking_number": "1ZNW000000000100",
+    "ship_line1": "6830 Birch Blvd",
+    "ship_city": "Portland",
+    "ship_state": "OR",
+    "ship_zip": "97205",
+    "items": [
+      {
+        "sku": "NW-TOWEL-02",
+        "name": "Linen Tea Towel (set of 2)",
+        "quantity": 2,
+        "unit_price_cents": 2800
+      },
+      {
+        "sku": "NW-CANDLE-04",
+        "name": "Cedar & Sage Candle",
+        "quantity": 1,
+        "unit_price_cents": 3600
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10101",
+    "customer_id": "cus_0021",
+    "status": "delivered",
+    "placed_days_ago": 15,
+    "shipped_days_ago": 13,
+    "delivered_days_ago": 9,
+    "tracking_number": "1ZNW000000000101",
+    "ship_line1": "522 Harbor Ave",
+    "ship_city": "Chicago",
+    "ship_state": "IL",
+    "ship_zip": "60601",
+    "items": [
+      {
+        "sku": "NW-JOURNAL-15",
+        "name": "Linen-Bound Journal",
+        "quantity": 1,
+        "unit_price_cents": 2600
+      },
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 2,
+        "unit_price_cents": 18900
+      },
+      {
+        "sku": "NW-TEA-06",
+        "name": "Smoky Earl Grey Tea, 50 bags",
+        "quantity": 1,
+        "unit_price_cents": 1400
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10102",
+    "customer_id": "cus_0031",
+    "status": "shipped",
+    "placed_days_ago": 4,
+    "shipped_days_ago": 3,
+    "tracking_number": "1ZNW000000000102",
+    "ship_line1": "5758 Harbor Ave",
+    "ship_city": "Denver",
+    "ship_state": "CO",
+    "ship_zip": "80202",
+    "items": [
+      {
+        "sku": "NW-JOURNAL-15",
+        "name": "Linen-Bound Journal",
+        "quantity": 2,
+        "unit_price_cents": 2600
+      },
+      {
+        "sku": "NW-MUG-01",
+        "name": "Stoneware Mug",
+        "quantity": 1,
+        "unit_price_cents": 2400
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10103",
+    "customer_id": "cus_0009",
+    "status": "shipped",
+    "placed_days_ago": 3,
+    "shipped_days_ago": 2,
+    "tracking_number": "1ZNW000000000103",
+    "ship_line1": "4489 Pine Rd",
+    "ship_city": "Brooklyn",
+    "ship_state": "NY",
+    "ship_zip": "11201",
+    "items": [
+      {
+        "sku": "NW-TEA-06",
+        "name": "Smoky Earl Grey Tea, 50 bags",
+        "quantity": 2,
+        "unit_price_cents": 1400
+      },
+      {
+        "sku": "NW-BOTTLE-10",
+        "name": "Insulated Water Bottle",
+        "quantity": 1,
+        "unit_price_cents": 3200
+      },
+      {
+        "sku": "NW-SOCKS-13",
+        "name": "Alpaca Socks",
+        "quantity": 1,
+        "unit_price_cents": 2200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10104",
+    "customer_id": "cus_0022",
+    "status": "shipped",
+    "placed_days_ago": 6,
+    "shipped_days_ago": 5,
+    "tracking_number": "1ZNW000000000104",
+    "ship_line1": "5081 Maple St",
+    "ship_city": "Oakland",
+    "ship_state": "CA",
+    "ship_zip": "94612",
+    "items": [
+      {
+        "sku": "NW-JOURNAL-15",
+        "name": "Linen-Bound Journal",
+        "quantity": 2,
+        "unit_price_cents": 2600
+      },
+      {
+        "sku": "NW-BOARD-07",
+        "name": "Walnut Cutting Board",
+        "quantity": 1,
+        "unit_price_cents": 8900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10105",
+    "customer_id": "cus_0042",
+    "status": "cancelled",
+    "placed_days_ago": 58,
+    "ship_line1": "9402 Juniper Way",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-BLANKET-03",
+        "name": "Merino Throw Blanket",
+        "quantity": 1,
+        "unit_price_cents": 14900
+      },
+      {
+        "sku": "NW-SOCKS-13",
+        "name": "Alpaca Socks",
+        "quantity": 2,
+        "unit_price_cents": 2200
+      },
+      {
+        "sku": "NW-CANDLE-04",
+        "name": "Cedar & Sage Candle",
+        "quantity": 1,
+        "unit_price_cents": 3600
+      }
+    ],
+    "refunds": [
+      {
+        "amount_cents": 22900,
+        "reason": "Order cancelled",
+        "days_ago": 58
+      }
+    ],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10106",
+    "customer_id": "cus_0022",
+    "status": "delivered",
+    "placed_days_ago": 48,
+    "shipped_days_ago": 45,
+    "delivered_days_ago": 40,
+    "tracking_number": "1ZNW000000000106",
+    "ship_line1": "3574 Elm Ct",
+    "ship_city": "Oakland",
+    "ship_state": "CA",
+    "ship_zip": "94612",
+    "items": [
+      {
+        "sku": "NW-BOTTLE-10",
+        "name": "Insulated Water Bottle",
+        "quantity": 1,
+        "unit_price_cents": 3200
+      },
+      {
+        "sku": "NW-BOARD-07",
+        "name": "Walnut Cutting Board",
+        "quantity": 1,
+        "unit_price_cents": 8900
+      },
+      {
+        "sku": "NW-COFFEE-05",
+        "name": "Northwind House Coffee, 12oz",
+        "quantity": 1,
+        "unit_price_cents": 1800
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10107",
+    "customer_id": "cus_0025",
+    "status": "delivered",
+    "placed_days_ago": 43,
+    "shipped_days_ago": 42,
+    "delivered_days_ago": 39,
+    "tracking_number": "1ZNW000000000107",
+    "ship_line1": "9210 Harbor Ave",
+    "ship_city": "Austin",
+    "ship_state": "TX",
+    "ship_zip": "78701",
+    "items": [
+      {
+        "sku": "NW-BLANKET-03",
+        "name": "Merino Throw Blanket",
+        "quantity": 2,
+        "unit_price_cents": 14900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10108",
+    "customer_id": "cus_0022",
+    "status": "delivered",
+    "placed_days_ago": 169,
+    "shipped_days_ago": 168,
+    "delivered_days_ago": 165,
+    "tracking_number": "1ZNW000000000108",
+    "ship_line1": "4098 Harbor Ave",
+    "ship_city": "Oakland",
+    "ship_state": "CA",
+    "ship_zip": "94612",
+    "items": [
+      {
+        "sku": "NW-BOARD-07",
+        "name": "Walnut Cutting Board",
+        "quantity": 1,
+        "unit_price_cents": 8900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10109",
+    "customer_id": "cus_0048",
+    "status": "delivered",
+    "placed_days_ago": 177,
+    "shipped_days_ago": 175,
+    "delivered_days_ago": 172,
+    "tracking_number": "1ZNW000000000109",
+    "ship_line1": "9493 Maple St",
+    "ship_city": "Brooklyn",
+    "ship_state": "NY",
+    "ship_zip": "11201",
+    "items": [
+      {
+        "sku": "NW-BOTTLE-10",
+        "name": "Insulated Water Bottle",
+        "quantity": 2,
+        "unit_price_cents": 3200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10110",
+    "customer_id": "cus_0003",
+    "status": "processing",
+    "placed_days_ago": 0,
+    "ship_line1": "6879 Elm Ct",
+    "ship_city": "Portland",
+    "ship_state": "OR",
+    "ship_zip": "97205",
+    "items": [
+      {
+        "sku": "NW-PLANTER-14",
+        "name": "Terracotta Planter",
+        "quantity": 2,
+        "unit_price_cents": 3900
+      },
+      {
+        "sku": "NW-JOURNAL-15",
+        "name": "Linen-Bound Journal",
+        "quantity": 1,
+        "unit_price_cents": 2600
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10111",
+    "customer_id": "cus_0032",
+    "status": "delivered",
+    "placed_days_ago": 135,
+    "shipped_days_ago": 134,
+    "delivered_days_ago": 128,
+    "tracking_number": "1ZNW000000000111",
+    "ship_line1": "6998 Juniper Way",
+    "ship_city": "Oakland",
+    "ship_state": "CA",
+    "ship_zip": "94612",
+    "items": [
+      {
+        "sku": "NW-KNIFE-08",
+        "name": "Chef's Knife, 8in",
+        "quantity": 2,
+        "unit_price_cents": 12500
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10112",
+    "customer_id": "cus_0046",
+    "status": "delivered",
+    "placed_days_ago": 97,
+    "shipped_days_ago": 95,
+    "delivered_days_ago": 90,
+    "tracking_number": "1ZNW000000000112",
+    "ship_line1": "5934 Harbor Ave",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-TOWEL-02",
+        "name": "Linen Tea Towel (set of 2)",
+        "quantity": 1,
+        "unit_price_cents": 2800
+      },
+      {
+        "sku": "NW-CANDLE-04",
+        "name": "Cedar & Sage Candle",
+        "quantity": 2,
+        "unit_price_cents": 3600
+      },
+      {
+        "sku": "NW-SOCKS-13",
+        "name": "Alpaca Socks",
+        "quantity": 2,
+        "unit_price_cents": 2200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10113",
+    "customer_id": "cus_0021",
+    "status": "shipped",
+    "placed_days_ago": 2,
+    "shipped_days_ago": 1,
+    "tracking_number": "1ZNW000000000113",
+    "ship_line1": "1930 Elm Ct",
+    "ship_city": "Chicago",
+    "ship_state": "IL",
+    "ship_zip": "60601",
+    "items": [
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 2,
+        "unit_price_cents": 18900
+      },
+      {
+        "sku": "NW-JOURNAL-15",
+        "name": "Linen-Bound Journal",
+        "quantity": 1,
+        "unit_price_cents": 2600
+      },
+      {
+        "sku": "NW-SOCKS-13",
+        "name": "Alpaca Socks",
+        "quantity": 1,
+        "unit_price_cents": 2200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10114",
+    "customer_id": "cus_0019",
+    "status": "delivered",
+    "placed_days_ago": 140,
+    "shipped_days_ago": 139,
+    "delivered_days_ago": 137,
+    "tracking_number": "1ZNW000000000114",
+    "ship_line1": "5633 Maple St",
+    "ship_city": "Brooklyn",
+    "ship_state": "NY",
+    "ship_zip": "11201",
+    "items": [
+      {
+        "sku": "NW-CANDLE-04",
+        "name": "Cedar & Sage Candle",
+        "quantity": 1,
+        "unit_price_cents": 3600
+      },
+      {
+        "sku": "NW-TEA-06",
+        "name": "Smoky Earl Grey Tea, 50 bags",
+        "quantity": 2,
+        "unit_price_cents": 1400
+      },
+      {
+        "sku": "NW-MUG-01",
+        "name": "Stoneware Mug",
+        "quantity": 1,
+        "unit_price_cents": 2400
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10115",
+    "customer_id": "cus_0027",
+    "status": "delivered",
+    "placed_days_ago": 12,
+    "shipped_days_ago": 9,
+    "delivered_days_ago": 3,
+    "tracking_number": "1ZNW000000000115",
+    "ship_line1": "1785 Cedar Ln",
+    "ship_city": "Minneapolis",
+    "ship_state": "MN",
+    "ship_zip": "55401",
+    "items": [
+      {
+        "sku": "NW-TEA-06",
+        "name": "Smoky Earl Grey Tea, 50 bags",
+        "quantity": 2,
+        "unit_price_cents": 1400
+      },
+      {
+        "sku": "NW-BOTTLE-10",
+        "name": "Insulated Water Bottle",
+        "quantity": 1,
+        "unit_price_cents": 3200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10116",
+    "customer_id": "cus_0008",
+    "status": "delivered",
+    "placed_days_ago": 159,
+    "shipped_days_ago": 157,
+    "delivered_days_ago": 152,
+    "tracking_number": "1ZNW000000000116",
+    "ship_line1": "1155 Elm Ct",
+    "ship_city": "Chicago",
+    "ship_state": "IL",
+    "ship_zip": "60601",
+    "items": [
+      {
+        "sku": "NW-BOARD-07",
+        "name": "Walnut Cutting Board",
+        "quantity": 2,
+        "unit_price_cents": 8900
+      },
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 1,
+        "unit_price_cents": 18900
+      },
+      {
+        "sku": "NW-BOTTLE-10",
+        "name": "Insulated Water Bottle",
+        "quantity": 1,
+        "unit_price_cents": 3200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10117",
+    "customer_id": "cus_0033",
+    "status": "delivered",
+    "placed_days_ago": 105,
+    "shipped_days_ago": 104,
+    "delivered_days_ago": 100,
+    "tracking_number": "1ZNW000000000117",
+    "ship_line1": "1121 Birch Blvd",
+    "ship_city": "Denver",
+    "ship_state": "CO",
+    "ship_zip": "80202",
+    "items": [
+      {
+        "sku": "NW-BLANKET-03",
+        "name": "Merino Throw Blanket",
+        "quantity": 2,
+        "unit_price_cents": 14900
+      },
+      {
+        "sku": "NW-SOCKS-13",
+        "name": "Alpaca Socks",
+        "quantity": 1,
+        "unit_price_cents": 2200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10118",
+    "customer_id": "cus_0050",
+    "status": "delivered",
+    "placed_days_ago": 77,
+    "shipped_days_ago": 75,
+    "delivered_days_ago": 70,
+    "tracking_number": "1ZNW000000000118",
+    "ship_line1": "4033 Juniper Way",
+    "ship_city": "Denver",
+    "ship_state": "CO",
+    "ship_zip": "80202",
+    "items": [
+      {
+        "sku": "NW-COFFEE-05",
+        "name": "Northwind House Coffee, 12oz",
+        "quantity": 1,
+        "unit_price_cents": 1800
+      },
+      {
+        "sku": "NW-SOAP-11",
+        "name": "Olive Oil Bar Soap (3-pack)",
+        "quantity": 2,
+        "unit_price_cents": 1600
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10119",
+    "customer_id": "cus_0042",
+    "status": "delivered",
+    "placed_days_ago": 116,
+    "shipped_days_ago": 115,
+    "delivered_days_ago": 112,
+    "tracking_number": "1ZNW000000000119",
+    "ship_line1": "8454 Elm Ct",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 2,
+        "unit_price_cents": 18900
+      },
+      {
+        "sku": "NW-CANDLE-04",
+        "name": "Cedar & Sage Candle",
+        "quantity": 2,
+        "unit_price_cents": 3600
+      },
+      {
+        "sku": "NW-BOTTLE-10",
+        "name": "Insulated Water Bottle",
+        "quantity": 1,
+        "unit_price_cents": 3200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10120",
+    "customer_id": "cus_0049",
+    "status": "shipped",
+    "placed_days_ago": 5,
+    "shipped_days_ago": 4,
+    "tracking_number": "1ZNW000000000120",
+    "ship_line1": "3711 Birch Blvd",
+    "ship_city": "Portland",
+    "ship_state": "OR",
+    "ship_zip": "97205",
+    "items": [
+      {
+        "sku": "NW-JOURNAL-15",
+        "name": "Linen-Bound Journal",
+        "quantity": 1,
+        "unit_price_cents": 2600
+      },
+      {
+        "sku": "NW-BOARD-07",
+        "name": "Walnut Cutting Board",
+        "quantity": 1,
+        "unit_price_cents": 8900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10121",
+    "customer_id": "cus_0017",
+    "status": "delivered",
+    "placed_days_ago": 83,
+    "shipped_days_ago": 82,
+    "delivered_days_ago": 80,
+    "tracking_number": "1ZNW000000000121",
+    "ship_line1": "5578 Harbor Ave",
+    "ship_city": "Atlanta",
+    "ship_state": "GA",
+    "ship_zip": "30303",
+    "items": [
+      {
+        "sku": "NW-BOTTLE-10",
+        "name": "Insulated Water Bottle",
+        "quantity": 1,
+        "unit_price_cents": 3200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10122",
+    "customer_id": "cus_0009",
+    "status": "delivered",
+    "placed_days_ago": 50,
+    "shipped_days_ago": 47,
+    "delivered_days_ago": 44,
+    "tracking_number": "1ZNW000000000122",
+    "ship_line1": "435 Maple St",
+    "ship_city": "Brooklyn",
+    "ship_state": "NY",
+    "ship_zip": "11201",
+    "items": [
+      {
+        "sku": "NW-PLANTER-14",
+        "name": "Terracotta Planter",
+        "quantity": 1,
+        "unit_price_cents": 3900
+      },
+      {
+        "sku": "NW-SOCKS-13",
+        "name": "Alpaca Socks",
+        "quantity": 2,
+        "unit_price_cents": 2200
+      },
+      {
+        "sku": "NW-SOAP-11",
+        "name": "Olive Oil Bar Soap (3-pack)",
+        "quantity": 2,
+        "unit_price_cents": 1600
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10123",
+    "customer_id": "cus_0030",
+    "status": "delivered",
+    "placed_days_ago": 30,
+    "shipped_days_ago": 28,
+    "delivered_days_ago": 23,
+    "tracking_number": "1ZNW000000000123",
+    "ship_line1": "1028 Maple St",
+    "ship_city": "Brooklyn",
+    "ship_state": "NY",
+    "ship_zip": "11201",
+    "items": [
+      {
+        "sku": "NW-CANDLE-04",
+        "name": "Cedar & Sage Candle",
+        "quantity": 1,
+        "unit_price_cents": 3600
+      },
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 2,
+        "unit_price_cents": 18900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10124",
+    "customer_id": "cus_0019",
+    "status": "delivered",
+    "placed_days_ago": 116,
+    "shipped_days_ago": 113,
+    "delivered_days_ago": 107,
+    "tracking_number": "1ZNW000000000124",
+    "ship_line1": "7946 Pine Rd",
+    "ship_city": "Brooklyn",
+    "ship_state": "NY",
+    "ship_zip": "11201",
+    "items": [
+      {
+        "sku": "NW-KNIFE-08",
+        "name": "Chef's Knife, 8in",
+        "quantity": 2,
+        "unit_price_cents": 12500
+      },
+      {
+        "sku": "NW-COFFEE-05",
+        "name": "Northwind House Coffee, 12oz",
+        "quantity": 2,
+        "unit_price_cents": 1800
+      },
+      {
+        "sku": "NW-SOCKS-13",
+        "name": "Alpaca Socks",
+        "quantity": 1,
+        "unit_price_cents": 2200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10125",
+    "customer_id": "cus_0041",
+    "status": "delivered",
+    "placed_days_ago": 27,
+    "shipped_days_ago": 24,
+    "delivered_days_ago": 19,
+    "tracking_number": "1ZNW000000000125",
+    "ship_line1": "4734 Harbor Ave",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-BLANKET-03",
+        "name": "Merino Throw Blanket",
+        "quantity": 1,
+        "unit_price_cents": 14900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10126",
+    "customer_id": "cus_0037",
+    "status": "delivered",
+    "placed_days_ago": 161,
+    "shipped_days_ago": 158,
+    "delivered_days_ago": 155,
+    "tracking_number": "1ZNW000000000126",
+    "ship_line1": "2023 Pine Rd",
+    "ship_city": "Atlanta",
+    "ship_state": "GA",
+    "ship_zip": "30303",
+    "items": [
+      {
+        "sku": "NW-TOWEL-02",
+        "name": "Linen Tea Towel (set of 2)",
+        "quantity": 2,
+        "unit_price_cents": 2800
+      },
+      {
+        "sku": "NW-PILLOW-09",
+        "name": "Wool Cushion Cover",
+        "quantity": 1,
+        "unit_price_cents": 5200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10127",
+    "customer_id": "cus_0047",
+    "status": "returned",
+    "placed_days_ago": 152,
+    "shipped_days_ago": 149,
+    "delivered_days_ago": 147,
+    "tracking_number": "1ZNW000000000127",
+    "ship_line1": "9488 Maple St",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 1,
+        "unit_price_cents": 18900
+      },
+      {
+        "sku": "NW-BOARD-07",
+        "name": "Walnut Cutting Board",
+        "quantity": 1,
+        "unit_price_cents": 8900
+      },
+      {
+        "sku": "NW-SOCKS-13",
+        "name": "Alpaca Socks",
+        "quantity": 2,
+        "unit_price_cents": 2200
+      }
+    ],
+    "refunds": [
+      {
+        "amount_cents": 32200,
+        "reason": "Return received",
+        "days_ago": 138
+      }
+    ],
+    "returns": [
+      {
+        "rma_number": "RMA-00127",
+        "status": "received",
+        "reason": "Changed my mind",
+        "days_ago": 138
+      }
+    ]
+  },
+  {
+    "order_number": "NW-10128",
+    "customer_id": "cus_0017",
+    "status": "shipped",
+    "placed_days_ago": 3,
+    "shipped_days_ago": 2,
+    "tracking_number": "1ZNW000000000128",
+    "ship_line1": "6651 Cedar Ln",
+    "ship_city": "Atlanta",
+    "ship_state": "GA",
+    "ship_zip": "30303",
+    "items": [
+      {
+        "sku": "NW-COFFEE-05",
+        "name": "Northwind House Coffee, 12oz",
+        "quantity": 2,
+        "unit_price_cents": 1800
+      },
+      {
+        "sku": "NW-BLANKET-03",
+        "name": "Merino Throw Blanket",
+        "quantity": 1,
+        "unit_price_cents": 14900
+      },
+      {
+        "sku": "NW-JOURNAL-15",
+        "name": "Linen-Bound Journal",
+        "quantity": 2,
+        "unit_price_cents": 2600
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10129",
+    "customer_id": "cus_0021",
+    "status": "shipped",
+    "placed_days_ago": 7,
+    "shipped_days_ago": 6,
+    "tracking_number": "1ZNW000000000129",
+    "ship_line1": "5553 Pine Rd",
+    "ship_city": "Chicago",
+    "ship_state": "IL",
+    "ship_zip": "60601",
+    "items": [
+      {
+        "sku": "NW-JOURNAL-15",
+        "name": "Linen-Bound Journal",
+        "quantity": 1,
+        "unit_price_cents": 2600
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10130",
+    "customer_id": "cus_0009",
+    "status": "shipped",
+    "placed_days_ago": 3,
+    "shipped_days_ago": 2,
+    "tracking_number": "1ZNW000000000130",
+    "ship_line1": "2625 Birch Blvd",
+    "ship_city": "Brooklyn",
+    "ship_state": "NY",
+    "ship_zip": "11201",
+    "items": [
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 1,
+        "unit_price_cents": 18900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10131",
+    "customer_id": "cus_0012",
+    "status": "processing",
+    "placed_days_ago": 0,
+    "ship_line1": "7943 Birch Blvd",
+    "ship_city": "Denver",
+    "ship_state": "CO",
+    "ship_zip": "80202",
+    "items": [
+      {
+        "sku": "NW-BOTTLE-10",
+        "name": "Insulated Water Bottle",
+        "quantity": 1,
+        "unit_price_cents": 3200
+      },
+      {
+        "sku": "NW-SOCKS-13",
+        "name": "Alpaca Socks",
+        "quantity": 1,
+        "unit_price_cents": 2200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10132",
+    "customer_id": "cus_0038",
+    "status": "processing",
+    "placed_days_ago": 2,
+    "ship_line1": "1175 Elm Ct",
+    "ship_city": "Chicago",
+    "ship_state": "IL",
+    "ship_zip": "60601",
+    "items": [
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 2,
+        "unit_price_cents": 18900
+      },
+      {
+        "sku": "NW-TEA-06",
+        "name": "Smoky Earl Grey Tea, 50 bags",
+        "quantity": 1,
+        "unit_price_cents": 1400
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10133",
+    "customer_id": "cus_0046",
+    "status": "returned",
+    "placed_days_ago": 125,
+    "shipped_days_ago": 124,
+    "delivered_days_ago": 118,
+    "tracking_number": "1ZNW000000000133",
+    "ship_line1": "3398 Harbor Ave",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-CANDLE-04",
+        "name": "Cedar & Sage Candle",
+        "quantity": 1,
+        "unit_price_cents": 3600
+      },
+      {
+        "sku": "NW-KNIFE-08",
+        "name": "Chef's Knife, 8in",
+        "quantity": 2,
+        "unit_price_cents": 12500
+      }
+    ],
+    "refunds": [
+      {
+        "amount_cents": 28600,
+        "reason": "Return received",
+        "days_ago": 115
+      }
+    ],
+    "returns": [
+      {
+        "rma_number": "RMA-00133",
+        "status": "received",
+        "reason": "Arrived damaged",
+        "days_ago": 115
+      }
+    ]
+  },
+  {
+    "order_number": "NW-10134",
+    "customer_id": "cus_0010",
+    "status": "shipped",
+    "placed_days_ago": 2,
+    "shipped_days_ago": 1,
+    "tracking_number": "1ZNW000000000134",
+    "ship_line1": "7916 Maple St",
+    "ship_city": "Chicago",
+    "ship_state": "IL",
+    "ship_zip": "60601",
+    "items": [
+      {
+        "sku": "NW-BOTTLE-10",
+        "name": "Insulated Water Bottle",
+        "quantity": 1,
+        "unit_price_cents": 3200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10135",
+    "customer_id": "cus_0048",
+    "status": "delivered",
+    "placed_days_ago": 121,
+    "shipped_days_ago": 118,
+    "delivered_days_ago": 116,
+    "tracking_number": "1ZNW000000000135",
+    "ship_line1": "9696 Pine Rd",
+    "ship_city": "Brooklyn",
+    "ship_state": "NY",
+    "ship_zip": "11201",
+    "items": [
+      {
+        "sku": "NW-PLANTER-14",
+        "name": "Terracotta Planter",
+        "quantity": 1,
+        "unit_price_cents": 3900
+      },
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 2,
+        "unit_price_cents": 18900
+      },
+      {
+        "sku": "NW-SOAP-11",
+        "name": "Olive Oil Bar Soap (3-pack)",
+        "quantity": 1,
+        "unit_price_cents": 1600
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10136",
+    "customer_id": "cus_0006",
+    "status": "delivered",
+    "placed_days_ago": 171,
+    "shipped_days_ago": 170,
+    "delivered_days_ago": 166,
+    "tracking_number": "1ZNW000000000136",
+    "ship_line1": "2597 Birch Blvd",
+    "ship_city": "Atlanta",
+    "ship_state": "GA",
+    "ship_zip": "30303",
+    "items": [
+      {
+        "sku": "NW-PLANTER-14",
+        "name": "Terracotta Planter",
+        "quantity": 1,
+        "unit_price_cents": 3900
+      },
+      {
+        "sku": "NW-SOCKS-13",
+        "name": "Alpaca Socks",
+        "quantity": 1,
+        "unit_price_cents": 2200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10137",
+    "customer_id": "cus_0021",
+    "status": "shipped",
+    "placed_days_ago": 4,
+    "shipped_days_ago": 3,
+    "tracking_number": "1ZNW000000000137",
+    "ship_line1": "5853 Juniper Way",
+    "ship_city": "Chicago",
+    "ship_state": "IL",
+    "ship_zip": "60601",
+    "items": [
+      {
+        "sku": "NW-COFFEE-05",
+        "name": "Northwind House Coffee, 12oz",
+        "quantity": 2,
+        "unit_price_cents": 1800
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10138",
+    "customer_id": "cus_0017",
+    "status": "delivered",
+    "placed_days_ago": 17,
+    "shipped_days_ago": 16,
+    "delivered_days_ago": 12,
+    "tracking_number": "1ZNW000000000138",
+    "ship_line1": "4165 Juniper Way",
+    "ship_city": "Atlanta",
+    "ship_state": "GA",
+    "ship_zip": "30303",
+    "items": [
+      {
+        "sku": "NW-TOWEL-02",
+        "name": "Linen Tea Towel (set of 2)",
+        "quantity": 2,
+        "unit_price_cents": 2800
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10139",
+    "customer_id": "cus_0046",
+    "status": "delivered",
+    "placed_days_ago": 108,
+    "shipped_days_ago": 106,
+    "delivered_days_ago": 101,
+    "tracking_number": "1ZNW000000000139",
+    "ship_line1": "2588 Juniper Way",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-TOWEL-02",
+        "name": "Linen Tea Towel (set of 2)",
+        "quantity": 2,
+        "unit_price_cents": 2800
+      },
+      {
+        "sku": "NW-BLANKET-03",
+        "name": "Merino Throw Blanket",
+        "quantity": 2,
+        "unit_price_cents": 14900
+      },
+      {
+        "sku": "NW-BOARD-07",
+        "name": "Walnut Cutting Board",
+        "quantity": 1,
+        "unit_price_cents": 8900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10140",
+    "customer_id": "cus_0038",
+    "status": "delivered",
+    "placed_days_ago": 157,
+    "shipped_days_ago": 156,
+    "delivered_days_ago": 151,
+    "tracking_number": "1ZNW000000000140",
+    "ship_line1": "9144 Harbor Ave",
+    "ship_city": "Chicago",
+    "ship_state": "IL",
+    "ship_zip": "60601",
+    "items": [
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 2,
+        "unit_price_cents": 18900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10141",
+    "customer_id": "cus_0029",
+    "status": "shipped",
+    "placed_days_ago": 2,
+    "shipped_days_ago": 1,
+    "tracking_number": "1ZNW000000000141",
+    "ship_line1": "2629 Pine Rd",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-BOTTLE-10",
+        "name": "Insulated Water Bottle",
+        "quantity": 2,
+        "unit_price_cents": 3200
+      },
+      {
+        "sku": "NW-PILLOW-09",
+        "name": "Wool Cushion Cover",
+        "quantity": 1,
+        "unit_price_cents": 5200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10142",
+    "customer_id": "cus_0014",
+    "status": "processing",
+    "placed_days_ago": 2,
+    "ship_line1": "2803 Juniper Way",
+    "ship_city": "Atlanta",
+    "ship_state": "GA",
+    "ship_zip": "30303",
+    "items": [
+      {
+        "sku": "NW-CANDLE-04",
+        "name": "Cedar & Sage Candle",
+        "quantity": 2,
+        "unit_price_cents": 3600
+      },
+      {
+        "sku": "NW-BOTTLE-10",
+        "name": "Insulated Water Bottle",
+        "quantity": 2,
+        "unit_price_cents": 3200
+      },
+      {
+        "sku": "NW-JOURNAL-15",
+        "name": "Linen-Bound Journal",
+        "quantity": 2,
+        "unit_price_cents": 2600
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10143",
+    "customer_id": "cus_0011",
+    "status": "shipped",
+    "placed_days_ago": 2,
+    "shipped_days_ago": 1,
+    "tracking_number": "1ZNW000000000143",
+    "ship_line1": "4710 Pine Rd",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-PLANTER-14",
+        "name": "Terracotta Planter",
+        "quantity": 1,
+        "unit_price_cents": 3900
+      },
+      {
+        "sku": "NW-BLANKET-03",
+        "name": "Merino Throw Blanket",
+        "quantity": 2,
+        "unit_price_cents": 14900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10144",
+    "customer_id": "cus_0009",
+    "status": "delivered",
+    "placed_days_ago": 152,
+    "shipped_days_ago": 149,
+    "delivered_days_ago": 143,
+    "tracking_number": "1ZNW000000000144",
+    "ship_line1": "1198 Juniper Way",
+    "ship_city": "Brooklyn",
+    "ship_state": "NY",
+    "ship_zip": "11201",
+    "items": [
+      {
+        "sku": "NW-MUG-01",
+        "name": "Stoneware Mug",
+        "quantity": 2,
+        "unit_price_cents": 2400
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10145",
+    "customer_id": "cus_0027",
+    "status": "delivered",
+    "placed_days_ago": 165,
+    "shipped_days_ago": 164,
+    "delivered_days_ago": 162,
+    "tracking_number": "1ZNW000000000145",
+    "ship_line1": "3903 Pine Rd",
+    "ship_city": "Minneapolis",
+    "ship_state": "MN",
+    "ship_zip": "55401",
+    "items": [
+      {
+        "sku": "NW-COFFEE-05",
+        "name": "Northwind House Coffee, 12oz",
+        "quantity": 2,
+        "unit_price_cents": 1800
+      },
+      {
+        "sku": "NW-KNIFE-08",
+        "name": "Chef's Knife, 8in",
+        "quantity": 2,
+        "unit_price_cents": 12500
+      },
+      {
+        "sku": "NW-CANDLE-04",
+        "name": "Cedar & Sage Candle",
+        "quantity": 1,
+        "unit_price_cents": 3600
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10146",
+    "customer_id": "cus_0045",
+    "status": "returned",
+    "placed_days_ago": 124,
+    "shipped_days_ago": 122,
+    "delivered_days_ago": 120,
+    "tracking_number": "1ZNW000000000146",
+    "ship_line1": "8387 Maple St",
+    "ship_city": "Portland",
+    "ship_state": "OR",
+    "ship_zip": "97205",
+    "items": [
+      {
+        "sku": "NW-BOARD-07",
+        "name": "Walnut Cutting Board",
+        "quantity": 1,
+        "unit_price_cents": 8900
+      },
+      {
+        "sku": "NW-TOWEL-02",
+        "name": "Linen Tea Towel (set of 2)",
+        "quantity": 1,
+        "unit_price_cents": 2800
+      },
+      {
+        "sku": "NW-PILLOW-09",
+        "name": "Wool Cushion Cover",
+        "quantity": 2,
+        "unit_price_cents": 5200
+      }
+    ],
+    "refunds": [
+      {
+        "amount_cents": 22100,
+        "reason": "Return received",
+        "days_ago": 113
+      }
+    ],
+    "returns": [
+      {
+        "rma_number": "RMA-00146",
+        "status": "received",
+        "reason": "Arrived damaged",
+        "days_ago": 113
+      }
+    ]
+  },
+  {
+    "order_number": "NW-10147",
+    "customer_id": "cus_0049",
+    "status": "processing",
+    "placed_days_ago": 2,
+    "ship_line1": "7464 Elm Ct",
+    "ship_city": "Portland",
+    "ship_state": "OR",
+    "ship_zip": "97205",
+    "items": [
+      {
+        "sku": "NW-MUG-01",
+        "name": "Stoneware Mug",
+        "quantity": 1,
+        "unit_price_cents": 2400
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10148",
+    "customer_id": "cus_0009",
+    "status": "shipped",
+    "placed_days_ago": 4,
+    "shipped_days_ago": 3,
+    "tracking_number": "1ZNW000000000148",
+    "ship_line1": "9545 Juniper Way",
+    "ship_city": "Brooklyn",
+    "ship_state": "NY",
+    "ship_zip": "11201",
+    "items": [
+      {
+        "sku": "NW-PILLOW-09",
+        "name": "Wool Cushion Cover",
+        "quantity": 2,
+        "unit_price_cents": 5200
+      },
+      {
+        "sku": "NW-MUG-01",
+        "name": "Stoneware Mug",
+        "quantity": 2,
+        "unit_price_cents": 2400
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10149",
+    "customer_id": "cus_0011",
+    "status": "returned",
+    "placed_days_ago": 128,
+    "shipped_days_ago": 127,
+    "delivered_days_ago": 121,
+    "tracking_number": "1ZNW000000000149",
+    "ship_line1": "2005 Elm Ct",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-PLANTER-14",
+        "name": "Terracotta Planter",
+        "quantity": 2,
+        "unit_price_cents": 3900
+      },
+      {
+        "sku": "NW-TOWEL-02",
+        "name": "Linen Tea Towel (set of 2)",
+        "quantity": 2,
+        "unit_price_cents": 2800
+      },
+      {
+        "sku": "NW-BLANKET-03",
+        "name": "Merino Throw Blanket",
+        "quantity": 1,
+        "unit_price_cents": 14900
+      }
+    ],
+    "refunds": [
+      {
+        "amount_cents": 28300,
+        "reason": "Return received",
+        "days_ago": 116
+      }
+    ],
+    "returns": [
+      {
+        "rma_number": "RMA-00149",
+        "status": "received",
+        "reason": "Changed my mind",
+        "days_ago": 116
+      }
+    ]
+  },
+  {
+    "order_number": "NW-10150",
+    "customer_id": "cus_0013",
+    "status": "delivered",
+    "placed_days_ago": 74,
+    "shipped_days_ago": 71,
+    "delivered_days_ago": 66,
+    "tracking_number": "1ZNW000000000150",
+    "ship_line1": "3201 Birch Blvd",
+    "ship_city": "Brooklyn",
+    "ship_state": "NY",
+    "ship_zip": "11201",
+    "items": [
+      {
+        "sku": "NW-TEA-06",
+        "name": "Smoky Earl Grey Tea, 50 bags",
+        "quantity": 2,
+        "unit_price_cents": 1400
+      },
+      {
+        "sku": "NW-BLANKET-03",
+        "name": "Merino Throw Blanket",
+        "quantity": 2,
+        "unit_price_cents": 14900
+      },
+      {
+        "sku": "NW-SOAP-11",
+        "name": "Olive Oil Bar Soap (3-pack)",
+        "quantity": 2,
+        "unit_price_cents": 1600
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10151",
+    "customer_id": "cus_0045",
+    "status": "shipped",
+    "placed_days_ago": 6,
+    "shipped_days_ago": 5,
+    "tracking_number": "1ZNW000000000151",
+    "ship_line1": "8608 Juniper Way",
+    "ship_city": "Portland",
+    "ship_state": "OR",
+    "ship_zip": "97205",
+    "items": [
+      {
+        "sku": "NW-BOTTLE-10",
+        "name": "Insulated Water Bottle",
+        "quantity": 2,
+        "unit_price_cents": 3200
+      },
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 2,
+        "unit_price_cents": 18900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10152",
+    "customer_id": "cus_0042",
+    "status": "delivered",
+    "placed_days_ago": 155,
+    "shipped_days_ago": 152,
+    "delivered_days_ago": 150,
+    "tracking_number": "1ZNW000000000152",
+    "ship_line1": "7354 Cedar Ln",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-MUG-01",
+        "name": "Stoneware Mug",
+        "quantity": 1,
+        "unit_price_cents": 2400
+      },
+      {
+        "sku": "NW-TEA-06",
+        "name": "Smoky Earl Grey Tea, 50 bags",
+        "quantity": 1,
+        "unit_price_cents": 1400
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10153",
+    "customer_id": "cus_0039",
+    "status": "delivered",
+    "placed_days_ago": 58,
+    "shipped_days_ago": 56,
+    "delivered_days_ago": 50,
+    "tracking_number": "1ZNW000000000153",
+    "ship_line1": "9456 Birch Blvd",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-COFFEE-05",
+        "name": "Northwind House Coffee, 12oz",
+        "quantity": 1,
+        "unit_price_cents": 1800
+      },
+      {
+        "sku": "NW-BOARD-07",
+        "name": "Walnut Cutting Board",
+        "quantity": 1,
+        "unit_price_cents": 8900
+      },
+      {
+        "sku": "NW-CANDLE-04",
+        "name": "Cedar & Sage Candle",
+        "quantity": 2,
+        "unit_price_cents": 3600
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10154",
+    "customer_id": "cus_0049",
+    "status": "shipped",
+    "placed_days_ago": 8,
+    "shipped_days_ago": 7,
+    "tracking_number": "1ZNW000000000154",
+    "ship_line1": "7377 Pine Rd",
+    "ship_city": "Portland",
+    "ship_state": "OR",
+    "ship_zip": "97205",
+    "items": [
+      {
+        "sku": "NW-TEA-06",
+        "name": "Smoky Earl Grey Tea, 50 bags",
+        "quantity": 2,
+        "unit_price_cents": 1400
+      },
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 2,
+        "unit_price_cents": 18900
+      },
+      {
+        "sku": "NW-BOARD-07",
+        "name": "Walnut Cutting Board",
+        "quantity": 1,
+        "unit_price_cents": 8900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10155",
+    "customer_id": "cus_0028",
+    "status": "delivered",
+    "placed_days_ago": 83,
+    "shipped_days_ago": 82,
+    "delivered_days_ago": 78,
+    "tracking_number": "1ZNW000000000155",
+    "ship_line1": "7979 Elm Ct",
+    "ship_city": "Boston",
+    "ship_state": "MA",
+    "ship_zip": "02108",
+    "items": [
+      {
+        "sku": "NW-PLANTER-14",
+        "name": "Terracotta Planter",
+        "quantity": 1,
+        "unit_price_cents": 3900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10156",
+    "customer_id": "cus_0043",
+    "status": "returned",
+    "placed_days_ago": 31,
+    "shipped_days_ago": 29,
+    "delivered_days_ago": 23,
+    "tracking_number": "1ZNW000000000156",
+    "ship_line1": "8851 Cedar Ln",
+    "ship_city": "Boston",
+    "ship_state": "MA",
+    "ship_zip": "02108",
+    "items": [
+      {
+        "sku": "NW-PILLOW-09",
+        "name": "Wool Cushion Cover",
+        "quantity": 2,
+        "unit_price_cents": 5200
+      }
+    ],
+    "refunds": [
+      {
+        "amount_cents": 10400,
+        "reason": "Return received",
+        "days_ago": 17
+      }
+    ],
+    "returns": [
+      {
+        "rma_number": "RMA-00156",
+        "status": "received",
+        "reason": "Changed my mind",
+        "days_ago": 17
+      }
+    ]
+  },
+  {
+    "order_number": "NW-10157",
+    "customer_id": "cus_0037",
+    "status": "processing",
+    "placed_days_ago": 0,
+    "ship_line1": "1528 Pine Rd",
+    "ship_city": "Atlanta",
+    "ship_state": "GA",
+    "ship_zip": "30303",
+    "items": [
+      {
+        "sku": "NW-COFFEE-05",
+        "name": "Northwind House Coffee, 12oz",
+        "quantity": 1,
+        "unit_price_cents": 1800
+      },
+      {
+        "sku": "NW-KNIFE-08",
+        "name": "Chef's Knife, 8in",
+        "quantity": 1,
+        "unit_price_cents": 12500
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10158",
+    "customer_id": "cus_0013",
+    "status": "shipped",
+    "placed_days_ago": 4,
+    "shipped_days_ago": 3,
+    "tracking_number": "1ZNW000000000158",
+    "ship_line1": "8727 Juniper Way",
+    "ship_city": "Brooklyn",
+    "ship_state": "NY",
+    "ship_zip": "11201",
+    "items": [
+      {
+        "sku": "NW-KNIFE-08",
+        "name": "Chef's Knife, 8in",
+        "quantity": 1,
+        "unit_price_cents": 12500
+      },
+      {
+        "sku": "NW-MUG-01",
+        "name": "Stoneware Mug",
+        "quantity": 2,
+        "unit_price_cents": 2400
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10159",
+    "customer_id": "cus_0050",
+    "status": "returned",
+    "placed_days_ago": 179,
+    "shipped_days_ago": 177,
+    "delivered_days_ago": 173,
+    "tracking_number": "1ZNW000000000159",
+    "ship_line1": "8005 Harbor Ave",
+    "ship_city": "Denver",
+    "ship_state": "CO",
+    "ship_zip": "80202",
+    "items": [
+      {
+        "sku": "NW-BOARD-07",
+        "name": "Walnut Cutting Board",
+        "quantity": 2,
+        "unit_price_cents": 8900
+      }
+    ],
+    "refunds": [
+      {
+        "amount_cents": 17800,
+        "reason": "Return received",
+        "days_ago": 168
+      }
+    ],
+    "returns": [
+      {
+        "rma_number": "RMA-00159",
+        "status": "received",
+        "reason": "Changed my mind",
+        "days_ago": 168
+      }
+    ]
+  },
+  {
+    "order_number": "NW-10160",
+    "customer_id": "cus_0021",
+    "status": "returned",
+    "placed_days_ago": 7,
+    "shipped_days_ago": 4,
+    "delivered_days_ago": 2,
+    "tracking_number": "1ZNW000000000160",
+    "ship_line1": "1188 Pine Rd",
+    "ship_city": "Chicago",
+    "ship_state": "IL",
+    "ship_zip": "60601",
+    "items": [
+      {
+        "sku": "NW-TOWEL-02",
+        "name": "Linen Tea Towel (set of 2)",
+        "quantity": 1,
+        "unit_price_cents": 2800
+      },
+      {
+        "sku": "NW-PILLOW-09",
+        "name": "Wool Cushion Cover",
+        "quantity": 1,
+        "unit_price_cents": 5200
+      },
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 1,
+        "unit_price_cents": 18900
+      }
+    ],
+    "refunds": [
+      {
+        "amount_cents": 26900,
+        "reason": "Return received",
+        "days_ago": 0
+      }
+    ],
+    "returns": [
+      {
+        "rma_number": "RMA-00160",
+        "status": "received",
+        "reason": "Changed my mind",
+        "days_ago": 0
+      }
+    ]
+  },
+  {
+    "order_number": "NW-10161",
+    "customer_id": "cus_0022",
+    "status": "delivered",
+    "placed_days_ago": 84,
+    "shipped_days_ago": 81,
+    "delivered_days_ago": 77,
+    "tracking_number": "1ZNW000000000161",
+    "ship_line1": "1390 Pine Rd",
+    "ship_city": "Oakland",
+    "ship_state": "CA",
+    "ship_zip": "94612",
+    "items": [
+      {
+        "sku": "NW-BLANKET-03",
+        "name": "Merino Throw Blanket",
+        "quantity": 2,
+        "unit_price_cents": 14900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10162",
+    "customer_id": "cus_0035",
+    "status": "delivered",
+    "placed_days_ago": 106,
+    "shipped_days_ago": 105,
+    "delivered_days_ago": 102,
+    "tracking_number": "1ZNW000000000162",
+    "ship_line1": "7935 Birch Blvd",
+    "ship_city": "Atlanta",
+    "ship_state": "GA",
+    "ship_zip": "30303",
+    "items": [
+      {
+        "sku": "NW-JOURNAL-15",
+        "name": "Linen-Bound Journal",
+        "quantity": 2,
+        "unit_price_cents": 2600
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10163",
+    "customer_id": "cus_0025",
+    "status": "processing",
+    "placed_days_ago": 2,
+    "ship_line1": "8121 Pine Rd",
+    "ship_city": "Austin",
+    "ship_state": "TX",
+    "ship_zip": "78701",
+    "items": [
+      {
+        "sku": "NW-COFFEE-05",
+        "name": "Northwind House Coffee, 12oz",
+        "quantity": 1,
+        "unit_price_cents": 1800
+      },
+      {
+        "sku": "NW-PILLOW-09",
+        "name": "Wool Cushion Cover",
+        "quantity": 1,
+        "unit_price_cents": 5200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10164",
+    "customer_id": "cus_0021",
+    "status": "shipped",
+    "placed_days_ago": 7,
+    "shipped_days_ago": 6,
+    "tracking_number": "1ZNW000000000164",
+    "ship_line1": "1981 Juniper Way",
+    "ship_city": "Chicago",
+    "ship_state": "IL",
+    "ship_zip": "60601",
+    "items": [
+      {
+        "sku": "NW-TOWEL-02",
+        "name": "Linen Tea Towel (set of 2)",
+        "quantity": 2,
+        "unit_price_cents": 2800
+      },
+      {
+        "sku": "NW-TEA-06",
+        "name": "Smoky Earl Grey Tea, 50 bags",
+        "quantity": 1,
+        "unit_price_cents": 1400
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10165",
+    "customer_id": "cus_0023",
+    "status": "delivered",
+    "placed_days_ago": 163,
+    "shipped_days_ago": 160,
+    "delivered_days_ago": 155,
+    "tracking_number": "1ZNW000000000165",
+    "ship_line1": "9635 Harbor Ave",
+    "ship_city": "Atlanta",
+    "ship_state": "GA",
+    "ship_zip": "30303",
+    "items": [
+      {
+        "sku": "NW-COFFEE-05",
+        "name": "Northwind House Coffee, 12oz",
+        "quantity": 1,
+        "unit_price_cents": 1800
+      },
+      {
+        "sku": "NW-BLANKET-03",
+        "name": "Merino Throw Blanket",
+        "quantity": 2,
+        "unit_price_cents": 14900
+      },
+      {
+        "sku": "NW-KNIFE-08",
+        "name": "Chef's Knife, 8in",
+        "quantity": 2,
+        "unit_price_cents": 12500
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10166",
+    "customer_id": "cus_0012",
+    "status": "shipped",
+    "placed_days_ago": 5,
+    "shipped_days_ago": 4,
+    "tracking_number": "1ZNW000000000166",
+    "ship_line1": "8115 Birch Blvd",
+    "ship_city": "Denver",
+    "ship_state": "CO",
+    "ship_zip": "80202",
+    "items": [
+      {
+        "sku": "NW-BOARD-07",
+        "name": "Walnut Cutting Board",
+        "quantity": 2,
+        "unit_price_cents": 8900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10167",
+    "customer_id": "cus_0024",
+    "status": "delivered",
+    "placed_days_ago": 132,
+    "shipped_days_ago": 131,
+    "delivered_days_ago": 128,
+    "tracking_number": "1ZNW000000000167",
+    "ship_line1": "8603 Cedar Ln",
+    "ship_city": "Boston",
+    "ship_state": "MA",
+    "ship_zip": "02108",
+    "items": [
+      {
+        "sku": "NW-TEA-06",
+        "name": "Smoky Earl Grey Tea, 50 bags",
+        "quantity": 2,
+        "unit_price_cents": 1400
+      },
+      {
+        "sku": "NW-SOCKS-13",
+        "name": "Alpaca Socks",
+        "quantity": 1,
+        "unit_price_cents": 2200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10168",
+    "customer_id": "cus_0016",
+    "status": "delivered",
+    "placed_days_ago": 36,
+    "shipped_days_ago": 33,
+    "delivered_days_ago": 27,
+    "tracking_number": "1ZNW000000000168",
+    "ship_line1": "506 Juniper Way",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-PILLOW-09",
+        "name": "Wool Cushion Cover",
+        "quantity": 1,
+        "unit_price_cents": 5200
+      },
+      {
+        "sku": "NW-TEA-06",
+        "name": "Smoky Earl Grey Tea, 50 bags",
+        "quantity": 2,
+        "unit_price_cents": 1400
+      },
+      {
+        "sku": "NW-BOTTLE-10",
+        "name": "Insulated Water Bottle",
+        "quantity": 1,
+        "unit_price_cents": 3200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10169",
+    "customer_id": "cus_0033",
+    "status": "cancelled",
+    "placed_days_ago": 67,
+    "ship_line1": "223 Cedar Ln",
+    "ship_city": "Denver",
+    "ship_state": "CO",
+    "ship_zip": "80202",
+    "items": [
+      {
+        "sku": "NW-BLANKET-03",
+        "name": "Merino Throw Blanket",
+        "quantity": 1,
+        "unit_price_cents": 14900
+      },
+      {
+        "sku": "NW-JOURNAL-15",
+        "name": "Linen-Bound Journal",
+        "quantity": 1,
+        "unit_price_cents": 2600
+      },
+      {
+        "sku": "NW-SOAP-11",
+        "name": "Olive Oil Bar Soap (3-pack)",
+        "quantity": 2,
+        "unit_price_cents": 1600
+      }
+    ],
+    "refunds": [
+      {
+        "amount_cents": 20700,
+        "reason": "Order cancelled",
+        "days_ago": 67
+      }
+    ],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10170",
+    "customer_id": "cus_0037",
+    "status": "delivered",
+    "placed_days_ago": 140,
+    "shipped_days_ago": 139,
+    "delivered_days_ago": 137,
+    "tracking_number": "1ZNW000000000170",
+    "ship_line1": "7454 Harbor Ave",
+    "ship_city": "Atlanta",
+    "ship_state": "GA",
+    "ship_zip": "30303",
+    "items": [
+      {
+        "sku": "NW-PLANTER-14",
+        "name": "Terracotta Planter",
+        "quantity": 2,
+        "unit_price_cents": 3900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10171",
+    "customer_id": "cus_0033",
+    "status": "delivered",
+    "placed_days_ago": 157,
+    "shipped_days_ago": 156,
+    "delivered_days_ago": 153,
+    "tracking_number": "1ZNW000000000171",
+    "ship_line1": "5805 Pine Rd",
+    "ship_city": "Denver",
+    "ship_state": "CO",
+    "ship_zip": "80202",
+    "items": [
+      {
+        "sku": "NW-KNIFE-08",
+        "name": "Chef's Knife, 8in",
+        "quantity": 1,
+        "unit_price_cents": 12500
+      },
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 2,
+        "unit_price_cents": 18900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10172",
+    "customer_id": "cus_0042",
+    "status": "delivered",
+    "placed_days_ago": 174,
+    "shipped_days_ago": 171,
+    "delivered_days_ago": 166,
+    "tracking_number": "1ZNW000000000172",
+    "ship_line1": "607 Elm Ct",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-PILLOW-09",
+        "name": "Wool Cushion Cover",
+        "quantity": 2,
+        "unit_price_cents": 5200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10173",
+    "customer_id": "cus_0013",
+    "status": "delivered",
+    "placed_days_ago": 131,
+    "shipped_days_ago": 130,
+    "delivered_days_ago": 124,
+    "tracking_number": "1ZNW000000000173",
+    "ship_line1": "6932 Maple St",
+    "ship_city": "Brooklyn",
+    "ship_state": "NY",
+    "ship_zip": "11201",
+    "items": [
+      {
+        "sku": "NW-PLANTER-14",
+        "name": "Terracotta Planter",
+        "quantity": 2,
+        "unit_price_cents": 3900
+      },
+      {
+        "sku": "NW-TOWEL-02",
+        "name": "Linen Tea Towel (set of 2)",
+        "quantity": 2,
+        "unit_price_cents": 2800
+      },
+      {
+        "sku": "NW-SOAP-11",
+        "name": "Olive Oil Bar Soap (3-pack)",
+        "quantity": 1,
+        "unit_price_cents": 1600
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10174",
+    "customer_id": "cus_0042",
+    "status": "delivered",
+    "placed_days_ago": 128,
+    "shipped_days_ago": 127,
+    "delivered_days_ago": 123,
+    "tracking_number": "1ZNW000000000174",
+    "ship_line1": "7864 Pine Rd",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-BLANKET-03",
+        "name": "Merino Throw Blanket",
+        "quantity": 1,
+        "unit_price_cents": 14900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10175",
+    "customer_id": "cus_0004",
+    "status": "delivered",
+    "placed_days_ago": 77,
+    "shipped_days_ago": 75,
+    "delivered_days_ago": 73,
+    "tracking_number": "1ZNW000000000175",
+    "ship_line1": "2530 Elm Ct",
+    "ship_city": "Portland",
+    "ship_state": "OR",
+    "ship_zip": "97205",
+    "items": [
+      {
+        "sku": "NW-PLANTER-14",
+        "name": "Terracotta Planter",
+        "quantity": 2,
+        "unit_price_cents": 3900
+      },
+      {
+        "sku": "NW-KNIFE-08",
+        "name": "Chef's Knife, 8in",
+        "quantity": 1,
+        "unit_price_cents": 12500
+      },
+      {
+        "sku": "NW-CANDLE-04",
+        "name": "Cedar & Sage Candle",
+        "quantity": 1,
+        "unit_price_cents": 3600
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10176",
+    "customer_id": "cus_0012",
+    "status": "delivered",
+    "placed_days_ago": 72,
+    "shipped_days_ago": 71,
+    "delivered_days_ago": 65,
+    "tracking_number": "1ZNW000000000176",
+    "ship_line1": "6815 Juniper Way",
+    "ship_city": "Denver",
+    "ship_state": "CO",
+    "ship_zip": "80202",
+    "items": [
+      {
+        "sku": "NW-TOWEL-02",
+        "name": "Linen Tea Towel (set of 2)",
+        "quantity": 2,
+        "unit_price_cents": 2800
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10177",
+    "customer_id": "cus_0023",
+    "status": "processing",
+    "placed_days_ago": 0,
+    "ship_line1": "7529 Pine Rd",
+    "ship_city": "Atlanta",
+    "ship_state": "GA",
+    "ship_zip": "30303",
+    "items": [
+      {
+        "sku": "NW-SOAP-11",
+        "name": "Olive Oil Bar Soap (3-pack)",
+        "quantity": 2,
+        "unit_price_cents": 1600
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10178",
+    "customer_id": "cus_0038",
+    "status": "delivered",
+    "placed_days_ago": 54,
+    "shipped_days_ago": 53,
+    "delivered_days_ago": 51,
+    "tracking_number": "1ZNW000000000178",
+    "ship_line1": "9217 Birch Blvd",
+    "ship_city": "Chicago",
+    "ship_state": "IL",
+    "ship_zip": "60601",
+    "items": [
+      {
+        "sku": "NW-MUG-01",
+        "name": "Stoneware Mug",
+        "quantity": 2,
+        "unit_price_cents": 2400
+      },
+      {
+        "sku": "NW-KNIFE-08",
+        "name": "Chef's Knife, 8in",
+        "quantity": 1,
+        "unit_price_cents": 12500
+      },
+      {
+        "sku": "NW-TOWEL-02",
+        "name": "Linen Tea Towel (set of 2)",
+        "quantity": 1,
+        "unit_price_cents": 2800
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10179",
+    "customer_id": "cus_0029",
+    "status": "shipped",
+    "placed_days_ago": 3,
+    "shipped_days_ago": 2,
+    "tracking_number": "1ZNW000000000179",
+    "ship_line1": "2743 Birch Blvd",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-PILLOW-09",
+        "name": "Wool Cushion Cover",
+        "quantity": 1,
+        "unit_price_cents": 5200
+      },
+      {
+        "sku": "NW-BOARD-07",
+        "name": "Walnut Cutting Board",
+        "quantity": 1,
+        "unit_price_cents": 8900
+      },
+      {
+        "sku": "NW-TEA-06",
+        "name": "Smoky Earl Grey Tea, 50 bags",
+        "quantity": 1,
+        "unit_price_cents": 1400
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10180",
+    "customer_id": "cus_0033",
+    "status": "cancelled",
+    "placed_days_ago": 25,
+    "ship_line1": "9644 Elm Ct",
+    "ship_city": "Denver",
+    "ship_state": "CO",
+    "ship_zip": "80202",
+    "items": [
+      {
+        "sku": "NW-KNIFE-08",
+        "name": "Chef's Knife, 8in",
+        "quantity": 1,
+        "unit_price_cents": 12500
+      }
+    ],
+    "refunds": [
+      {
+        "amount_cents": 12500,
+        "reason": "Order cancelled",
+        "days_ago": 25
+      }
+    ],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10181",
+    "customer_id": "cus_0036",
+    "status": "delivered",
+    "placed_days_ago": 78,
+    "shipped_days_ago": 75,
+    "delivered_days_ago": 70,
+    "tracking_number": "1ZNW000000000181",
+    "ship_line1": "1652 Birch Blvd",
+    "ship_city": "Chicago",
+    "ship_state": "IL",
+    "ship_zip": "60601",
+    "items": [
+      {
+        "sku": "NW-MUG-01",
+        "name": "Stoneware Mug",
+        "quantity": 2,
+        "unit_price_cents": 2400
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10182",
+    "customer_id": "cus_0026",
+    "status": "cancelled",
+    "placed_days_ago": 16,
+    "ship_line1": "650 Harbor Ave",
+    "ship_city": "Minneapolis",
+    "ship_state": "MN",
+    "ship_zip": "55401",
+    "items": [
+      {
+        "sku": "NW-SOCKS-13",
+        "name": "Alpaca Socks",
+        "quantity": 1,
+        "unit_price_cents": 2200
+      },
+      {
+        "sku": "NW-PLANTER-14",
+        "name": "Terracotta Planter",
+        "quantity": 2,
+        "unit_price_cents": 3900
+      }
+    ],
+    "refunds": [
+      {
+        "amount_cents": 10000,
+        "reason": "Order cancelled",
+        "days_ago": 16
+      }
+    ],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10183",
+    "customer_id": "cus_0005",
+    "status": "delivered",
+    "placed_days_ago": 88,
+    "shipped_days_ago": 87,
+    "delivered_days_ago": 83,
+    "tracking_number": "1ZNW000000000183",
+    "ship_line1": "690 Birch Blvd",
+    "ship_city": "Chicago",
+    "ship_state": "IL",
+    "ship_zip": "60601",
+    "items": [
+      {
+        "sku": "NW-KNIFE-08",
+        "name": "Chef's Knife, 8in",
+        "quantity": 2,
+        "unit_price_cents": 12500
+      },
+      {
+        "sku": "NW-PILLOW-09",
+        "name": "Wool Cushion Cover",
+        "quantity": 1,
+        "unit_price_cents": 5200
+      },
+      {
+        "sku": "NW-MUG-01",
+        "name": "Stoneware Mug",
+        "quantity": 2,
+        "unit_price_cents": 2400
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10184",
+    "customer_id": "cus_0039",
+    "status": "returned",
+    "placed_days_ago": 133,
+    "shipped_days_ago": 130,
+    "delivered_days_ago": 124,
+    "tracking_number": "1ZNW000000000184",
+    "ship_line1": "4288 Birch Blvd",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-KNIFE-08",
+        "name": "Chef's Knife, 8in",
+        "quantity": 2,
+        "unit_price_cents": 12500
+      },
+      {
+        "sku": "NW-TEA-06",
+        "name": "Smoky Earl Grey Tea, 50 bags",
+        "quantity": 2,
+        "unit_price_cents": 1400
+      }
+    ],
+    "refunds": [
+      {
+        "amount_cents": 27800,
+        "reason": "Return received",
+        "days_ago": 120
+      }
+    ],
+    "returns": [
+      {
+        "rma_number": "RMA-00184",
+        "status": "received",
+        "reason": "Arrived damaged",
+        "days_ago": 120
+      }
+    ]
+  },
+  {
+    "order_number": "NW-10185",
+    "customer_id": "cus_0045",
+    "status": "delivered",
+    "placed_days_ago": 79,
+    "shipped_days_ago": 76,
+    "delivered_days_ago": 70,
+    "tracking_number": "1ZNW000000000185",
+    "ship_line1": "3252 Elm Ct",
+    "ship_city": "Portland",
+    "ship_state": "OR",
+    "ship_zip": "97205",
+    "items": [
+      {
+        "sku": "NW-BOARD-07",
+        "name": "Walnut Cutting Board",
+        "quantity": 2,
+        "unit_price_cents": 8900
+      },
+      {
+        "sku": "NW-KNIFE-08",
+        "name": "Chef's Knife, 8in",
+        "quantity": 1,
+        "unit_price_cents": 12500
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10186",
+    "customer_id": "cus_0024",
+    "status": "processing",
+    "placed_days_ago": 3,
+    "ship_line1": "5542 Maple St",
+    "ship_city": "Boston",
+    "ship_state": "MA",
+    "ship_zip": "02108",
+    "items": [
+      {
+        "sku": "NW-COFFEE-05",
+        "name": "Northwind House Coffee, 12oz",
+        "quantity": 1,
+        "unit_price_cents": 1800
+      },
+      {
+        "sku": "NW-CANDLE-04",
+        "name": "Cedar & Sage Candle",
+        "quantity": 1,
+        "unit_price_cents": 3600
+      },
+      {
+        "sku": "NW-BOARD-07",
+        "name": "Walnut Cutting Board",
+        "quantity": 1,
+        "unit_price_cents": 8900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10187",
+    "customer_id": "cus_0030",
+    "status": "delivered",
+    "placed_days_ago": 133,
+    "shipped_days_ago": 131,
+    "delivered_days_ago": 126,
+    "tracking_number": "1ZNW000000000187",
+    "ship_line1": "8839 Juniper Way",
+    "ship_city": "Brooklyn",
+    "ship_state": "NY",
+    "ship_zip": "11201",
+    "items": [
+      {
+        "sku": "NW-BLANKET-03",
+        "name": "Merino Throw Blanket",
+        "quantity": 2,
+        "unit_price_cents": 14900
+      },
+      {
+        "sku": "NW-BOTTLE-10",
+        "name": "Insulated Water Bottle",
+        "quantity": 1,
+        "unit_price_cents": 3200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10188",
+    "customer_id": "cus_0039",
+    "status": "shipped",
+    "placed_days_ago": 8,
+    "shipped_days_ago": 7,
+    "tracking_number": "1ZNW000000000188",
+    "ship_line1": "7384 Maple St",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-CANDLE-04",
+        "name": "Cedar & Sage Candle",
+        "quantity": 2,
+        "unit_price_cents": 3600
+      },
+      {
+        "sku": "NW-PILLOW-09",
+        "name": "Wool Cushion Cover",
+        "quantity": 2,
+        "unit_price_cents": 5200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10189",
+    "customer_id": "cus_0020",
+    "status": "returned",
+    "placed_days_ago": 85,
+    "shipped_days_ago": 83,
+    "delivered_days_ago": 78,
+    "tracking_number": "1ZNW000000000189",
+    "ship_line1": "9174 Elm Ct",
+    "ship_city": "Austin",
+    "ship_state": "TX",
+    "ship_zip": "78701",
+    "items": [
+      {
+        "sku": "NW-TEA-06",
+        "name": "Smoky Earl Grey Tea, 50 bags",
+        "quantity": 1,
+        "unit_price_cents": 1400
+      },
+      {
+        "sku": "NW-PILLOW-09",
+        "name": "Wool Cushion Cover",
+        "quantity": 2,
+        "unit_price_cents": 5200
+      }
+    ],
+    "refunds": [
+      {
+        "amount_cents": 11800,
+        "reason": "Return received",
+        "days_ago": 69
+      }
+    ],
+    "returns": [
+      {
+        "rma_number": "RMA-00189",
+        "status": "received",
+        "reason": "Changed my mind",
+        "days_ago": 69
+      }
+    ]
+  },
+  {
+    "order_number": "NW-10190",
+    "customer_id": "cus_0009",
+    "status": "shipped",
+    "placed_days_ago": 6,
+    "shipped_days_ago": 5,
+    "tracking_number": "1ZNW000000000190",
+    "ship_line1": "9324 Birch Blvd",
+    "ship_city": "Brooklyn",
+    "ship_state": "NY",
+    "ship_zip": "11201",
+    "items": [
+      {
+        "sku": "NW-SOAP-11",
+        "name": "Olive Oil Bar Soap (3-pack)",
+        "quantity": 1,
+        "unit_price_cents": 1600
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10191",
+    "customer_id": "cus_0049",
+    "status": "returned",
+    "placed_days_ago": 140,
+    "shipped_days_ago": 137,
+    "delivered_days_ago": 132,
+    "tracking_number": "1ZNW000000000191",
+    "ship_line1": "3294 Elm Ct",
+    "ship_city": "Portland",
+    "ship_state": "OR",
+    "ship_zip": "97205",
+    "items": [
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 1,
+        "unit_price_cents": 18900
+      },
+      {
+        "sku": "NW-KNIFE-08",
+        "name": "Chef's Knife, 8in",
+        "quantity": 2,
+        "unit_price_cents": 12500
+      },
+      {
+        "sku": "NW-JOURNAL-15",
+        "name": "Linen-Bound Journal",
+        "quantity": 1,
+        "unit_price_cents": 2600
+      }
+    ],
+    "refunds": [
+      {
+        "amount_cents": 46500,
+        "reason": "Return received",
+        "days_ago": 124
+      }
+    ],
+    "returns": [
+      {
+        "rma_number": "RMA-00191",
+        "status": "received",
+        "reason": "Wrong size",
+        "days_ago": 124
+      }
+    ]
+  },
+  {
+    "order_number": "NW-10192",
+    "customer_id": "cus_0043",
+    "status": "delivered",
+    "placed_days_ago": 6,
+    "shipped_days_ago": 5,
+    "delivered_days_ago": 1,
+    "tracking_number": "1ZNW000000000192",
+    "ship_line1": "8984 Birch Blvd",
+    "ship_city": "Boston",
+    "ship_state": "MA",
+    "ship_zip": "02108",
+    "items": [
+      {
+        "sku": "NW-BOTTLE-10",
+        "name": "Insulated Water Bottle",
+        "quantity": 2,
+        "unit_price_cents": 3200
+      },
+      {
+        "sku": "NW-KNIFE-08",
+        "name": "Chef's Knife, 8in",
+        "quantity": 2,
+        "unit_price_cents": 12500
+      },
+      {
+        "sku": "NW-SOCKS-13",
+        "name": "Alpaca Socks",
+        "quantity": 1,
+        "unit_price_cents": 2200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10193",
+    "customer_id": "cus_0048",
+    "status": "shipped",
+    "placed_days_ago": 2,
+    "shipped_days_ago": 1,
+    "tracking_number": "1ZNW000000000193",
+    "ship_line1": "2713 Juniper Way",
+    "ship_city": "Brooklyn",
+    "ship_state": "NY",
+    "ship_zip": "11201",
+    "items": [
+      {
+        "sku": "NW-COFFEE-05",
+        "name": "Northwind House Coffee, 12oz",
+        "quantity": 2,
+        "unit_price_cents": 1800
+      },
+      {
+        "sku": "NW-JOURNAL-15",
+        "name": "Linen-Bound Journal",
+        "quantity": 2,
+        "unit_price_cents": 2600
+      },
+      {
+        "sku": "NW-MUG-01",
+        "name": "Stoneware Mug",
+        "quantity": 1,
+        "unit_price_cents": 2400
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10194",
+    "customer_id": "cus_0047",
+    "status": "delivered",
+    "placed_days_ago": 171,
+    "shipped_days_ago": 170,
+    "delivered_days_ago": 167,
+    "tracking_number": "1ZNW000000000194",
+    "ship_line1": "6828 Maple St",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-KNIFE-08",
+        "name": "Chef's Knife, 8in",
+        "quantity": 2,
+        "unit_price_cents": 12500
+      },
+      {
+        "sku": "NW-TEA-06",
+        "name": "Smoky Earl Grey Tea, 50 bags",
+        "quantity": 2,
+        "unit_price_cents": 1400
+      },
+      {
+        "sku": "NW-LAMP-12",
+        "name": "Brass Reading Lamp",
+        "quantity": 2,
+        "unit_price_cents": 18900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10195",
+    "customer_id": "cus_0008",
+    "status": "returned",
+    "placed_days_ago": 124,
+    "shipped_days_ago": 121,
+    "delivered_days_ago": 117,
+    "tracking_number": "1ZNW000000000195",
+    "ship_line1": "9173 Juniper Way",
+    "ship_city": "Chicago",
+    "ship_state": "IL",
+    "ship_zip": "60601",
+    "items": [
+      {
+        "sku": "NW-JOURNAL-15",
+        "name": "Linen-Bound Journal",
+        "quantity": 1,
+        "unit_price_cents": 2600
+      },
+      {
+        "sku": "NW-TOWEL-02",
+        "name": "Linen Tea Towel (set of 2)",
+        "quantity": 1,
+        "unit_price_cents": 2800
+      },
+      {
+        "sku": "NW-COFFEE-05",
+        "name": "Northwind House Coffee, 12oz",
+        "quantity": 1,
+        "unit_price_cents": 1800
+      }
+    ],
+    "refunds": [
+      {
+        "amount_cents": 7200,
+        "reason": "Return received",
+        "days_ago": 113
+      }
+    ],
+    "returns": [
+      {
+        "rma_number": "RMA-00195",
+        "status": "received",
+        "reason": "Wrong size",
+        "days_ago": 113
+      }
+    ]
+  },
+  {
+    "order_number": "NW-10196",
+    "customer_id": "cus_0042",
+    "status": "shipped",
+    "placed_days_ago": 6,
+    "shipped_days_ago": 5,
+    "tracking_number": "1ZNW000000000196",
+    "ship_line1": "1735 Pine Rd",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-BLANKET-03",
+        "name": "Merino Throw Blanket",
+        "quantity": 1,
+        "unit_price_cents": 14900
+      },
+      {
+        "sku": "NW-BOTTLE-10",
+        "name": "Insulated Water Bottle",
+        "quantity": 1,
+        "unit_price_cents": 3200
+      },
+      {
+        "sku": "NW-COFFEE-05",
+        "name": "Northwind House Coffee, 12oz",
+        "quantity": 1,
+        "unit_price_cents": 1800
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10197",
+    "customer_id": "cus_0047",
+    "status": "delivered",
+    "placed_days_ago": 28,
+    "shipped_days_ago": 27,
+    "delivered_days_ago": 24,
+    "tracking_number": "1ZNW000000000197",
+    "ship_line1": "1811 Birch Blvd",
+    "ship_city": "Seattle",
+    "ship_state": "WA",
+    "ship_zip": "98101",
+    "items": [
+      {
+        "sku": "NW-BLANKET-03",
+        "name": "Merino Throw Blanket",
+        "quantity": 1,
+        "unit_price_cents": 14900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10198",
+    "customer_id": "cus_0043",
+    "status": "delivered",
+    "placed_days_ago": 180,
+    "shipped_days_ago": 177,
+    "delivered_days_ago": 171,
+    "tracking_number": "1ZNW000000000198",
+    "ship_line1": "4721 Harbor Ave",
+    "ship_city": "Boston",
+    "ship_state": "MA",
+    "ship_zip": "02108",
+    "items": [
+      {
+        "sku": "NW-KNIFE-08",
+        "name": "Chef's Knife, 8in",
+        "quantity": 1,
+        "unit_price_cents": 12500
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10199",
+    "customer_id": "cus_0037",
+    "status": "delivered",
+    "placed_days_ago": 34,
+    "shipped_days_ago": 32,
+    "delivered_days_ago": 27,
+    "tracking_number": "1ZNW000000000199",
+    "ship_line1": "9252 Birch Blvd",
+    "ship_city": "Atlanta",
+    "ship_state": "GA",
+    "ship_zip": "30303",
+    "items": [
+      {
+        "sku": "NW-PLANTER-14",
+        "name": "Terracotta Planter",
+        "quantity": 2,
+        "unit_price_cents": 3900
+      },
+      {
+        "sku": "NW-BOTTLE-10",
+        "name": "Insulated Water Bottle",
+        "quantity": 1,
+        "unit_price_cents": 3200
+      },
+      {
+        "sku": "NW-PILLOW-09",
+        "name": "Wool Cushion Cover",
+        "quantity": 2,
+        "unit_price_cents": 5200
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  },
+  {
+    "order_number": "NW-10200",
+    "customer_id": "cus_0024",
+    "status": "delivered",
+    "placed_days_ago": 84,
+    "shipped_days_ago": 83,
+    "delivered_days_ago": 77,
+    "tracking_number": "1ZNW000000000200",
+    "ship_line1": "1070 Birch Blvd",
+    "ship_city": "Boston",
+    "ship_state": "MA",
+    "ship_zip": "02108",
+    "items": [
+      {
+        "sku": "NW-PLANTER-14",
+        "name": "Terracotta Planter",
+        "quantity": 2,
+        "unit_price_cents": 3900
+      }
+    ],
+    "refunds": [],
+    "returns": []
+  }
+]

@@ -1,0 +1,252 @@
+[
+  {
+    "customer_id": "cus_0001",
+    "points_balance": 100,
+    "lifetime_points": 1250
+  },
+  {
+    "customer_id": "cus_0002",
+    "points_balance": 300,
+    "lifetime_points": 550
+  },
+  {
+    "customer_id": "cus_0003",
+    "points_balance": 450,
+    "lifetime_points": 1300
+  },
+  {
+    "customer_id": "cus_0004",
+    "points_balance": 300,
+    "lifetime_points": 800
+  },
+  {
+    "customer_id": "cus_0005",
+    "points_balance": 850,
+    "lifetime_points": 1250
+  },
+  {
+    "customer_id": "cus_0006",
+    "points_balance": 900,
+    "lifetime_points": 1350
+  },
+  {
+    "customer_id": "cus_0007",
+    "points_balance": 250,
+    "lifetime_points": 250
+  },
+  {
+    "customer_id": "cus_0008",
+    "points_balance": 100,
+    "lifetime_points": 1250
+  },
+  {
+    "customer_id": "cus_0009",
+    "points_balance": 800,
+    "lifetime_points": 1000
+  },
+  {
+    "customer_id": "cus_0010",
+    "points_balance": 700,
+    "lifetime_points": 800
+  },
+  {
+    "customer_id": "cus_0011",
+    "points_balance": 800,
+    "lifetime_points": 1100
+  },
+  {
+    "customer_id": "cus_0012",
+    "points_balance": 100,
+    "lifetime_points": 800
+  },
+  {
+    "customer_id": "cus_0013",
+    "points_balance": 50,
+    "lifetime_points": 50
+  },
+  {
+    "customer_id": "cus_0014",
+    "points_balance": 200,
+    "lifetime_points": 2150
+  },
+  {
+    "customer_id": "cus_0015",
+    "points_balance": 0,
+    "lifetime_points": 0
+  },
+  {
+    "customer_id": "cus_0016",
+    "points_balance": 200,
+    "lifetime_points": 850
+  },
+  {
+    "customer_id": "cus_0017",
+    "points_balance": 150,
+    "lifetime_points": 600
+  },
+  {
+    "customer_id": "cus_0018",
+    "points_balance": 1550,
+    "lifetime_points": 2450
+  },
+  {
+    "customer_id": "cus_0019",
+    "points_balance": 500,
+    "lifetime_points": 500
+  },
+  {
+    "customer_id": "cus_0020",
+    "points_balance": 400,
+    "lifetime_points": 2000
+  },
+  {
+    "customer_id": "cus_0021",
+    "points_balance": 450,
+    "lifetime_points": 1900
+  },
+  {
+    "customer_id": "cus_0022",
+    "points_balance": 150,
+    "lifetime_points": 600
+  },
+  {
+    "customer_id": "cus_0023",
+    "points_balance": 1850,
+    "lifetime_points": 1900
+  },
+  {
+    "customer_id": "cus_0024",
+    "points_balance": 1250,
+    "lifetime_points": 2200
+  },
+  {
+    "customer_id": "cus_0025",
+    "points_balance": 2300,
+    "lifetime_points": 2450
+  },
+  {
+    "customer_id": "cus_0026",
+    "points_balance": 1600,
+    "lifetime_points": 2850
+  },
+  {
+    "customer_id": "cus_0027",
+    "points_balance": 1450,
+    "lifetime_points": 2000
+  },
+  {
+    "customer_id": "cus_0028",
+    "points_balance": 1450,
+    "lifetime_points": 2500
+  },
+  {
+    "customer_id": "cus_0029",
+    "points_balance": 1050,
+    "lifetime_points": 1450
+  },
+  {
+    "customer_id": "cus_0030",
+    "points_balance": 1700,
+    "lifetime_points": 2350
+  },
+  {
+    "customer_id": "cus_0031",
+    "points_balance": 100,
+    "lifetime_points": 2450
+  },
+  {
+    "customer_id": "cus_0032",
+    "points_balance": 950,
+    "lifetime_points": 2200
+  },
+  {
+    "customer_id": "cus_0033",
+    "points_balance": 1050,
+    "lifetime_points": 1650
+  },
+  {
+    "customer_id": "cus_0034",
+    "points_balance": 1800,
+    "lifetime_points": 2400
+  },
+  {
+    "customer_id": "cus_0035",
+    "points_balance": 200,
+    "lifetime_points": 1000
+  },
+  {
+    "customer_id": "cus_0036",
+    "points_balance": 2600,
+    "lifetime_points": 2650
+  },
+  {
+    "customer_id": "cus_0037",
+    "points_balance": 150,
+    "lifetime_points": 300
+  },
+  {
+    "customer_id": "cus_0038",
+    "points_balance": 300,
+    "lifetime_points": 550
+  },
+  {
+    "customer_id": "cus_0039",
+    "points_balance": 500,
+    "lifetime_points": 2050
+  },
+  {
+    "customer_id": "cus_0040",
+    "points_balance": 450,
+    "lifetime_points": 2950
+  },
+  {
+    "customer_id": "cus_0041",
+    "points_balance": 700,
+    "lifetime_points": 1300
+  },
+  {
+    "customer_id": "cus_0042",
+    "points_balance": 1300,
+    "lifetime_points": 2700
+  },
+  {
+    "customer_id": "cus_0043",
+    "points_balance": 50,
+    "lifetime_points": 1750
+  },
+  {
+    "customer_id": "cus_0044",
+    "points_balance": 50,
+    "lifetime_points": 150
+  },
+  {
+    "customer_id": "cus_0045",
+    "points_balance": 650,
+    "lifetime_points": 750
+  },
+  {
+    "customer_id": "cus_0046",
+    "points_balance": 500,
+    "lifetime_points": 1050
+  },
+  {
+    "customer_id": "cus_0047",
+    "points_balance": 150,
+    "lifetime_points": 200
+  },
+  {
+    "customer_id": "cus_0048",
+    "points_balance": 650,
+    "lifetime_points": 2750
+  },
+  {
+    "customer_id": "cus_0049",
+    "points_balance": 0,
+    "lifetime_points": 50
+  },
+  {
+    "customer_id": "cus_0050",
+    "points_balance": 250,
+    "lifetime_points": 950
+  }
+]
