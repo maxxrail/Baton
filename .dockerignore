@@ -1,0 +1,16 @@
+.git
+.github
+.claude
+.venv
+.env
+.env.*
+!.env.example
+**/__pycache__
+.pytest_cache
+.mypy_cache
+.ruff_cache
+*.db
+evals/reports
+web/node_modules
+docs
+tests

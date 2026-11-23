@@ -1,0 +1,30 @@
+# secrets
+.env
+.env.*
+!.env.example
+
+# claude code personal settings
+.claude/settings.local.json
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+
+# data
+*.db
+evals/reports/
+
+# node
+node_modules/
+web/dist/
+
+# os/editor
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json

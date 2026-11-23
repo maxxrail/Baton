@@ -1,0 +1,2 @@
+# Fingerprints of known false positives (e.g. fake keys in test fixtures).
+# Format: <commit>:<file>:<rule>:<line>  — add only after checking it's not a real secret.
