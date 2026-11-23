@@ -1,0 +1,195 @@
+[
+  {
+    "id": "sub_0001",
+    "customer_id": "cus_0019",
+    "sku": "NW-SOAP-11",
+    "name": "Olive Oil Bar Soap (3-pack)",
+    "cadence_days": 14,
+    "price_cents": 1500,
+    "status": "active",
+    "next_ship_in_days": 8
+  },
+  {
+    "id": "sub_0002",
+    "customer_id": "cus_0018",
+    "sku": "NW-COFFEE-05",
+    "name": "Northwind House Coffee, 12oz",
+    "cadence_days": 30,
+    "price_cents": 1700,
+    "status": "paused"
+  },
+  {
+    "id": "sub_0003",
+    "customer_id": "cus_0043",
+    "sku": "NW-COFFEE-05",
+    "name": "Northwind House Coffee, 12oz",
+    "cadence_days": 60,
+    "price_cents": 1700,
+    "status": "paused"
+  },
+  {
+    "id": "sub_0004",
+    "customer_id": "cus_0049",
+    "sku": "NW-TEA-06",
+    "name": "Smoky Earl Grey Tea, 50 bags",
+    "cadence_days": 60,
+    "price_cents": 1300,
+    "status": "active",
+    "next_ship_in_days": 23
+  },
+  {
+    "id": "sub_0005",
+    "customer_id": "cus_0012",
+    "sku": "NW-TEA-06",
+    "name": "Smoky Earl Grey Tea, 50 bags",
+    "cadence_days": 60,
+    "price_cents": 1300,
+    "status": "active",
+    "next_ship_in_days": 1
+  },
+  {
+    "id": "sub_0006",
+    "customer_id": "cus_0013",
+    "sku": "NW-SOAP-11",
+    "name": "Olive Oil Bar Soap (3-pack)",
+    "cadence_days": 14,
+    "price_cents": 1500,
+    "status": "paused"
+  },
+  {
+    "id": "sub_0007",
+    "customer_id": "cus_0044",
+    "sku": "NW-COFFEE-05",
+    "name": "Northwind House Coffee, 12oz",
+    "cadence_days": 60,
+    "price_cents": 1700,
+    "status": "active",
+    "next_ship_in_days": 14
+  },
+  {
+    "id": "sub_0008",
+    "customer_id": "cus_0050",
+    "sku": "NW-CANDLE-04",
+    "name": "Cedar & Sage Candle",
+    "cadence_days": 60,
+    "price_cents": 3200,
+    "status": "paused"
+  },
+  {
+    "id": "sub_0009",
+    "customer_id": "cus_0015",
+    "sku": "NW-COFFEE-05",
+    "name": "Northwind House Coffee, 12oz",
+    "cadence_days": 30,
+    "price_cents": 1700,
+    "status": "active",
+    "next_ship_in_days": 16
+  },
+  {
+    "id": "sub_0010",
+    "customer_id": "cus_0024",
+    "sku": "NW-SOAP-11",
+    "name": "Olive Oil Bar Soap (3-pack)",
+    "cadence_days": 60,
+    "price_cents": 1500,
+    "status": "active",
+    "next_ship_in_days": 10
+  },
+  {
+    "id": "sub_0011",
+    "customer_id": "cus_0041",
+    "sku": "NW-SOAP-11",
+    "name": "Olive Oil Bar Soap (3-pack)",
+    "cadence_days": 60,
+    "price_cents": 1500,
+    "status": "active",
+    "next_ship_in_days": 21
+  },
+  {
+    "id": "sub_0012",
+    "customer_id": "cus_0037",
+    "sku": "NW-TEA-06",
+    "name": "Smoky Earl Grey Tea, 50 bags",
+    "cadence_days": 14,
+    "price_cents": 1300,
+    "status": "paused"
+  },
+  {
+    "id": "sub_0013",
+    "customer_id": "cus_0027",
+    "sku": "NW-CANDLE-04",
+    "name": "Cedar & Sage Candle",
+    "cadence_days": 14,
+    "price_cents": 3200,
+    "status": "active",
+    "next_ship_in_days": 28
+  },
+  {
+    "id": "sub_0014",
+    "customer_id": "cus_0038",
+    "sku": "NW-CANDLE-04",
+    "name": "Cedar & Sage Candle",
+    "cadence_days": 14,
+    "price_cents": 3200,
+    "status": "active",
+    "next_ship_in_days": 25
+  },
+  {
+    "id": "sub_0015",
+    "customer_id": "cus_0031",
+    "sku": "NW-TEA-06",
+    "name": "Smoky Earl Grey Tea, 50 bags",
+    "cadence_days": 14,
+    "price_cents": 1300,
+    "status": "paused"
+  },
+  {
+    "id": "sub_0016",
+    "customer_id": "cus_0022",
+    "sku": "NW-COFFEE-05",
+    "name": "Northwind House Coffee, 12oz",
+    "cadence_days": 60,
+    "price_cents": 1700,
+    "status": "paused"
+  },
+  {
+    "id": "sub_0017",
+    "customer_id": "cus_0017",
+    "sku": "NW-COFFEE-05",
+    "name": "Northwind House Coffee, 12oz",
+    "cadence_days": 14,
+    "price_cents": 1700,
+    "status": "active",
+    "next_ship_in_days": 11
+  },
+  {
+    "id": "sub_0018",
+    "customer_id": "cus_0026",
+    "sku": "NW-COFFEE-05",
+    "name": "Northwind House Coffee, 12oz",
+    "cadence_days": 60,
+    "price_cents": 1700,
+    "status": "active",
+    "next_ship_in_days": 24
+  },
+  {
+    "id": "sub_0019",
+    "customer_id": "cus_0020",
+    "sku": "NW-CANDLE-04",
+    "name": "Cedar & Sage Candle",
+    "cadence_days": 60,
+    "price_cents": 3200,
+    "status": "active",
+    "next_ship_in_days": 28
+  },
+  {
+    "id": "sub_0020",
+    "customer_id": "cus_0047",
+    "sku": "NW-TEA-06",
+    "name": "Smoky Earl Grey Tea, 50 bags",
+    "cadence_days": 30,
+    "price_cents": 1300,
+    "status": "active",
+    "next_ship_in_days": 27
+  }
+]
