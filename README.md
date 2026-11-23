@@ -20,8 +20,18 @@ uv run alembic upgrade head       # create baton.db
 uv run python -m scripts.dev      # Baton API on :8000, Northwind mock store on :8100
 ```
 
-Then open <http://localhost:8000/healthz> and <http://localhost:8100/docs>.
+Then open <http://localhost:8000/healthz>, <http://localhost:8000/aops> and
+<http://localhost:8100/docs>.
 If a port is taken: `uv run python -m scripts.dev --baton-port 8001`.
+
+AOPs (support procedures in plain-English Markdown, see [`aops/README.md`](aops/README.md)):
+
+```
+uv run baton-aop validate            # check every AOP; nonzero exit on any error
+uv run baton-aop graph return_item   # Mermaid flowchart of one procedure
+uv run baton-aop show return_item --prompts
+uv run baton-aop compile             # record new AOP versions in the database
+```
 
 Checks:
 
@@ -37,7 +47,11 @@ uv run pre-commit run --all-files
 | Piece | Where | Notes |
 |---|---|---|
 | Baton API | `src/baton/api/` | FastAPI, `/healthz`, JSON logs (structlog) with request IDs and PII redaction |
-| Database | `src/baton/db/`, `migrations/` | SQLAlchemy 2.0 + Alembic: `conversations`, `messages`, `traces`. SQLite locally, Postgres via `DATABASE_URL` |
+| AOPs | `aops/`, `src/baton/aop/` | 8 Northwind procedures. Deterministic parser, validator (10 diagnostic codes), compiler with per-step prompts, Mermaid graphs, `baton-aop` CLI, version history |
+| Router | `src/baton/aop/router.py` | Embedding pre-filter over AOP triggers, then an LLM classifier with structured output; answers validated in code |
+| Tool registry | `src/baton/tools/` | Typed contracts (Pydantic in/out, `side_effect`, `requires_verification`) for the 13 Northwind tools |
+| AOP API | `src/baton/api/aops.py` | `GET /aops`, `GET /aops/{id}` (graph + Mermaid), `POST /aops/validate` |
+| Database | `src/baton/db/`, `migrations/` | SQLAlchemy 2.0 + Alembic: `conversations`, `messages`, `traces`, `aop_versions`. SQLite locally, Postgres via `DATABASE_URL` |
 | LLM layer | `src/baton/llm/` | `LLMClient` protocol, `AnthropicClient` (official SDK), `FakeLLM` for offline tests, `HashingEmbedder` |
 | Northwind mock store | `src/mock_commerce/` | Customers, orders, returns, refunds, subscriptions, loyalty. Rules enforced server-side. See its [README](src/mock_commerce/README.md) |
 | Seed data | `data/seed/` | Deterministic, with deliberate tricky cases (expired return window, partial refund, shared phone) |
@@ -52,7 +66,7 @@ picks `anthropic` or `fake`. It defaults to `anthropic` when `ANTHROPIC_API_KEY`
 | # | Part | Status |
 |---|------|--------|
 | 00 | Foundation + Northwind mock commerce | done |
-| 01 | AOP language + compiler | |
+| 01 | AOP language + compiler | done |
 | 02 | Agent runtime + guardrails | |
 | 03 | Knowledge base (RAG) | |
 | 04 | Channels + human handoff | |

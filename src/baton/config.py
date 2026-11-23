@@ -4,12 +4,16 @@ Every tunable lives here so the rest of the code never touches `os.environ` dire
 """
 
 from functools import lru_cache
+from pathlib import Path
 from typing import Literal
 
 from pydantic import SecretStr, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 DEFAULT_MODEL = "claude-sonnet-5-5"
+
+# src/baton/config.py -> repo root. The package is installed editable, so this is the checkout.
+REPO_ROOT = Path(__file__).resolve().parents[2]
 
 
 class Settings(BaseSettings):
@@ -27,6 +31,10 @@ class Settings(BaseSettings):
     baton_llm_fallbacks: bool = True
 
     mock_commerce_url: str = "http://localhost:8100"
+
+    # Where the customer's procedures and our versioned prompt files live.
+    aops_dir: Path = REPO_ROOT / "aops"
+    prompts_dir: Path = REPO_ROOT / "prompts"
 
     log_level: str = "INFO"
 

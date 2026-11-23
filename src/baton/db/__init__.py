@@ -1,6 +1,14 @@
 """Database layer: models and sessions. Schema changes go through Alembic (`migrations/`)."""
 
-from baton.db.models import Base, Conversation, ConversationStatus, Message, MessageRole, Trace
+from baton.db.models import (
+    AOPVersion,
+    Base,
+    Conversation,
+    ConversationStatus,
+    Message,
+    MessageRole,
+    Trace,
+)
 from baton.db.session import (
     default_session_factory,
     get_session,
@@ -10,6 +18,7 @@ from baton.db.session import (
 )
 
 __all__ = [
+    "AOPVersion",
     "Base",
     "Conversation",
     "ConversationStatus",
