@@ -30,7 +30,7 @@ class Settings(BaseSettings):
     # Ask the API to retry a refused request on a fallback model (server-side fallbacks beta).
     baton_llm_fallbacks: bool = True
 
-    mock_commerce_url: str = "http://localhost:8100"
+    mock_commerce_url: str = "http://localhost:8300"
 
     # Guardrails. Refunds up to this amount (cents) are issued automatically; larger ones, or
     # a running total above it in one conversation, are escalated to a human.

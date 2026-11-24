@@ -136,6 +136,7 @@ Claude Code updates this file at the end of every part.
 - 2026-11-24 — (Part 03) Own ~40-line BM25 rather than `rank-bm25`: no dependency, and its idf is needed for the coverage signal anyway.
 - 2026-11-24 — (Part 03) Voyage via plain httpx rather than its SDK: one endpoint, no new dependency, and mockable with `httpx.MockTransport`.
 - 2026-11-24 — (Part 03) The `Embedder` protocol gained `name`; it's part of every chunk's hash and stored per row, so a mixed-embedder index can't happen silently.
+- 2026-11-24 — The mock store's default port moved from 8100 to 8300 (`scripts/dev.py`, `MOCK_COMMERCE_URL` default, `.env.example`, docs): 8100 is taken on the dev machine. Part files and earlier CHANGELOG entries still say 8100 as a historical record.
 
 ## Known gaps
 - Port 8000 is used by Docker Desktop/WSL on the dev machine, so the live dev-runner check ran with `--baton-port 8001`. On a machine with 8000 free, the default command works unchanged; `scripts/dev.py` now fails fast with a clear message when a port is taken.
@@ -171,6 +172,6 @@ Claude Code updates this file at the end of every part.
 - (Part 03) The judge is itself an LLM: it can wrongly mark a claim supported. Code enforces that it names a real evidence source, but not that the source actually says it. Part 05's judge calibration set should cover the grounding judge too.
 - (Part 03) Evidence from earlier turns is limited to the most recent search. An answer that relies on a search from two turns ago is checked without it (and may be trimmed); the model is told to search again for each new question.
 - (Part 03) `KnowledgeBase` loads the index once per process; a long-running API needs a restart (or `refresh()`) after `baton-kb ingest`.
-- (Part 03) The local `.env` on the dev machine sets `MOCK_COMMERCE_URL` to port 8300 while `scripts.dev` starts the store on 8100; the live check overrode it with `MOCK_COMMERCE_URL=http://localhost:8100`.
+- (Part 03) The local `.env` on the dev machine sets `MOCK_COMMERCE_URL` to port 8300 while `scripts.dev` starts the store on 8100; the live check overrode it with `MOCK_COMMERCE_URL=http://localhost:8100`. *(Resolved 2026-11-24: the store's default port is now 8300, see Decisions.)*
 - (Part 03, from code review) **Grounding only covers help-center turns.** In an account procedure (`return_item`, `refund_request`, ...) a reply that states policy from memory ("you have 60 days") without searching or citing isn't grounding-checked (`test_account_procedure_replies_without_kb_use_are_not_grounding_checked` pins the current behaviour). Grounding every reply would cost a judge call per turn. The AOP policies in the prompt and Part 05 red-team sims ("you said 60 days") are the planned backstop; Part 06 Watchtower can score it live.
 - (Part 03) `baton-kb ingest` assumes a single writer (like `baton-aop compile`): two concurrent runs could both insert the same new chunk. It runs from a CLI or deploy step, not per request.
