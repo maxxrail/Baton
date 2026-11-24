@@ -194,10 +194,14 @@ class Router:
                 continue
         return None
 
-    def route(self, message: str, history: Sequence[Msg] = ()) -> RouteDecision:
+    def route(
+        self, message: str, history: Sequence[Msg] = (), *, llm: LLMClient | None = None
+    ) -> RouteDecision:
+        """Route one message. `llm` overrides the client for this call (the agent passes a
+        per-turn wrapper that records token usage and latency for the trace)."""
         candidates = self.prefilter(message, history)
         candidate_ids = [c.aop_id for c in candidates]
-        response = self.llm.complete(
+        response = (llm or self.llm).complete(
             system=self._system(candidate_ids),
             messages=[self._user_message(message, history)],
             tools=[self._tool(candidate_ids)],

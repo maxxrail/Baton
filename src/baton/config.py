@@ -7,7 +7,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Literal
 
-from pydantic import SecretStr, model_validator
+from pydantic import Field, SecretStr, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 DEFAULT_MODEL = "claude-sonnet-5-5"
@@ -31,6 +31,10 @@ class Settings(BaseSettings):
     baton_llm_fallbacks: bool = True
 
     mock_commerce_url: str = "http://localhost:8100"
+
+    # Guardrails. Refunds up to this amount (cents) are issued automatically; larger ones, or
+    # a running total above it in one conversation, are escalated to a human.
+    baton_refund_auto_limit_cents: int = Field(default=10_000, ge=0)
 
     # Where the customer's procedures and our versioned prompt files live.
     aops_dir: Path = REPO_ROOT / "aops"
