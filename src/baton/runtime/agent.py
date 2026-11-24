@@ -48,7 +48,7 @@ from sqlalchemy.orm import Session, sessionmaker
 from baton.aop.models import AOPBundle, CompiledAOP, CompiledStep, Terminal, target_label
 from baton.aop.router import Router
 from baton.aop.store import sync_versions
-from baton.db.models import Conversation, Message, MessageRole
+from baton.db.models import Conversation, Message, MessageRole, Trace
 from baton.db.session import session_scope
 from baton.knowledge.grounding import (
     HEDGE_NOTE,
@@ -138,6 +138,10 @@ NO_PROCEDURE = (
 DRAFT_KEPT_NOTE = (
     "[system] The text you wrote with those tool calls will be sent to the customer. Don't "
     "repeat it; reply only with anything still missing, or a brief closing."
+)
+NOTHING_SENT_NOTE = (
+    "[system] The customer hasn't seen any text from you this turn. When you reply, include "
+    "everything they need to know, such as the answer from the tool results."
 )
 REWRITE_INSTRUCTION = (
     "[system] Your reply was not sent: {reason}. Write a new reply to the customer that fixes "
@@ -588,6 +592,11 @@ class Agent:
             if resp.text.strip() and not any(r.is_error for r in results):
                 turn.drafts.append(resp.text.strip())
                 content.append(TextBlock(text=DRAFT_KEPT_NOTE))
+            elif not turn.drafts:
+                # Some models return text written between tool calls as hidden progress
+                # blocks, so an answer written next to `advance_step(RESOLVE)` never reaches
+                # us. Say plainly that the customer has seen nothing yet this turn.
+                content.append(TextBlock(text=NOTHING_SENT_NOTE))
             turn.messages.append(Msg(role="user", content=content))
             if turn.forced_escalation and turn.escalation:
                 return self._escalate(turn, turn.escalation)
@@ -836,7 +845,7 @@ class Agent:
         if target == Terminal.RESOLVE:
             state.end_procedure()
             state.status = "resolved"
-            message = "Procedure resolved. Reply to the customer to wrap up."
+            message = "Procedure resolved. Now write your reply to the customer."
         elif target == Terminal.ESCALATE:
             turn.escalation = str(call.input.get("reason") or f"{aop.name} needs a teammate")
             message = (
@@ -1025,17 +1034,43 @@ class Agent:
         ] + [("customer", turn.customer_message)]
         turn.llm.purpose = "handoff"
         self._activity(turn, "handoff")
+        # The whole conversation's tool log, not just this turn's: an escalation turn often
+        # calls no tools, and the teammate must know the customer was already verified.
+        tried = [*self._earlier_tool_log(state.conversation_id), *turn.tried]
         result = build_handoff(
             turn.llm,
             state,
             transcript,
-            turn.tried,
+            tried,
             reason,
             aop.name if aop else None,
             self.prompts_dir,
         )
         state.handoff = result.summary
         turn.trace.prompt_versions["handoff"] = result.prompt_version
+
+    def _earlier_tool_log(self, conversation_id: str) -> list[str]:
+        """`turn N: tool: outcome` for every tool call in earlier turns, from their (already
+        redacted) traces."""
+        with self.sessions() as session:
+            payloads = session.scalars(
+                select(Trace.payload).where(Trace.conversation_id == conversation_id)
+            ).all()
+        lines: list[str] = []
+        for payload in sorted(payloads, key=lambda p: int(str(p.get("turn", 0)))):
+            calls = payload.get("tool_calls")
+            if not isinstance(calls, list):
+                continue
+            for call in calls:
+                if not isinstance(call, dict) or call.get("source") == "guardrail":
+                    continue
+                name = call.get("name")
+                if name in (ADVANCE_TOOL, SWITCH_TOOL):
+                    continue
+                outcome = call.get("blocked_by") and f"blocked by {call['blocked_by']}"
+                outcome = outcome or (call.get("error_code") or "ok")
+                lines.append(f"turn {payload.get('turn')}: {name}: {outcome}")
+        return lines
 
     # ------------------------------------------------------------------ helpers
 

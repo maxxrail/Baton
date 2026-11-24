@@ -64,6 +64,7 @@ class ScriptedLLM:
         self.agent_calls: list[tuple[str, list[Msg], list[ToolSpec] | None]] = []
         self.route_calls = 0
         self.handoff_calls = 0
+        self.handoff_prompts: list[str] = []
         self.streamed = 0
 
     def push(self, *responses: LLMResponse) -> None:
@@ -86,6 +87,7 @@ class ScriptedLLM:
             )
         if HANDOFF_TOOL in names:
             self.handoff_calls += 1
+            self.handoff_prompts.append(system)
             if self.handoff is None:
                 return say("I'd rather not.")
             return LLMResponse(

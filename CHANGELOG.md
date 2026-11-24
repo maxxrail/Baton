@@ -25,6 +25,11 @@ All notable changes to Baton. Format: [Keep a Changelog](https://keepachangelog.
 - `acquire_turn` returns a lease token; a turn that outlived its lease raises `LeaseLostError` instead of saving over whoever claimed the conversation since.
 - Agent replies store their citations in `messages.meta`; `AgentReply` gains `message_id` and `replied`.
 
+### Fixed (found in the browser check)
+- The widget crashed when opened in current Chrome (`scrollIntoView` returns a Promise, which an effect returned to React).
+- Handoff notes were written from the escalation turn's tool log only, so a verified customer could be described as unverified. The note writer now gets the verified state and the whole conversation's tool log.
+- An answer written next to a tool call could be lost when the model returns that text as a hidden progress block. The runtime now tells the model when the customer has seen nothing yet this turn.
+
 ## [Part 03] - 2026-11-24 — Knowledge base (RAG) with citations
 ### Added
 - 28 Northwind help-center articles in `data/kb/` (shipping by region, Canada, costs, processing, tracking, returns, exchanges, refunds, damaged items, warranty, sizing, care, loyalty, subscriptions, payments, gift cards, promo codes, support, account, coffee freshness). Two deliberate old-vs-new conflicts: `return-policy` vs `return-policy-2024` and `shipping-costs` vs `free-shipping-offer-2025`.

@@ -109,6 +109,7 @@ def build_handoff(
         reason=reason,
         procedure=procedure or "none",
         tool_log="\n".join(f"- {t}" for t in tried) or "- (no tools called)",
+        state=state.summary(),
     )
     lines = [f"{who}: {_escape(text)}" for who, text in transcript[-TRANSCRIPT_MESSAGES:]]
     user = Msg(role="user", content="<transcript>\n" + "\n".join(lines) + "\n</transcript>")

@@ -69,7 +69,11 @@ export function Widget({ embedded = false }: { embedded?: boolean }) {
     if (embedded) window.parent.postMessage({ type: "baton:resize", open }, "*");
   }, [open, embedded]);
 
-  useEffect(() => bottom.current?.scrollIntoView({ block: "end" }), [messages, activity]);
+  // Braces matter: current Chrome returns a Promise from scrollIntoView, and an effect that
+  // returns a non-function crashes React on the next render (caught in the browser check).
+  useEffect(() => {
+    bottom.current?.scrollIntoView({ block: "end" });
+  }, [messages, activity]);
 
   // Create or resume the conversation when the panel first opens.
   useEffect(() => {
