@@ -4,9 +4,9 @@ A fake store backend for **Northwind Goods**, a fictional DTC home-goods brand. 
 it over HTTP the way they would call a real brand's commerce API. It ships in this repo so
 everything runs offline.
 
-- Separate FastAPI app, default port **8100**, SQLite (`MOCK_COMMERCE_DATABASE_URL`, default
+- Separate FastAPI app, default port **8300**, SQLite (`MOCK_COMMERCE_DATABASE_URL`, default
   `sqlite:///./mock_commerce.db`).
-- Interactive docs at `http://localhost:8100/docs` when running.
+- Interactive docs at `http://localhost:8300/docs` when running.
 - Business rules are enforced **server-side**. A rule violation returns 4xx with a
   machine-readable code, never a silent success:
   ```json

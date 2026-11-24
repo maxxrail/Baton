@@ -1,6 +1,6 @@
 """Run the Baton API and the Northwind mock commerce API together.
 
-    uv run python -m scripts.dev              # API on :8000, mock commerce on :8100
+    uv run python -m scripts.dev              # API on :8000, mock commerce on :8300
     uv run python -m scripts.dev --keep-data  # don't reseed the mock store
     uv run python -m scripts.dev --reload     # auto-reload on code changes
 
@@ -17,7 +17,7 @@ from mock_commerce.db import make_session_factory
 from mock_commerce.seed import reset_and_seed
 
 BATON_PORT = 8000
-MOCK_COMMERCE_PORT = 8100
+MOCK_COMMERCE_PORT = 8300
 
 
 def _uvicorn(target: str, port: int, reload: bool) -> list[str]:

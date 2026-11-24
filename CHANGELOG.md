@@ -3,6 +3,8 @@
 All notable changes to Baton. Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). One entry per roadmap part.
 
 ## [Unreleased]
+### Changed
+- The Northwind mock store now defaults to port 8300 (was 8100): `scripts/dev.py`, the `MOCK_COMMERCE_URL` default and `.env.example`. Override with `--mock-port`.
 
 ## [Part 03] - 2026-11-24 — Knowledge base (RAG) with citations
 ### Added

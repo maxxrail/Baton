@@ -18,11 +18,11 @@ uv sync                           # install (Python 3.12 is fetched if needed)
 cp .env.example .env              # optional; add ANTHROPIC_API_KEY for real model calls
 uv run alembic upgrade head       # create baton.db
 uv run baton-kb ingest            # index the help center (data/kb) for grounded answers
-uv run python -m scripts.dev      # Baton API on :8000, Northwind mock store on :8100
+uv run python -m scripts.dev      # Baton API on :8000, Northwind mock store on :8300
 ```
 
 Then open <http://localhost:8000/healthz>, <http://localhost:8000/aops> and
-<http://localhost:8100/docs>.
+<http://localhost:8300/docs>.
 If a port is taken: `uv run python -m scripts.dev --baton-port 8001`.
 
 AOPs (support procedures in plain-English Markdown, see [`aops/README.md`](aops/README.md)):

@@ -4,7 +4,7 @@ A stand-in for a brand's real store backend. Baton's tools call it over HTTP. Bu
 enforced here, server-side, the way a real backend would: a rule violation is a 4xx with a
 machine-readable `error.code` (see `ErrorCode`), never a silent success.
 
-Run alone with `uv run uvicorn mock_commerce.app:app --port 8100`, or via `scripts/dev.py`.
+Run alone with `uv run uvicorn mock_commerce.app:app --port 8300`, or via `scripts/dev.py`.
 """
 
 import re

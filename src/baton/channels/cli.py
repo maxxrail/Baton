@@ -1,6 +1,6 @@
 """`baton-chat`: talk to the agent in a terminal, against the local stack.
 
-    uv run python -m scripts.dev      # terminal 1: mock commerce on :8100 (and the API)
+    uv run python -m scripts.dev      # terminal 1: mock commerce on :8300 (and the API)
     uv run baton-chat --trace          # terminal 2
 
 The agent runs in this process with the real runtime, tools and guardrails; tools call the
