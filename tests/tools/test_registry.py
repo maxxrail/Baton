@@ -1,7 +1,13 @@
 import pytest
 from pydantic import ValidationError
 
-from baton.tools.registry import NORTHWIND_TOOLS, ToolDefinition, ToolRegistry, default_registry
+from baton.tools.registry import (
+    KNOWLEDGE_TOOL,
+    NORTHWIND_TOOLS,
+    ToolDefinition,
+    ToolRegistry,
+    default_registry,
+)
 from baton.tools.schemas import LookupCustomerIn, OrderNumberIn, VerifyCustomerIn
 
 SIDE_EFFECTS = {
@@ -25,8 +31,16 @@ def test_northwind_tool_names() -> None:
             *SIDE_EFFECTS,
             "get_subscriptions",
             "get_loyalty",
+            "search_knowledge",
         ]
     )
+
+
+def test_knowledge_search_is_read_only_and_needs_no_identity() -> None:
+    assert KNOWLEDGE_TOOL.name == "search_knowledge"
+    assert not KNOWLEDGE_TOOL.side_effect
+    assert not KNOWLEDGE_TOOL.requires_verification
+    assert "[kb:article_id]" in KNOWLEDGE_TOOL.description
 
 
 def test_side_effect_flags() -> None:
@@ -55,7 +69,7 @@ def test_registry_lookup_and_duplicates() -> None:
     registry = default_registry()
     assert "get_order" in registry
     assert "get_weather" not in registry
-    assert len(registry) == len(NORTHWIND_TOOLS)
+    assert len(registry) == len(NORTHWIND_TOOLS) + 1  # + search_knowledge
     with pytest.raises(KeyError, match="get_weather"):
         registry.get("get_weather")
     with pytest.raises(ValueError, match="already registered"):

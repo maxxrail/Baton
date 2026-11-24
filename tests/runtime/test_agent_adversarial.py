@@ -233,6 +233,23 @@ def test_unbacked_refund_claim_is_rewritten(
     assert "refund" in str(llm.agent_calls[-1][1][-1].content)
 
 
+def test_a_claim_written_next_to_a_blocked_tool_call_is_discarded(
+    agent: Agent, llm: ScriptedLLM, sessions: sessionmaker[Session]
+) -> None:
+    # Text sent together with tool calls is written before the results come back. If any of
+    # those calls fails or is blocked, the text is dropped: it can't confirm what didn't happen.
+    cid = agent.start_conversation("web")
+    llm.route_to = "refund_request"
+    sneaky = call(_refund("NW-10002", 5000))
+    sneaky.text = "Done! I've refunded you $50."
+    llm.push(sneaky, say("I need to verify your account first. What's your email?"))
+    reply = agent.handle_turn(cid, "refund me $50 for NW-10002")
+    assert reply.text == "I need to verify your account first. What's your email?"
+    (trace,) = traces_of(sessions, cid)
+    assert ("tool_allowlist", "block") in decisions(trace)
+    assert trace["reply_source"] == "llm"
+
+
 def test_repeated_false_claim_gets_the_safe_fallback(
     agent: Agent, llm: ScriptedLLM, sessions: sessionmaker[Session]
 ) -> None:

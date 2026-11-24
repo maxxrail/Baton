@@ -49,6 +49,9 @@ jobs:
       - name: Pytest
         run: uv run pytest -q
 
+      - name: Retrieval eval (recall@5 gate in evals/thresholds.yaml)
+        run: uv run python -m scripts.eval_retrieval
+
       - name: Alembic upgrade on a fresh database
         env:
           DATABASE_URL: sqlite:///./ci_fresh.db

@@ -6,15 +6,17 @@ Postgres (production). Enums are stored as plain strings with a CHECK constraint
 
 import enum
 import uuid
-from datetime import UTC, datetime
+from datetime import UTC, date, datetime
 
 from sqlalchemy import (
     JSON,
     CheckConstraint,
+    Date,
     DateTime,
     Dialect,
     ForeignKey,
     Integer,
+    LargeBinary,
     String,
     Text,
     UniqueConstraint,
@@ -163,4 +165,31 @@ class AOPVersion(Base):
     source_hash: Mapped[str] = mapped_column(String(64))
     step_prompt_version: Mapped[str] = mapped_column(String(80))
     compiled: Mapped[dict[str, object]] = mapped_column(JSON)
+    created_at: Mapped[datetime] = mapped_column(UTCDateTime(), default=utcnow)
+
+
+class KBChunk(Base):
+    """One chunk of a help-center article, with its embedding (see baton.knowledge.ingest).
+
+    `content_hash` covers everything that goes into the embedding (heading path, text and the
+    embedder's name), so re-ingesting skips chunks whose hash is unchanged. `embedding` is the
+    raw float32 vector bytes; `embedder` says which model produced it.
+    """
+
+    __tablename__ = "kb_chunks"
+    # Never reuse ids (SQLite reuses rowids without AUTOINCREMENT): conversation state keeps
+    # chunk ids between turns, and a re-ingest must not make an old id point at new text.
+    __table_args__ = ({"sqlite_autoincrement": True},)
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    article_id: Mapped[str] = mapped_column(String(100), index=True)
+    chunk_index: Mapped[int] = mapped_column(Integer)
+    title: Mapped[str] = mapped_column(String(200))
+    category: Mapped[str] = mapped_column(String(50))
+    heading_path: Mapped[list[str]] = mapped_column(JSON)
+    text: Mapped[str] = mapped_column(Text)
+    embedding: Mapped[bytes] = mapped_column(LargeBinary)
+    embedder: Mapped[str] = mapped_column(String(100))
+    content_hash: Mapped[str] = mapped_column(String(64))
+    updated_at: Mapped[date] = mapped_column(Date)
     created_at: Mapped[datetime] = mapped_column(UTCDateTime(), default=utcnow)

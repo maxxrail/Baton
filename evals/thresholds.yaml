@@ -1,0 +1,5 @@
+# Quality gates. Scripts exit non-zero (and CI fails) when a metric drops below its gate.
+retrieval:
+  # Part 03 acceptance: recall@5 on the answerable questions in retrieval_qa.yaml, offline
+  # HashingEmbedder. Measured 0.969 when this gate was set.
+  recall_at_5: 0.85

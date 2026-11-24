@@ -1,13 +1,16 @@
 """Helpers for agent tests: a scripted LLM, response builders and DB readers.
 
-`ScriptedLLM` plays three roles, picked by which tool the caller offers:
+`ScriptedLLM` plays four roles, picked by which tool the caller offers:
 - the router (offers `choose_procedure`): answers with `route_to`;
 - the handoff writer (offers `write_handoff`): answers with `handoff` (None -> no tool call,
   which exercises the deterministic fallback);
+- the grounding judge (offers `report_grounding`): answers with the `grounding` responder; a
+  test that doesn't set one fails loudly if a reply gets grounding-checked;
 - the agent: pops the next scripted response, failing loudly if the script runs out.
 """
 
 from collections import deque
+from collections.abc import Callable
 from pathlib import Path
 
 from sqlalchemy import select
@@ -15,6 +18,7 @@ from sqlalchemy.orm import Session, sessionmaker
 
 from baton.aop.router import ROUTE_TOOL
 from baton.db import Message, Trace
+from baton.knowledge.grounding import GROUNDING_TOOL
 from baton.llm import LLMResponse, Msg, ToolCall, ToolSpec, Usage
 from baton.runtime.escalation import HANDOFF_TOOL
 from baton.runtime.state import ConversationState, load_state
@@ -53,6 +57,8 @@ class ScriptedLLM:
             "tried": ["looked up the order"],
             "needed": "Approve or decline the refund",
         }
+        self.grounding: Callable[[str, list[Msg], list[ToolSpec] | None], LLMResponse] | None = None
+        self.grounding_calls: list[list[Msg]] = []
         self.script: deque[LLMResponse] = deque()
         self.agent_calls: list[tuple[str, list[Msg], list[ToolSpec] | None]] = []
         self.route_calls = 0
@@ -84,6 +90,11 @@ class ScriptedLLM:
                 tool_calls=[ToolCall(id="handoff", name=HANDOFF_TOOL, input=self.handoff)],
                 usage=USAGE,
             )
+        if GROUNDING_TOOL in names:
+            self.grounding_calls.append(list(messages))
+            if self.grounding is None:
+                raise AssertionError("unexpected grounding check: set llm.grounding in the test")
+            return self.grounding(system, messages, tools)
         self.agent_calls.append((system, list(messages), tools))
         if not self.script:
             raise AssertionError(f"agent script exhausted after {len(self.agent_calls)} calls")

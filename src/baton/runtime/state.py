@@ -59,6 +59,9 @@ class ConversationState(BaseModel):
     owned_orders: list[str] = Field(default_factory=list)
     orders_with_refunds: list[str] = Field(default_factory=list)
     auto_refunded_cents: int = 0
+    # Help-center chunks returned by the most recent `search_knowledge`, so a follow-up answer
+    # in the next turn is grounding-checked against the same passages (Part 03).
+    kb_evidence: list[int] = Field(default_factory=list)
 
     # Loop detection.
     turn_count: int = 0

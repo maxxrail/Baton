@@ -3,6 +3,9 @@
 import httpx
 import pytest
 
+from baton.knowledge.base import KnowledgeBase
+from baton.knowledge.retrieve import Retriever
+from baton.llm import EmbeddingError
 from baton.tools import schemas as s
 from baton.tools.client import CommerceClient
 from baton.tools.errors import ToolError, safe_message
@@ -24,7 +27,9 @@ def _code(outcome: object) -> str | None:
 
 
 def test_every_registered_tool_has_an_implementation(tools: NorthwindTools) -> None:
-    assert len(tools.registry) == 13  # constructor raises if any is missing
+    assert (
+        len(tools.registry) == 14
+    )  # 13 store tools + search_knowledge; constructor raises if any is missing
 
 
 def test_lookup_masks_contact_details(tools: NorthwindTools) -> None:
@@ -277,3 +282,59 @@ def test_unknown_error_codes_get_a_generic_message() -> None:
     with pytest.raises(ToolError) as exc:
         _client(httpx.MockTransport(handle)).get("/x")
     assert exc.value.code == "UNKNOWN_ERROR"
+
+
+# ---------------------------------------------------------------- help center (Part 03)
+
+
+def test_search_knowledge_needs_no_identity_and_returns_citable_passages(
+    commerce: CommerceClient, knowledge: KnowledgeBase
+) -> None:
+    tools = NorthwindTools(commerce, knowledge=knowledge)
+    out = tools.execute(
+        "search_knowledge", {"query": "how long does shipping to Canada take?"}, NOBODY
+    )
+    assert isinstance(out.output, s.SearchKnowledgeOut)
+    assert out.output.covered
+    first = out.output.results[0]
+    assert first.article_id == "shipping-international"
+    assert first.cite_as == "[kb:shipping-international]"
+    assert "6-10 business days" in first.text
+    assert len(out.output.results) == 5
+
+
+def test_search_knowledge_flags_questions_it_doesnt_cover(
+    commerce: CommerceClient, knowledge: KnowledgeBase
+) -> None:
+    tools = NorthwindTools(commerce, knowledge=knowledge)
+    out = tools.execute(
+        "search_knowledge", {"query": "are you hiring? I'd like to apply for a job"}, NOBODY
+    )
+    assert isinstance(out.output, s.SearchKnowledgeOut)
+    assert not out.output.covered
+    assert "not sure" in out.output.note
+
+
+def test_search_knowledge_validates_input_and_reports_a_missing_kb(tools: NorthwindTools) -> None:
+    assert tools.execute("search_knowledge", {"query": ""}, NOBODY).error.code == "INVALID_INPUT"  # type: ignore[union-attr]
+    out = tools.execute("search_knowledge", {"query": "returns"}, NOBODY)
+    assert out.error is not None
+    assert out.error.code == "KNOWLEDGE_UNAVAILABLE"
+
+
+def test_an_embedding_outage_reports_knowledge_unavailable(
+    commerce: CommerceClient, retriever: Retriever
+) -> None:
+    class DownEmbedder:
+        dim, name = retriever.embedder.dim, retriever.embedder.name
+
+        def embed(self, texts: list[str]) -> object:
+            raise EmbeddingError("Voyage embeddings request failed: ConnectError")
+
+    broken = Retriever(retriever.chunks, retriever.vectors, DownEmbedder())  # type: ignore[arg-type]
+    kb = KnowledgeBase(None, broken.embedder, retriever=broken)
+    out = NorthwindTools(commerce, knowledge=kb).execute(
+        "search_knowledge", {"query": "returns"}, NOBODY
+    )
+    assert out.error is not None
+    assert out.error.code == "KNOWLEDGE_UNAVAILABLE"

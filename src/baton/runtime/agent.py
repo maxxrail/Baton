@@ -13,6 +13,9 @@
    `check_refund`. At most `MAX_TOOL_CALLS` store calls run per turn. The model moves through
    the procedure with `advance_step(target)`, which is checked against the compiled graph.
 5. The final text passes `check_reply`. A blocked reply gets one rewrite, then a safe fallback.
+   A help-center answer (the turn searched the help center, the reply cites it, or the active
+   procedure answers from it) then passes the grounding check (`baton.knowledge.grounding`):
+   unsupported claims are removed, or the reply becomes an abstention that offers a teammate.
 6. Save the reply, the new state and the turn's trace (second short transaction).
 
 No database transaction is held open while the model or the store is being called.
@@ -26,7 +29,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 import structlog
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel, Field, ValidationError
 from sqlalchemy import select
 from sqlalchemy.orm import Session, sessionmaker
 
@@ -35,11 +38,28 @@ from baton.aop.router import Router
 from baton.aop.store import sync_versions
 from baton.db.models import Conversation, Message, MessageRole
 from baton.db.session import session_scope
+from baton.knowledge.grounding import (
+    HEDGE_NOTE,
+    Evidence,
+    GroundingChecker,
+    citations,
+    normalize_citations,
+)
+from baton.knowledge.retrieve import IndexedChunk, KnowledgeIndexError
 from baton.llm.client import LLMClient
-from baton.llm.types import LLMResponse, Msg, ToolCall, ToolResultBlock, ToolSpec
+from baton.llm.types import (
+    ContentBlock,
+    LLMResponse,
+    Msg,
+    TextBlock,
+    ToolCall,
+    ToolResultBlock,
+    ToolSpec,
+)
 from baton.prompts import Prompt, load_prompt
 from baton.runtime.escalation import build_handoff
 from baton.runtime.guardrails import (
+    KNOWLEDGE_TOOL,
     REFUND_TOOLS,
     Action,
     GuardrailConfig,
@@ -52,6 +72,7 @@ from baton.runtime.guardrails import (
     check_reply,
     check_tool_call,
     check_verification_attempts,
+    truncate,
     wants_human,
 )
 from baton.runtime.redact import redact
@@ -65,7 +86,14 @@ from baton.runtime.state import (
     release_turn,
     save_state,
 )
-from baton.runtime.traces import LLMCallTrace, LLMPurpose, ToolCallTrace, TurnTrace, save_trace
+from baton.runtime.traces import (
+    KnowledgeSearchTrace,
+    LLMCallTrace,
+    LLMPurpose,
+    ToolCallTrace,
+    TurnTrace,
+    save_trace,
+)
 from baton.tools import schemas as s
 from baton.tools.northwind import NorthwindTools, ToolContext, ToolOutcome
 
@@ -95,16 +123,32 @@ NO_PROCEDURE = (
     "## Current procedure\nNone yet. Greet the customer briefly and ask what they need help "
     "with. Don't answer questions about orders or accounts until a procedure is active."
 )
+DRAFT_KEPT_NOTE = (
+    "[system] The text you wrote with those tool calls will be sent to the customer. Don't "
+    "repeat it; reply only with anything still missing, or a brief closing."
+)
 REWRITE_INSTRUCTION = (
     "[system] Your reply was not sent: {reason}. Write a new reply to the customer that fixes "
     "this. Don't call tools."
 )
 
 
+ACCOUNT_EVIDENCE_CHARS = 3000  # per tool result shown to the grounding judge
+
+
+class Citation(BaseModel):
+    """A help-center article cited in a reply as `[kb:article_id]`; channels render it."""
+
+    article_id: str
+    title: str
+    url: str
+
+
 class AgentReply(BaseModel):
     text: str
     status: Status
     trace_id: str
+    citations: list[Citation] = Field(default_factory=list)
 
 
 @dataclass
@@ -127,6 +171,16 @@ class _Turn:
     escalation: str | None = None
     forced_escalation: bool = False  # a guardrail escalated: the runtime writes the reply
     tried: list[str] = field(default_factory=list)
+    # Grounding inputs: help-center passages returned this turn, other tool results, and
+    # whether a procedure that answers from the help center was active at any point.
+    kb_results: list[s.KnowledgeResult] = field(default_factory=list)
+    account_evidence: list[Evidence] = field(default_factory=list)
+    searched: bool = False
+    knowledge_procedure: bool = False
+    previous_kb_evidence: list[int] = field(default_factory=list)
+    drafts: list[str] = field(default_factory=list)  # text sent along with tool calls
+    completed: list[str] = field(default_factory=list)  # side effects the store confirmed
+    procedures: dict[str, CompiledAOP] = field(default_factory=dict)  # active during the turn
 
 
 class _MeteredLLM:
@@ -200,6 +254,30 @@ def _control_tools(aop: CompiledAOP, step: CompiledStep) -> list[ToolSpec]:
     ]
 
 
+def _answers_from_help_center(aop: CompiledAOP) -> bool:
+    """A procedure whose steps reference `@search_knowledge` answers from the help center, so
+    every reply it produces is grounding-checked, even one written without searching."""
+    return any(KNOWLEDGE_TOOL in step.allowed_tools for step in aop.steps)
+
+
+def _done(call: ToolCall, out: BaseModel | None) -> str:
+    """A plain statement of a side effect the store confirmed, for runtime-written replies."""
+    order = str(call.input.get("order_number", "")).strip().upper()
+    if call.name == "create_refund":
+        cents = int(str(call.input.get("amount_cents", 0)))
+        return f"issued a refund of {_dollars(cents)} on order {order}"
+    if call.name == "create_return" and isinstance(out, s.ReturnAuthorization):
+        return f"opened return {out.rma_number} for order {order}"
+    phrases = {
+        "cancel_order": f"cancelled order {order}",
+        "change_address": f"updated the shipping address on order {order}",
+        "pause_subscription": "paused your subscription",
+        "resume_subscription": "resumed your subscription",
+        "cancel_subscription": "cancelled your subscription",
+    }
+    return phrases.get(call.name, f"completed {call.name.replace('_', ' ')}")
+
+
 def _dollars(cents: int) -> str:
     return f"${cents / 100:,.0f}" if cents % 100 == 0 else f"${cents / 100:,.2f}"
 
@@ -237,13 +315,19 @@ class Agent:
         router: Router | None = None,
         config: GuardrailConfig | None = None,
         prompts_dir: Path | None = None,
+        grounding: GroundingChecker | None = None,
         raise_errors: bool = False,
     ) -> None:
         """`raise_errors=True` (tests) re-raises unexpected exceptions after the error trace is
-        written, instead of answering the customer with a generic apology."""
+        written, instead of answering the customer with a generic apology.
+
+        The help center comes from `tools.knowledge`; `grounding` defaults to a checker that
+        uses the agent's own LLM."""
         self.bundle = bundle
         self.llm = llm
         self.tools = tools
+        self.knowledge = tools.knowledge
+        self.grounding = grounding or GroundingChecker(llm, prompts_dir)
         self.registry = tools.registry
         self.sessions = session_factory
         self.router = router or Router(bundle, llm, prompts_dir=prompts_dir)
@@ -334,6 +418,7 @@ class Agent:
             customer_message=customer_message,
             history=self._llm_history(rows),
             customer_text=customer_text,
+            previous_kb_evidence=list(state.kb_evidence),
         )
         self._note_aop(turn)
         was_escalated = state.status == "escalated"
@@ -357,8 +442,11 @@ class Agent:
             else:
                 state.turns_without_progress += 1
 
+        trace.citations = citations(text)
         trace_id = self._save(turn, text, start)
-        return AgentReply(text=text, status=state.status, trace_id=trace_id)
+        return AgentReply(
+            text=text, status=state.status, trace_id=trace_id, citations=self._citations(turn, text)
+        )
 
     def _run(self, turn: _Turn) -> str:
         state = turn.state
@@ -391,6 +479,9 @@ class Agent:
     def _loop(self, turn: _Turn) -> str:
         for _ in range(MAX_LLM_CALLS):
             aop, step = self._active(turn.state)
+            if aop is not None:
+                turn.procedures[aop.id] = aop
+                turn.knowledge_procedure |= _answers_from_help_center(aop)
             specs: list[ToolSpec] = []
             if aop is not None and step is not None and turn.escalation is None:
                 specs = [self.registry.get(n).to_llm_spec() for n in self._allowed(aop, step)]
@@ -403,9 +494,20 @@ class Agent:
             if resp.stop_reason == "refusal":
                 return self._escalate(turn, "the model declined to answer")
             if not resp.tool_calls:
-                return self._finish(turn, resp.text)
+                final = resp.text.strip()
+                if final and any(final in d for d in turn.drafts):
+                    final = ""  # the model repeated text that is already being sent
+                return self._finish(turn, "\n\n".join([*turn.drafts, final]).strip())
             results = [self._dispatch(turn, call) for call in resp.tool_calls]
-            turn.messages.append(Msg(role="user", content=list(results)))
+            content: list[ContentBlock] = list(results)
+            # Text written alongside tool calls is often the answer itself, sent together with
+            # `advance_step(RESOLVE)`. It was written *before* the tool results, so it's kept
+            # only if every call in that response succeeded; a draft next to a failed or
+            # blocked call ("I've cancelled it" + a cancel that failed) is discarded.
+            if resp.text.strip() and not any(r.is_error for r in results):
+                turn.drafts.append(resp.text.strip())
+                content.append(TextBlock(text=DRAFT_KEPT_NOTE))
+            turn.messages.append(Msg(role="user", content=content))
             if turn.forced_escalation and turn.escalation:
                 return self._escalate(turn, turn.escalation)
         reason = f"no reply after {MAX_LLM_CALLS} model calls"
@@ -561,9 +663,28 @@ class Agent:
         elif isinstance(out, s.Subscription):
             state.slots["subscription_id"] = out.id
 
+        if isinstance(out, s.SearchKnowledgeOut):
+            turn.searched = True
+            turn.kb_results.extend(out.results)
+            state.kb_evidence = [r.chunk_id for r in out.results]
+            turn.trace.knowledge_searches.append(
+                KnowledgeSearchTrace(
+                    query=str(call.input.get("query", ""))[:300],
+                    covered=out.covered,
+                    articles=[r.article_id for r in out.results],
+                    chunk_ids=[r.chunk_id for r in out.results],
+                )
+            )
+        elif out is not None:  # account data the reply may legitimately state
+            data = json.dumps(out.model_dump(mode="json"), default=str)
+            turn.account_evidence.append(
+                Evidence(source="account", title=call.name, text=data[:ACCOUNT_EVIDENCE_CHARS])
+            )
+
         tool = self.registry.get(call.name)
         if outcome.ok and tool.side_effect:
             turn.progress = True
+            turn.completed.append(_done(call, out))
         if outcome.ok and call.name in REFUND_TOOLS:
             if call.name == "create_refund":
                 amount = s.CreateRefundIn.model_validate(call.input).amount_cents
@@ -650,6 +771,7 @@ class Agent:
     # ------------------------------------------------------------------ reply + escalation
 
     def _finish(self, turn: _Turn, text: str) -> str:
+        text = normalize_citations(text)
         ctx = ReplyContext(
             channel=turn.state.channel,
             refund_succeeded_this_turn=turn.refund_succeeded,
@@ -667,9 +789,109 @@ class Agent:
         else:
             turn.trace.rejected_replies.append(text)
             final = self._rewrite(turn, ctx, check.blocked_reason)
+        if turn.trace.reply_source != "fallback" and self._needs_grounding(turn, final):
+            final = self._ground(turn, ctx, final)
         if turn.escalation is not None:  # the procedure said ESCALATE; the model wrote the reply
             self._handoff(turn, turn.escalation)
         return final
+
+    # ------------------------------------------------------------------ grounding
+
+    @staticmethod
+    def _needs_grounding(turn: _Turn, text: str) -> bool:
+        return turn.searched or turn.knowledge_procedure or bool(citations(text))
+
+    def _ground(self, turn: _Turn, ctx: ReplyContext, text: str) -> str:
+        """Check the reply's claims against the evidence; see `baton.knowledge.grounding`."""
+        turn.llm.purpose = "grounding"
+        result = self.grounding.check(
+            text, self._evidence(turn), turn.customer_message, llm=turn.llm
+        )
+        outcome = result.outcome
+        turn.trace.grounding.append(outcome)
+        turn.trace.prompt_versions["grounding"] = outcome.prompt_version
+        action: Action = "allow" if outcome.action == "pass" else "rewrite"
+        self._record(turn, _decision("grounding", action, f"{outcome.action}: {outcome.reason}"))
+        if result.text == text:
+            return text
+        if outcome.action != "pass":
+            turn.trace.rejected_replies.append(text)
+        new_text = result.text
+        if outcome.action == "abstained":
+            turn.trace.reply_source = "abstention"
+            # "I'm not sure" must not hide what really happened this turn: a teammate is
+            # taking over, or the store confirmed an action. Both are runtime-verified facts.
+            if turn.escalation is not None:
+                new_text = ESCALATION_REPLY
+            elif turn.completed:
+                new_text = f"I've {'; and '.join(turn.completed)}. {HEDGE_NOTE}"
+        # Never truncate away the offer of a teammate on a short channel: cut the body instead.
+        limit = self.config.max_reply_chars.get(ctx.channel, 1200)
+        if len(new_text) > limit and new_text.endswith(HEDGE_NOTE):
+            body = new_text[: -len(HEDGE_NOTE)].rstrip()
+            new_text = f"{truncate(body, max(limit - len(HEDGE_NOTE) - 2, 1))}\n\n{HEDGE_NOTE}"
+        # The edited text goes through the deterministic reply checks again (length, PII).
+        check = check_reply(new_text, ctx, self.config)
+        if check.blocked_reason is not None:  # edits only remove sentences or add fixed text,
+            turn.trace.reply_source = "fallback"  # so this is a safety net, not a code path
+            return FALLBACK_REPLY
+        return check.text
+
+    def _evidence(self, turn: _Turn) -> list[Evidence]:
+        """Everything a help-center answer may rely on this turn."""
+        evidence: list[Evidence] = []
+        seen: set[int] = set()
+        for r in turn.kb_results:
+            if r.chunk_id not in seen:
+                seen.add(r.chunk_id)
+                evidence.append(
+                    Evidence(f"kb:{r.article_id}", r.title, f"{r.section}\n{r.text}", r.updated_at)
+                )
+        # Passages from the previous turn's search, so a follow-up answer stays checkable.
+        for chunk_id in turn.previous_kb_evidence:
+            chunk = self._kb_chunk(chunk_id) if chunk_id not in seen else None
+            if chunk is not None:
+                seen.add(chunk_id)
+                text = f"{chunk.section}\n{chunk.text}"
+                evidence.append(
+                    Evidence(f"kb:{chunk.article_id}", chunk.title, text, chunk.updated_at)
+                )
+        evidence.extend(turn.account_evidence)
+        evidence.append(Evidence("state", "Conversation state", turn.state.summary()))
+        for aop in turn.procedures.values():
+            if aop.policies:
+                evidence.append(Evidence("procedure", aop.name, "\n".join(aop.policies)))
+        return evidence
+
+    def _kb_chunk(self, chunk_id: int) -> IndexedChunk | None:
+        if self.knowledge is None:
+            return None
+        try:
+            return self.knowledge.chunk(chunk_id)
+        except KnowledgeIndexError:
+            return None
+
+    def _citations(self, turn: _Turn, text: str) -> list[Citation]:
+        """Citations for articles the agent actually retrieved (this turn or the previous
+        search). Grounding already strips any other tag; this doesn't rely on that."""
+        if self.knowledge is None:
+            return []
+        retrieved = {r.article_id for r in turn.kb_results}
+        for chunk_id in turn.previous_kb_evidence:
+            chunk = self._kb_chunk(chunk_id)
+            if chunk is not None:
+                retrieved.add(chunk.article_id)
+        out = []
+        for article_id in citations(text):
+            try:
+                title = self.knowledge.title(article_id) if article_id in retrieved else None
+            except KnowledgeIndexError:
+                title = None
+            if title is not None:
+                out.append(
+                    Citation(article_id=article_id, title=title, url=self.knowledge.url(article_id))
+                )
+        return out
 
     def _rewrite(self, turn: _Turn, ctx: ReplyContext, reason: str) -> str:
         turn.messages.append(Msg(role="user", content=REWRITE_INSTRUCTION.format(reason=reason)))
