@@ -8,15 +8,22 @@ cents, matching the store API.
 from datetime import datetime
 from typing import Literal
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-OrderStatus = Literal["processing", "shipped", "delivered", "cancelled"]
+OrderStatus = Literal["processing", "shipped", "delivered", "returned", "cancelled"]
 SubscriptionStatus = Literal["active", "paused", "cancelled"]
 
 # ---------------------------------------------------------------- inputs
 
 
-class LookupCustomerIn(BaseModel):
+class _In(BaseModel):
+    """Tool inputs come from the model: strip stray whitespace so " cus_0001 " can't verify
+    one id and then fail every scoped call."""
+
+    model_config = ConfigDict(str_strip_whitespace=True)
+
+
+class LookupCustomerIn(_In):
     """Find an account by email or phone (exactly one)."""
 
     email: str | None = Field(default=None, max_length=254)
@@ -29,44 +36,44 @@ class LookupCustomerIn(BaseModel):
         return self
 
 
-class VerifyCustomerIn(BaseModel):
+class VerifyCustomerIn(_In):
     customer_id: str
     order_number: str = Field(description="Any order on the account, e.g. NW-10042")
     zip: str = Field(pattern=r"^\d{5}$", description="Shipping ZIP code of that order")
 
 
-class CustomerIdIn(BaseModel):
+class CustomerIdIn(_In):
     customer_id: str
 
 
-class OrderNumberIn(BaseModel):
+class OrderNumberIn(_In):
     order_number: str = Field(description="Order number, e.g. NW-10042")
 
 
-class AddressIn(BaseModel):
+class AddressIn(_In):
     line1: str = Field(min_length=1, max_length=128)
     city: str = Field(min_length=1, max_length=64)
     state: str = Field(min_length=2, max_length=2, description="Two-letter state code")
     zip: str = Field(pattern=r"^\d{5}$")
 
 
-class ChangeAddressIn(BaseModel):
+class ChangeAddressIn(_In):
     order_number: str
     address: AddressIn
 
 
-class CreateReturnIn(BaseModel):
+class CreateReturnIn(_In):
     order_number: str
     reason: str = Field(min_length=1, max_length=256)
 
 
-class CreateRefundIn(BaseModel):
+class CreateRefundIn(_In):
     order_number: str
     amount_cents: int = Field(gt=0, description="Refund amount in cents")
     reason: str = Field(min_length=1, max_length=256)
 
 
-class SubscriptionIdIn(BaseModel):
+class SubscriptionIdIn(_In):
     subscription_id: str
 
 

@@ -46,3 +46,9 @@ def redact_value(value: object) -> object:
     if isinstance(value, list | tuple | set | frozenset):
         return [redact_value(v) for v in value]
     return redact(str(value))
+
+
+# Public names for the patterns, so guardrails can find (not just mask) contact details.
+EMAIL_RE = _EMAIL
+CARD_RE = _CARD
+PHONE_RE = _PHONE

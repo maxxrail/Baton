@@ -94,5 +94,6 @@ uv run pytest -q                # tests
 uv run ruff check . && uv run ruff format --check .
 uv run mypy src
 uv run python -m scripts.dev    # run API + mock commerce together
+uv run baton-chat --trace       # terminal chat with the agent (needs ANTHROPIC_API_KEY)
 cd web && npm install && npm run dev
 ```

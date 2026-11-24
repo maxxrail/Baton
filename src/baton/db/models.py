@@ -85,6 +85,11 @@ class Conversation(Base):
     channel: Mapped[str] = mapped_column(String(32))
     customer_ref: Mapped[str | None] = mapped_column(String(64), index=True)
     status: Mapped[str] = mapped_column(String(16), default=ConversationStatus.OPEN.value)
+    # The runtime's `ConversationState` as JSON (see baton.runtime.state). None until first turn.
+    state: Mapped[dict[str, object] | None] = mapped_column(JSON, nullable=True)
+    # Set while a turn is running so two turns on one conversation can't interleave
+    # (see baton.runtime.state.acquire_turn). Expires so a crashed turn can't wedge it.
+    turn_lease_until: Mapped[datetime | None] = mapped_column(UTCDateTime(), nullable=True)
     created_at: Mapped[datetime] = mapped_column(UTCDateTime(), default=utcnow)
     updated_at: Mapped[datetime] = mapped_column(UTCDateTime(), default=utcnow, onupdate=utcnow)
 

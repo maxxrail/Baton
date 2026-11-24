@@ -33,6 +33,17 @@ uv run baton-aop show return_item --prompts
 uv run baton-aop compile             # record new AOP versions in the database
 ```
 
+Chat with the agent in a terminal (needs `ANTHROPIC_API_KEY`; the mock store must be running):
+
+```
+uv run python -m scripts.dev      # terminal 1
+uv run baton-chat --trace         # terminal 2: prints route, steps, tools and guardrails per turn
+```
+
+Or over HTTP: `POST /conversations`, then `POST /conversations/{id}/messages {"text": "..."}`.
+Every turn's trace is at `GET /conversations/{id}/traces`. A recorded session is in
+[`docs/samples/chat-return.md`](docs/samples/chat-return.md).
+
 Checks:
 
 ```
@@ -49,9 +60,12 @@ uv run pre-commit run --all-files
 | Baton API | `src/baton/api/` | FastAPI, `/healthz`, JSON logs (structlog) with request IDs and PII redaction |
 | AOPs | `aops/`, `src/baton/aop/` | 8 Northwind procedures. Deterministic parser, validator (10 diagnostic codes), compiler with per-step prompts, Mermaid graphs, `baton-aop` CLI, version history |
 | Router | `src/baton/aop/router.py` | Embedding pre-filter over AOP triggers, then an LLM classifier with structured output; answers validated in code |
-| Tool registry | `src/baton/tools/` | Typed contracts (Pydantic in/out, `side_effect`, `requires_verification`) for the 13 Northwind tools |
+| Agent runtime | `src/baton/runtime/` | Routes to an AOP, follows it step by step (`advance_step` checked against the compiled graph), calls tools, persists state, writes a trace per turn, escalates with a handoff note |
+| Guardrails | `src/baton/runtime/guardrails.py` | In code, not the prompt: identity gate, refunds ≤ $100 and ≤ balance (else escalate), per-step tool allow-list, reply checks (no unbacked refund claims, no other customers' orders, PII masking, length caps), escalation on 3 failed verifications / 12 stuck turns / "talk to a human" |
+| Tools | `src/baton/tools/` | 13 Northwind tools over HTTP with timeouts, one retry on 5xx, customer-safe error codes, and scoping to the verified customer |
+| Conversations API + CLI | `src/baton/api/conversations.py`, `src/baton/channels/cli.py` | `POST /conversations`, `POST /conversations/{id}/messages`, `GET .../traces`; `baton-chat --trace` |
 | AOP API | `src/baton/api/aops.py` | `GET /aops`, `GET /aops/{id}` (graph + Mermaid), `POST /aops/validate` |
-| Database | `src/baton/db/`, `migrations/` | SQLAlchemy 2.0 + Alembic: `conversations`, `messages`, `traces`, `aop_versions`. SQLite locally, Postgres via `DATABASE_URL` |
+| Database | `src/baton/db/`, `migrations/` | SQLAlchemy 2.0 + Alembic: `conversations` (with JSON runtime state), `messages`, `traces`, `aop_versions`. SQLite locally, Postgres via `DATABASE_URL` |
 | LLM layer | `src/baton/llm/` | `LLMClient` protocol, `AnthropicClient` (official SDK), `FakeLLM` for offline tests, `HashingEmbedder` |
 | Northwind mock store | `src/mock_commerce/` | Customers, orders, returns, refunds, subscriptions, loyalty. Rules enforced server-side. See its [README](src/mock_commerce/README.md) |
 | Seed data | `data/seed/` | Deterministic, with deliberate tricky cases (expired return window, partial refund, shared phone) |
@@ -67,7 +81,7 @@ picks `anthropic` or `fake`. It defaults to `anthropic` when `ANTHROPIC_API_KEY`
 |---|------|--------|
 | 00 | Foundation + Northwind mock commerce | done |
 | 01 | AOP language + compiler | done |
-| 02 | Agent runtime + guardrails | |
+| 02 | Agent runtime + guardrails | done |
 | 03 | Knowledge base (RAG) | |
 | 04 | Channels + human handoff | |
 | 05 | Simulations + eval harness | |
