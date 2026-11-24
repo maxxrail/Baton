@@ -1,0 +1,76 @@
+name: Simulations (live)
+
+# The real-LLM suite: personas, agent and judge all call Claude, so this costs money and is
+# run by hand (Actions -> Simulations (live) -> Run workflow). It fails if pass^k or the pass
+# rate drops below the `live` gate in evals/thresholds.yaml, and uploads the HTML report.
+on:
+  workflow_dispatch:
+    inputs:
+      runs:
+        description: Runs per scenario (k in pass^k)
+        default: "3"
+      filter:
+        description: Tag, AOP id or scenario id (comma-separated); empty = whole suite
+        default: ""
+      calibrate:
+        description: Also measure judge agreement on evals/judge_calibration.yaml
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sims-live
+  cancel-in-progress: false
+
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      BATON_LLM: anthropic
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: Install Python + deps
+        run: |
+          uv python install 3.12
+          uv sync --locked
+
+      - name: Check the secret is set
+        run: |
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "Add an ANTHROPIC_API_KEY repository secret first." >&2
+            exit 2
+          fi
+
+      - name: Validate suites
+        run: uv run baton-sim validate
+
+      - name: Judge calibration
+        if: inputs.calibrate
+        run: uv run baton-sim calibrate --gate
+
+      - name: Run the live suite (gate in evals/thresholds.yaml)
+        env:
+          RUNS: ${{ inputs.runs }}
+          FILTER: ${{ inputs.filter }}
+        run: |
+          args=(run --runs "$RUNS" --gate --out evals/reports)
+          if [ -n "$FILTER" ]; then args+=(--filter "$FILTER"); fi
+          uv run baton-sim "${args[@]}"
+
+      - name: Upload the report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sim-report-live
+          path: evals/reports/
+          if-no-files-found: ignore

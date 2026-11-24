@@ -16,7 +16,7 @@ from sqlalchemy.orm import Session, sessionmaker
 from baton import __version__
 from baton.aop.compiler import compile_aops
 from baton.aop.models import AOPBundle
-from baton.api import aops, channels, chat, console, conversations
+from baton.api import aops, channels, chat, console, conversations, sims
 from baton.api.logging import configure_logging
 from baton.channels.email import EmailSender, build_email_sender
 from baton.channels.events import EventHub
@@ -66,6 +66,8 @@ def create_app(
     app.include_router(channels.router)
     app.include_router(console.router)
     app.include_router(console.socket_router)
+    app.include_router(sims.router)
+    sims.install(app.state)
 
     lock = threading.Lock()
     lazy: dict[str, object] = {}

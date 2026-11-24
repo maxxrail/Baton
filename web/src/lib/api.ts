@@ -226,3 +226,62 @@ export function socketUrl(path: string): string {
   const scheme = window.location.protocol === "https:" ? "wss" : "ws";
   return `${scheme}://${window.location.host}${path}`;
 }
+
+// ---------------------------------------------------------------- simulations (Part 05)
+
+export interface SimTotals {
+  scenarios: number;
+  conversations: number;
+  pass_rate: number;
+  pass_k_rate: number;
+  mean_turns: number;
+  tool_error_rate: number;
+  escalation_rate: number;
+  p50_latency_ms: number;
+  p95_latency_ms: number;
+  mean_tokens: number;
+  mean_cost_usd: number;
+  sim_cost_usd: number;
+}
+
+export interface SimRunSummary {
+  id: string;
+  created_at: string;
+  mode: "live" | "scripted";
+  suite: string;
+  filter: string | null;
+  models: Record<string, string>;
+  totals: SimTotals;
+}
+
+export interface SimScenario {
+  scenario_id: string;
+  aop: string;
+  tags: string[];
+  description: string | null;
+  runs: number;
+  passed_runs: number;
+  pass_rate: number;
+  pass_k: boolean;
+  mean_turns: number;
+  escalation_rate: number;
+  p50_latency_ms: number;
+  p95_latency_ms: number;
+  mean_cost_usd: number;
+  failed_criteria: Record<string, number>;
+}
+
+export interface SimRunDetail extends SimRunSummary {
+  scenarios: SimScenario[];
+  git_sha: string | null;
+  aop_bundle_hash: string;
+}
+
+export interface RerunState {
+  state: "idle" | "running" | "done" | "failed";
+  scenario_id: string | null;
+  started_by: string | null;
+  started_at: string | null;
+  run_id: string | null;
+  error: string | null;
+}

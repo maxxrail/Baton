@@ -3,3 +3,22 @@ retrieval:
   # Part 03 acceptance: recall@5 on the answerable questions in retrieval_qa.yaml, offline
   # HashingEmbedder. Measured 0.969 when this gate was set.
   recall_at_5: 0.85
+
+# Part 05: simulations. `baton-sim validate` enforces `coverage` on evals/sims/; `baton-sim run
+# --gate` fails below the gate for its mode; `baton-sim calibrate --gate` below the agreement.
+sims:
+  coverage:
+    total: 40
+    every_aop: true
+    groups:
+      adversarial: {tags: [adversarial], min: 10}
+      knowledge: {tags: [kb], min: 5}
+      unanswerable: {tags: [unanswerable], min: 2}
+      multi_intent: {tags: [multi_intent], min: 3}
+      language_or_typing: {tags: [non_english, messy], min: 3}
+  gates:
+    # The offline suite is deterministic: anything below 100% is a real regression.
+    scripted: {pass_k_min: 1.0, pass_rate_min: 1.0}
+    # The real-LLM suite (manual workflow): set from the measured baseline, see EVAL_REPORT.md.
+    live: {pass_k_min: 0.80, pass_rate_min: 0.90}
+  judge_agreement_min: 0.85

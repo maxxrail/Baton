@@ -97,5 +97,8 @@ uv run python -m scripts.dev    # run API + mock commerce together
 uv run baton-kb ingest          # index data/kb into kb_chunks (incremental)
 uv run python -m scripts.eval_retrieval   # retrieval recall@5 / MRR / abstention gate
 uv run baton-chat --trace       # terminal chat with the agent (needs ANTHROPIC_API_KEY)
+uv run baton-sim validate       # simulation suites + coverage mix
+uv run baton-sim run --suite evals/sims/ci --scripted --gate   # offline sims (CI gate)
+uv run baton-sim run --runs 3   # live sims (needs ANTHROPIC_API_KEY); compare / table / calibrate
 cd web && npm install && npm run dev
 ```
