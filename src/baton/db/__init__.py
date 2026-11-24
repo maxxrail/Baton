@@ -3,11 +3,13 @@
 from baton.db.models import (
     AOPVersion,
     Base,
+    ChannelThread,
     Conversation,
     ConversationStatus,
     KBChunk,
     Message,
     MessageRole,
+    SmsOptOut,
     Trace,
 )
 from baton.db.session import (
@@ -21,11 +23,13 @@ from baton.db.session import (
 __all__ = [
     "AOPVersion",
     "Base",
+    "ChannelThread",
     "Conversation",
     "ConversationStatus",
     "KBChunk",
     "Message",
     "MessageRole",
+    "SmsOptOut",
     "Trace",
     "default_session_factory",
     "get_session",

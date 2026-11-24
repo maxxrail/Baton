@@ -1,4 +1,4 @@
-"""Baton's HTTP API: health checks, AOPs and conversations; later parts add more routers here.
+"""Baton's HTTP API: health, AOPs, conversations, web chat, channel webhooks and the console.
 
 Run with `uv run uvicorn baton.api.app:app --port 8000`, or via `scripts/dev.py`.
 """
@@ -16,8 +16,12 @@ from sqlalchemy.orm import Session, sessionmaker
 from baton import __version__
 from baton.aop.compiler import compile_aops
 from baton.aop.models import AOPBundle
-from baton.api import aops, conversations
+from baton.api import aops, channels, chat, console, conversations
 from baton.api.logging import configure_logging
+from baton.channels.email import EmailSender, build_email_sender
+from baton.channels.events import EventHub
+from baton.channels.service import ConversationService
+from baton.channels.sms import SmsSender, build_sms_sender
 from baton.config import Settings, get_settings
 from baton.runtime.agent import Agent
 from baton.runtime.factory import build_agent, session_factory_for
@@ -41,6 +45,9 @@ def create_app(
     *,
     agent: Agent | None = None,
     session_factory: sessionmaker[Session] | None = None,
+    email_sender: EmailSender | None = None,
+    sms_sender: SmsSender | None = None,
+    hub: EventHub | None = None,
 ) -> FastAPI:
     """Build the app. AOPs compile here, so invalid AOPs stop startup with the diagnostics.
 
@@ -55,6 +62,10 @@ def create_app(
     app.state.aop_bundle = bundle
     app.include_router(aops.router)
     app.include_router(conversations.router)
+    app.include_router(chat.router)
+    app.include_router(channels.router)
+    app.include_router(console.router)
+    app.include_router(console.socket_router)
 
     lock = threading.Lock()
     lazy: dict[str, object] = {}
@@ -82,6 +93,29 @@ def create_app(
 
     app.state.session_factory = get_session_factory
     app.state.get_agent = get_agent
+    app.state.hub = hub or EventHub()
+
+    def get_service() -> ConversationService:
+        """Built on first use (like the agent), so starting the app needs neither a database
+        nor channel credentials. A bad channel config raises `ValueError` here."""
+        sessions = get_session_factory()
+        with lock:
+            if "service" not in lazy:
+                link = settings.baton_link_secret
+                lazy["service"] = ConversationService(
+                    get_agent,
+                    sessions,
+                    app.state.hub,
+                    email_sender or build_email_sender(settings),
+                    sms_sender or build_sms_sender(settings),
+                    web_url=settings.baton_web_url,
+                    link_secret=link.get_secret_value() if link else None,
+                )
+            built = lazy["service"]
+        assert isinstance(built, ConversationService)
+        return built
+
+    app.state.get_service = get_service
 
     @app.middleware("http")
     async def request_context(

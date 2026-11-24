@@ -82,9 +82,10 @@ class TurnTrace(BaseModel):
     latency_ms: float = 0.0
     status: str = "open"
     escalation_reason: str | None = None
-    reply_source: Literal["llm", "rewrite", "fallback", "escalation", "holding", "abstention"] = (
-        "llm"
-    )
+    # "human_owned": the conversation was escalated, so the agent stayed silent.
+    reply_source: Literal[
+        "llm", "rewrite", "fallback", "escalation", "human_owned", "abstention"
+    ] = "llm"
     rejected_replies: list[str] = Field(
         default_factory=list, description="drafts an output guardrail blocked, for debugging"
     )

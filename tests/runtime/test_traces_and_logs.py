@@ -15,7 +15,7 @@ AVA = {"customer_id": "cus_0001", "order_number": "NW-10002", "zip": "98101"}
 
 
 def _conversation(agent: Agent, llm: ScriptedLLM) -> str:
-    """Three turns: an ordinary one, an escalation, and the holding reply after it."""
+    """Three turns: an ordinary one, an escalation, and a message the agent stays silent on."""
     cid = agent.start_conversation("web")
     llm.route_to = "where_is_my_order"
     llm.push(
@@ -46,12 +46,12 @@ def test_every_turn_has_a_complete_trace(
         assert versions["brand"].startswith("brand@")
         assert isinstance(trace["tool_calls"], list)
         assert isinstance(trace["guardrails"], list)
-        assert trace["guardrails"] or trace["reply_source"] == "holding"
+        assert trace["guardrails"] or trace["reply_source"] == "human_owned"
         assert float(str(trace["latency_ms"])) > 0
         assert "input_tokens" in trace
         assert "output_tokens" in trace
 
-    first, escalated, holding = traces
+    first, escalated, silent = traces
     assert first["route"]["aop_id"] == "where_is_my_order"
     assert first["prompt_versions"]["router"].startswith("router@")
     assert first["input_tokens"] == 120 * 4  # route + three agent calls, 120 each
@@ -64,8 +64,8 @@ def test_every_turn_has_a_complete_trace(
     assert escalated["escalation_reason"] == "customer asked for a human"
     assert escalated["prompt_versions"]["handoff"].startswith("handoff@")
     assert [c["purpose"] for c in escalated["llm_calls"]] == ["handoff"]
-    assert holding["reply_source"] == "holding"
-    assert holding["llm_calls"] == []
+    assert silent["reply_source"] == "human_owned"
+    assert silent["llm_calls"] == []
 
 
 def test_trace_aop_version_has_a_stored_row(

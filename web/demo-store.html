@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Northwind Goods (demo store)</title>
+    <style>
+      /* Deliberately its own styles (no Tailwind): the widget must look right on any page. */
+      :root { --ink: #23302a; --green: #24553e; --paper: #faf7f2; }
+      * { box-sizing: border-box; }
+      body { margin: 0; font-family: Georgia, "Times New Roman", serif; color: var(--ink); background: var(--paper); }
+      header { display: flex; justify-content: space-between; align-items: center; padding: 18px 32px; border-bottom: 1px solid #e5ded2; }
+      header strong { font-size: 22px; letter-spacing: .5px; color: var(--green); }
+      nav a { margin-left: 20px; color: var(--ink); text-decoration: none; font-family: system-ui, sans-serif; font-size: 14px; }
+      .hero { padding: 64px 32px; max-width: 760px; }
+      .hero h1 { font-size: 42px; margin: 0 0 12px; }
+      .hero p { font-size: 18px; line-height: 1.5; }
+      .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 24px; padding: 0 32px 96px; }
+      .card { background: white; border: 1px solid #e5ded2; border-radius: 6px; padding: 16px; font-family: system-ui, sans-serif; }
+      .swatch { height: 140px; border-radius: 4px; margin-bottom: 12px; }
+      .price { color: var(--green); font-weight: 600; }
+      .note { font-family: system-ui, sans-serif; font-size: 13px; color: #6b6458; padding: 0 32px 32px; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <strong>NORTHWIND GOODS</strong>
+      <nav><a href="#">Kitchen</a><a href="#">Home</a><a href="#">Subscriptions</a><a href="#">Help</a></nav>
+    </header>
+    <section class="hero">
+      <h1>Things made to last.</h1>
+      <p>Cast iron, linen and stoneware for everyday use. Free shipping over $75, 30-day returns.</p>
+    </section>
+    <section class="grid">
+      <div class="card"><div class="swatch" style="background:#3b3a36"></div>Cast Iron Skillet 10"<div class="price">$48</div></div>
+      <div class="card"><div class="swatch" style="background:#d9cbb4"></div>Linen Apron<div class="price">$32</div></div>
+      <div class="card"><div class="swatch" style="background:#8aa39a"></div>Stoneware Mug Set<div class="price">$40</div></div>
+      <div class="card"><div class="swatch" style="background:#b8643f"></div>Coffee Subscription<div class="price">$18 / month</div></div>
+    </section>
+    <p class="note">
+      A fictional store for the Baton demo. Try: "where is my order NW-10002? I'm ava.thompson@example.com, zip 98101",
+      "do you ship to Canada?", or "refund me $250 for NW-10004".
+    </p>
+    <!-- The whole integration: one script tag. -->
+    <script src="/widget.js" async></script>
+  </body>
+</html>

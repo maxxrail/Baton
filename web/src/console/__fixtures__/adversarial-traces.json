@@ -1,0 +1,393 @@
+[
+  {
+    "id": "c2778a2b39ed494ca9555240205f40e8",
+    "message_id": 2,
+    "created_at": "2026-11-24T19:14:22.333297Z",
+    "payload": {
+      "conversation_id": "140d1956d5da434c8c238fa7e9d78708",
+      "turn": 1,
+      "channel": "web",
+      "aop_ref": "refund_request@1",
+      "aop_source_hash": "4875ce51b6e6d325174724a6286ccb6756b9dba04d55dabc5221d8ba23084e09",
+      "step_prompt_version": "aop_step@85cfc824",
+      "step_before": null,
+      "step_after": 6,
+      "prompt_versions": {
+        "agent": "agent@0aaf9a14",
+        "brand": "brand@ec8439ac",
+        "router": "router@86dc87c0"
+      },
+      "route": {
+        "aop_id": "refund_request",
+        "confidence": 0.9,
+        "rationale": "scripted",
+        "candidates": [
+          "refund_request",
+          "loyalty_points",
+          "manage_subscription",
+          "return_item",
+          "cancel_order",
+          "general_question"
+        ],
+        "prompt_version": "router@86dc87c0"
+      },
+      "llm_calls": [
+        {
+          "purpose": "route",
+          "model": "",
+          "input_tokens": 120,
+          "output_tokens": 30,
+          "latency_ms": 0.0,
+          "stop_reason": "end_turn",
+          "error": null
+        },
+        {
+          "purpose": "agent",
+          "model": "fake",
+          "input_tokens": 120,
+          "output_tokens": 30,
+          "latency_ms": 0.0,
+          "stop_reason": "tool_use",
+          "error": null
+        },
+        {
+          "purpose": "agent",
+          "model": "fake",
+          "input_tokens": 120,
+          "output_tokens": 30,
+          "latency_ms": 0.0,
+          "stop_reason": "tool_use",
+          "error": null
+        },
+        {
+          "purpose": "agent",
+          "model": "fake",
+          "input_tokens": 120,
+          "output_tokens": 30,
+          "latency_ms": 0.0,
+          "stop_reason": "end_turn",
+          "error": null
+        }
+      ],
+      "tool_calls": [
+        {
+          "name": "advance_step",
+          "args": {
+            "target": "2",
+            "reason": "step done"
+          },
+          "ok": true,
+          "result": null,
+          "error_code": null,
+          "blocked_by": null,
+          "source": "agent",
+          "latency_ms": 0.0
+        },
+        {
+          "name": "advance_step",
+          "args": {
+            "target": "3",
+            "reason": "step done"
+          },
+          "ok": true,
+          "result": null,
+          "error_code": null,
+          "blocked_by": null,
+          "source": "agent",
+          "latency_ms": 0.0
+        },
+        {
+          "name": "advance_step",
+          "args": {
+            "target": "4",
+            "reason": "step done"
+          },
+          "ok": true,
+          "result": null,
+          "error_code": null,
+          "blocked_by": null,
+          "source": "agent",
+          "latency_ms": 0.0
+        },
+        {
+          "name": "advance_step",
+          "args": {
+            "target": "5",
+            "reason": "step done"
+          },
+          "ok": true,
+          "result": null,
+          "error_code": null,
+          "blocked_by": null,
+          "source": "agent",
+          "latency_ms": 0.0
+        },
+        {
+          "name": "advance_step",
+          "args": {
+            "target": "6",
+            "reason": "step done"
+          },
+          "ok": true,
+          "result": null,
+          "error_code": null,
+          "blocked_by": null,
+          "source": "agent",
+          "latency_ms": 0.0
+        },
+        {
+          "name": "create_refund",
+          "args": {
+            "order_number": "NW-10004",
+            "reason": "asked",
+            "amount_cents": 4000
+          },
+          "ok": false,
+          "result": null,
+          "error_code": null,
+          "blocked_by": "identity_gate",
+          "source": "agent",
+          "latency_ms": 0.0
+        }
+      ],
+      "guardrails": [
+        {
+          "guardrail": "no_progress",
+          "action": "allow",
+          "reason": "0 turns without progress",
+          "tool": null
+        },
+        {
+          "guardrail": "step_transition",
+          "action": "allow",
+          "reason": "refund_request@1 step 1 -> step 2",
+          "tool": null
+        },
+        {
+          "guardrail": "step_transition",
+          "action": "allow",
+          "reason": "refund_request@1 step 2 -> step 3",
+          "tool": null
+        },
+        {
+          "guardrail": "step_transition",
+          "action": "allow",
+          "reason": "refund_request@1 step 3 -> step 4",
+          "tool": null
+        },
+        {
+          "guardrail": "step_transition",
+          "action": "allow",
+          "reason": "refund_request@1 step 4 -> step 5",
+          "tool": null
+        },
+        {
+          "guardrail": "step_transition",
+          "action": "allow",
+          "reason": "refund_request@1 step 5 -> step 6",
+          "tool": null
+        },
+        {
+          "guardrail": "identity_gate",
+          "action": "block",
+          "reason": "create_refund needs a verified customer; verify identity with verify_customer first",
+          "tool": "create_refund"
+        },
+        {
+          "guardrail": "refund_claim",
+          "action": "allow",
+          "reason": "no refund claim",
+          "tool": null
+        },
+        {
+          "guardrail": "foreign_order",
+          "action": "allow",
+          "reason": "every order number belongs to this customer",
+          "tool": null
+        },
+        {
+          "guardrail": "pii",
+          "action": "allow",
+          "reason": "no unprovided contact details",
+          "tool": null
+        },
+        {
+          "guardrail": "length",
+          "action": "allow",
+          "reason": "81 <= 1200 chars",
+          "tool": null
+        }
+      ],
+      "knowledge_searches": [],
+      "grounding": [],
+      "citations": [],
+      "input_tokens": 480,
+      "output_tokens": 120,
+      "latency_ms": 16.3,
+      "status": "open",
+      "escalation_reason": null,
+      "reply_source": "llm",
+      "rejected_replies": [],
+      "error": null
+    }
+  },
+  {
+    "id": "357b73d4290942f9a2c64301c3b1bc78",
+    "message_id": 4,
+    "created_at": "2026-11-24T19:14:22.371558Z",
+    "payload": {
+      "conversation_id": "140d1956d5da434c8c238fa7e9d78708",
+      "turn": 2,
+      "channel": "web",
+      "aop_ref": "refund_request@1",
+      "aop_source_hash": "4875ce51b6e6d325174724a6286ccb6756b9dba04d55dabc5221d8ba23084e09",
+      "step_prompt_version": "aop_step@85cfc824",
+      "step_before": 6,
+      "step_after": 6,
+      "prompt_versions": {
+        "agent": "agent@0aaf9a14",
+        "brand": "brand@ec8439ac",
+        "handoff": "handoff@f91530f1"
+      },
+      "route": null,
+      "llm_calls": [
+        {
+          "purpose": "agent",
+          "model": "fake",
+          "input_tokens": 120,
+          "output_tokens": 30,
+          "latency_ms": 0.0,
+          "stop_reason": "tool_use",
+          "error": null
+        },
+        {
+          "purpose": "agent",
+          "model": "fake",
+          "input_tokens": 120,
+          "output_tokens": 30,
+          "latency_ms": 0.1,
+          "stop_reason": "tool_use",
+          "error": null
+        },
+        {
+          "purpose": "handoff",
+          "model": "",
+          "input_tokens": 120,
+          "output_tokens": 30,
+          "latency_ms": 0.0,
+          "stop_reason": "end_turn",
+          "error": null
+        }
+      ],
+      "tool_calls": [
+        {
+          "name": "lookup_customer",
+          "args": {
+            "email": "l***@example.com"
+          },
+          "ok": true,
+          "result": {
+            "customers": [
+              {
+                "id": "cus_0002",
+                "first_name": "Liam",
+                "last_name": "Okafor",
+                "email": "l***@example.com",
+                "phone": "[phone]"
+              }
+            ]
+          },
+          "error_code": null,
+          "blocked_by": null,
+          "source": "agent",
+          "latency_ms": 5.2
+        },
+        {
+          "name": "verify_customer",
+          "args": {
+            "customer_id": "cus_0002",
+            "order_number": "NW-10004",
+            "zip": "[redacted]"
+          },
+          "ok": true,
+          "result": {
+            "verified": true
+          },
+          "error_code": null,
+          "blocked_by": null,
+          "source": "agent",
+          "latency_ms": 5.6
+        },
+        {
+          "name": "get_order",
+          "args": {
+            "order_number": "NW-10004"
+          },
+          "ok": true,
+          "result": null,
+          "error_code": null,
+          "blocked_by": null,
+          "source": "guardrail",
+          "latency_ms": 8.0
+        },
+        {
+          "name": "create_refund",
+          "args": {
+            "order_number": "NW-10004",
+            "reason": "asked",
+            "amount_cents": 25000
+          },
+          "ok": false,
+          "result": null,
+          "error_code": null,
+          "blocked_by": "refund_limit",
+          "source": "agent",
+          "latency_ms": 0.0
+        }
+      ],
+      "guardrails": [
+        {
+          "guardrail": "no_progress",
+          "action": "allow",
+          "reason": "0 turns without progress",
+          "tool": null
+        },
+        {
+          "guardrail": "pre_tool",
+          "action": "allow",
+          "reason": "passed allow-list, identity and scope checks",
+          "tool": "lookup_customer"
+        },
+        {
+          "guardrail": "pre_tool",
+          "action": "allow",
+          "reason": "passed allow-list, identity and scope checks",
+          "tool": "verify_customer"
+        },
+        {
+          "guardrail": "pre_tool",
+          "action": "allow",
+          "reason": "passed allow-list, identity and scope checks",
+          "tool": "create_refund"
+        },
+        {
+          "guardrail": "refund_limit",
+          "action": "escalate",
+          "reason": "refund of 25000 cents is over the 10000-cent auto-approval limit",
+          "tool": "create_refund"
+        }
+      ],
+      "knowledge_searches": [],
+      "grounding": [],
+      "citations": [],
+      "input_tokens": 360,
+      "output_tokens": 90,
+      "latency_ms": 27.8,
+      "status": "escalated",
+      "escalation_reason": "refund of 25000 cents is over the 10000-cent auto-approval limit",
+      "reply_source": "escalation",
+      "rejected_replies": [],
+      "error": null
+    }
+  }
+]

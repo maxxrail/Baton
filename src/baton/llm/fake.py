@@ -1,9 +1,9 @@
 """`FakeLLM`: a scripted, offline LLM for tests and for running without an API key."""
 
 from collections import deque
-from collections.abc import Callable, Iterable
+from collections.abc import Callable, Iterable, Iterator
 
-from baton.llm.types import LLMResponse, Msg, ToolSpec
+from baton.llm.types import LLMResponse, Msg, StreamEvent, ToolSpec, stream_response
 
 Responder = Callable[[str, list[Msg], list[ToolSpec] | None], LLMResponse]
 
@@ -54,3 +54,13 @@ class FakeLLM:
                 "Add more LLMResponse objects to the script or use a callable responder."
             )
         return self._queue.popleft()
+
+    def stream(
+        self,
+        system: str,
+        messages: list[Msg],
+        tools: list[ToolSpec] | None = None,
+        max_tokens: int = 16000,
+    ) -> Iterator[StreamEvent]:
+        """The next scripted response, yielded in chunks (see `stream_response`)."""
+        yield from stream_response(self.complete(system, messages, tools, max_tokens=max_tokens))

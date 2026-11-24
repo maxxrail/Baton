@@ -92,6 +92,10 @@ class Conversation(Base):
     # Set while a turn is running so two turns on one conversation can't interleave
     # (see baton.runtime.state.acquire_turn). Expires so a crashed turn can't wedge it.
     turn_lease_until: Mapped[datetime | None] = mapped_column(UTCDateTime(), nullable=True)
+    # Where replies go on channels we push to: the customer's email address or phone number
+    # (None for web, which pulls over its WebSocket). `subject` is the email thread's subject.
+    contact: Mapped[str | None] = mapped_column(String(254), nullable=True, index=True)
+    subject: Mapped[str | None] = mapped_column(String(300), nullable=True)
     created_at: Mapped[datetime] = mapped_column(UTCDateTime(), default=utcnow)
     updated_at: Mapped[datetime] = mapped_column(UTCDateTime(), default=utcnow, onupdate=utcnow)
 
@@ -119,6 +123,9 @@ class Message(Base):
     )
     role: Mapped[str] = mapped_column(String(16))
     content: Mapped[str] = mapped_column(Text)
+    # Channel details, e.g. {"citations": [...]} on agent replies, the email Message-ID, or
+    # the operator who wrote a human_agent message.
+    meta: Mapped[dict[str, object] | None] = mapped_column(JSON, nullable=True)
     created_at: Mapped[datetime] = mapped_column(UTCDateTime(), default=utcnow)
 
     conversation: Mapped[Conversation] = relationship(back_populates="messages")
@@ -192,4 +199,32 @@ class KBChunk(Base):
     embedder: Mapped[str] = mapped_column(String(100))
     content_hash: Mapped[str] = mapped_column(String(64))
     updated_at: Mapped[date] = mapped_column(Date)
+    created_at: Mapped[datetime] = mapped_column(UTCDateTime(), default=utcnow)
+
+
+class ChannelThread(Base):
+    """An external thread id that maps to a conversation, so a reply lands in the same one.
+
+    Email stores every Message-ID it sees or sends (`in_reply_to` is looked up here). Keys are
+    unique per channel; a conversation can have many.
+    """
+
+    __tablename__ = "channel_threads"
+    __table_args__ = (UniqueConstraint("channel", "thread_key", name="uq_channel_threads_key"),)
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    channel: Mapped[str] = mapped_column(String(32))
+    thread_key: Mapped[str] = mapped_column(String(300))
+    conversation_id: Mapped[str] = mapped_column(
+        ForeignKey("conversations.id", ondelete="CASCADE"), index=True
+    )
+    created_at: Mapped[datetime] = mapped_column(UTCDateTime(), default=utcnow)
+
+
+class SmsOptOut(Base):
+    """A phone number that texted STOP. Nothing is sent to it until it texts START."""
+
+    __tablename__ = "sms_opt_outs"
+
+    phone: Mapped[str] = mapped_column(String(32), primary_key=True)
     created_at: Mapped[datetime] = mapped_column(UTCDateTime(), default=utcnow)

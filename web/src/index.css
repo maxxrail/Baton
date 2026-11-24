@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+/* Inside the embed iframe the page must be see-through: only the widget shows. */
+html.embedded,
+html.embedded body {
+  background: transparent;
+}
+
+.markdown a.citation {
+  @apply ml-0.5 text-[10px] font-semibold text-nw-700 no-underline hover:underline;
+}
+.markdown .sources {
+  @apply border-t border-stone-200 pt-1.5;
+}
+.markdown .sources a {
+  @apply underline decoration-stone-300;
+}

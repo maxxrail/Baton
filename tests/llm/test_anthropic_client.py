@@ -14,6 +14,7 @@ import pytest
 
 from baton.llm import (
     AnthropicClient,
+    LLMResponse,
     Msg,
     TextBlock,
     ThinkingBlock,
@@ -189,3 +190,68 @@ def test_api_errors_surface_as_sdk_exceptions() -> None:
     )
     with pytest.raises(anthropic.BadRequestError):
         client.complete("s", [Msg(role="user", content="x")])
+
+
+def _sse(events: list[dict[str, object]]) -> httpx2.Response:
+    body = "".join(f"event: {e['type']}\ndata: {json.dumps(e)}\n\n" for e in events)
+    return httpx2.Response(
+        200, content=body.encode(), headers={"content-type": "text/event-stream"}
+    )
+
+
+def test_stream_yields_text_deltas_tool_starts_then_the_full_response() -> None:
+    start = _message([], "end_turn") | {"stop_reason": None}
+    events: list[dict[str, object]] = [
+        {"type": "message_start", "message": start},
+        {
+            "type": "content_block_start",
+            "index": 0,
+            "content_block": {"type": "text", "text": ""},
+        },
+        {
+            "type": "content_block_delta",
+            "index": 0,
+            "delta": {"type": "text_delta", "text": "Let "},
+        },
+        {
+            "type": "content_block_delta",
+            "index": 0,
+            "delta": {"type": "text_delta", "text": "me check."},
+        },
+        {"type": "content_block_stop", "index": 0},
+        {
+            "type": "content_block_start",
+            "index": 1,
+            "content_block": {
+                "type": "tool_use",
+                "id": "toolu_1",
+                "name": "get_order",
+                "input": {},
+            },
+        },
+        {
+            "type": "content_block_delta",
+            "index": 1,
+            "delta": {"type": "input_json_delta", "partial_json": '{"order_number": "NW-10001"}'},
+        },
+        {"type": "content_block_stop", "index": 1},
+        {
+            "type": "message_delta",
+            "delta": {"stop_reason": "tool_use", "stop_sequence": None},
+            "usage": {"output_tokens": 12},
+        },
+        {"type": "message_stop"},
+    ]
+    client, seen = _client(lambda _: _sse(events))
+    out = list(client.stream("s", [Msg(role="user", content="where is it")]))
+
+    assert [type(e).__name__ for e in out] == ["TextDelta", "TextDelta", "ToolStart", "LLMResponse"]
+    final = out[-1]
+    assert isinstance(final, LLMResponse)
+    assert final.text == "Let me check."
+    assert [(c.name, c.input) for c in final.tool_calls] == [
+        ("get_order", {"order_number": "NW-10001"})
+    ]
+    assert final.stop_reason == "tool_use"
+    assert seen[0]["body"]["stream"] is True
+    assert seen[0]["body"]["fallbacks"] == "default"
