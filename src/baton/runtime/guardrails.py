@@ -197,10 +197,15 @@ def check_refund(
 
 _HUMAN = re.compile(
     r"\b(?:talk|speak|chat)\s+(?:to|with)\s+(?:a\s+|an\s+|your\s+|some\s*one\s+|a\s+real\s+)?"
-    r"(?:human|person|someone|real\s+person|agent|representative|rep|manager|supervisor)\b"
+    r"(?:human|person|someone|real\s+person|agent|representative|rep|manager|supervisor"
+    r"|teammate)\b"
     r"|\b(?:human|live|real)\s+(?:agent|person|support|representative)\b"
-    r"|\b(?:get|transfer)\s+me\s+(?:to\s+)?(?:a\s+)?(?:human|person|agent|representative)\b"
-    r"|^\s*(?:human|agent|representative)\s*[.!?]*\s*$",
+    r"|\b(?:get|transfer|pass|put|connect|hand)\s+me\s+(?:to|through\s+to|over\s+to|with)?\s*"
+    r"(?:a\s+|an\s+|the\s+|your\s+)?(?:human|person|agent|representative|teammate|manager)\b"
+    r"|^\s*(?:human|agent|representative)\s*[.!?]*\s*$"
+    # Spanish and French, the other languages in the simulation suite.
+    r"|\bhablar\s+con\s+(?:una\s+persona|un\s+agente|alguien|un\s+humano|un\s+compañero)"
+    r"|\bparler\s+(?:à|a|avec)\s+(?:une\s+personne|un\s+conseiller|quelqu'un|un\s+humain)",
     re.IGNORECASE,
 )
 
@@ -209,6 +214,22 @@ def wants_human(message: str) -> bool:
     """An explicit request for a person. Deliberately literal: the cost of a false positive is
     a human reading a chat, the cost of a false negative is a customer trapped with a bot."""
     return bool(_HUMAN.search(message))
+
+
+_CLOSING = re.compile(
+    r"\b(?:thanks|thank\s+you|thx|ty|that'?s\s+all|that'?s\s+it|all\s+set|bye|goodbye"
+    r"|nothing\s+else|gracias|eso\s+es\s+todo|adi[oó]s|merci|c'est\s+tout|au\s+revoir)\b",
+    re.IGNORECASE,
+)
+CLOSING_MAX_WORDS = 25
+
+
+def is_closing(message: str) -> bool:
+    """A goodbye ("thanks, that's all"), not a new request: short, no question, and a closing
+    phrase. Used to keep a resolved conversation resolved."""
+    if "?" in message or len(message.split()) > CLOSING_MAX_WORDS:
+        return False
+    return bool(_CLOSING.search(message))
 
 
 def check_progress(state: ConversationState, config: GuardrailConfig) -> GuardrailDecision:

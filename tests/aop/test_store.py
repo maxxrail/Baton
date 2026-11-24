@@ -45,7 +45,7 @@ def test_first_compile_stores_every_aop(factory: sessionmaker[Session], aop_dir:
     with session_scope(factory) as s:
         result = sync_versions(s, bundle)
     assert len(result.created) == 8
-    assert "return_item@1" in result.created
+    assert "return_item@2" in result.created
     assert _count(factory) == 8
 
 

@@ -6,6 +6,19 @@ All notable changes to Baton. Format: [Keep a Changelog](https://keepachangelog.
 ### Changed
 - The Northwind mock store now defaults to port 8300 (was 8100): `scripts/dev.py`, the `MOCK_COMMERCE_URL` default and `.env.example`. Override with `--mock-port`.
 
+## [Part 05 live eval] - 2026-11-24 — Live simulation results and the fixes they drove
+### Added
+- `docs/EVAL_REPORT.md` with real numbers: judge agreement 95.6%, baseline pass^k 49.0%, 10 failure modes with root causes, two fix rounds, after 89.2% pass^k on the 37 complete scenarios.
+- `baton.runtime.language`: Spanish/French translations of runtime-written replies; `guardrails.is_closing`; `ConversationState.completed_actions`.
+### Changed
+- The simulator delivers the persona's goodbye as the last message.
+- `advance_step(RESOLVE|ESCALATE)` results repeat the step's instructions; `ESCALATE` is valid from every step when the customer asks for a person.
+- A closing message no longer reopens a resolved conversation; confirmed side effects appear in the state summary.
+- Grounding evidence includes the active procedure's steps; the state shows verification attempts left.
+- Human-request detection covers "teammate", "pass/put/connect me", Spanish and French.
+- `prompts/brand.md` (scope, reply language), `prompts/agent.md`, `prompts/judge.md` (account-action rubric); `aops/return_item.md` v2 and `aops/refund_request.md` v2.
+- Four scenario expectations corrected.
+
 ## [Part 05] - 2026-11-24 — Simulations + eval harness
 ### Added
 - `baton.sim`: simulated customers against the real agent runtime. Suite format (`evals/sims/*.yaml`, strict Pydantic models) with seed fixtures and `<seeded>` placeholders resolved from `data/seed/`; persona player (`prompts/persona.md`, never sees the agent's prompt or tools, ends with `[DONE]`); simulator with a per-worker sandbox (in-process mock store + Baton DB) reset to the seed before every run under a frozen clock, a store fingerprint per run, and a thread pool (`--concurrency`).

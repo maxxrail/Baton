@@ -54,7 +54,9 @@ class ConversationResult(BaseModel):
     end_status: str
     turns: list[TurnRecord]
     checks: list[CheckResult]
-    persona_closing: str = Field(default="", description="the persona's last words, not sent")
+    persona_closing: str = Field(
+        default="", description="a goodbye written before any agent turn (so never sent)"
+    )
     store_fingerprint: str = Field(description="hash of the store's state when the run started")
     agent_usage: Usage = Field(default_factory=Usage)
     persona_usage: Usage = Field(default_factory=Usage)

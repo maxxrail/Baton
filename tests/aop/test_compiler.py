@@ -49,7 +49,7 @@ def test_readme_is_not_an_aop() -> None:
 def test_step_prompt_contains_step_policies_tools_and_exits() -> None:
     aop = compile_aops(AOPS, prompts_dir=PROMPTS).get("return_item")
     prompt = aop.step(2).prompt
-    assert "Return or exchange an item (return_item@1)" in prompt
+    assert "Return or exchange an item (return_item@2)" in prompt
     assert "step 2 of 6" in prompt
     assert aop.step(2).text in prompt
     assert "- Returns are accepted within 30 days of delivery." in prompt

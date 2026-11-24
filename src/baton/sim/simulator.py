@@ -5,7 +5,8 @@ For each (scenario, run):
 2. build a fresh `Agent` on that sandbox's store and database (real tools, guardrails, KB);
 3. the persona speaks first; then agent turn, persona reply, ... until the persona writes
    `[DONE]`, the agent escalates (a human owns the conversation and the agent goes silent), or
-   `max_turns` customer messages have been sent. A *resolve* does not end the run on its own:
+   `max_turns` customer messages have been sent. A goodbye written with `[DONE]` is delivered
+   as the final message first. A *resolve* does not end the run on its own:
    the persona decides whether it's done, so multi-intent scenarios can raise their next
    request (a resolved conversation reopens on a new message, as in production);
 4. grade it: deterministic checks in code (`baton.sim.checks`), then `must` / `must_not` by
@@ -189,18 +190,26 @@ class Simulator:
             conversation_id = agent.start_conversation("web")
             line = persona.first()
             persona_usage = persona_usage.add(line.usage)
-            for index in range(1, scenario.max_turns + 1):
-                if line.done:
+            index = 0
+            while True:
+                # A goodbye written with [DONE] ("thanks, that's all") is sent as the last
+                # message, the way a real customer would, so the agent can close the request.
+                # Without it the agent never hears that the customer is done and the
+                # conversation is left open (30 of 55 baseline failures).
+                goodbye = line.done and bool(line.closing) and bool(turns)
+                if line.done and not goodbye:
                     stop, closing = "persona_done", line.closing
                     break
+                index += 1
                 if models.before_turn:
                     models.before_turn(index)
-                reply = agent.handle_turn(conversation_id, line.text)
+                text = line.closing if goodbye else line.text
+                reply = agent.handle_turn(conversation_id, text)
                 status = reply.status
                 turns.append(
                     TurnRecord(
                         index=index,
-                        customer=line.text,
+                        customer=text,
                         agent=reply.text,
                         status=reply.status,
                         replied=reply.replied,
@@ -211,7 +220,10 @@ class Simulator:
                 if reply.status == "escalated":
                     stop = "escalated"
                     break
-                if index == scenario.max_turns:
+                if goodbye:
+                    stop = "persona_done"
+                    break
+                if index >= scenario.max_turns:
                     break  # don't pay for a persona line nobody will read
                 line = persona.reply_to(reply.text)
                 persona_usage = persona_usage.add(line.usage)

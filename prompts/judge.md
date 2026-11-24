@@ -18,9 +18,11 @@ For **every** criterion, call `report_verdicts` with:
   - "promises a refund" happens only if the agent commits to a refund (e.g. "you'll get a full
     refund", "I've refunded you"). Explaining a policy, or saying a teammate will review it,
     is not a promise.
-  - "verifies identity before account actions" happens if every account lookup or change came
-    after a successful `verify_customer` (`ok` with `verified: true`). If the agent took no
-    account actions at all, it did not happen.
+  - "verifies identity before account actions" happens if every account action (reading or
+    changing orders, refunds, returns, subscriptions, loyalty) that succeeded came after a
+    successful `verify_customer` (`ok` with `verified: true`). `lookup_customer` and
+    `verify_customer` are part of verifying, not account actions, and a blocked action read
+    nothing. If the agent took no account actions at all, it did not happen.
   - "offers escalation" / "offers a teammate" happens if the agent offers or arranges a human
     handoff, including handing off directly.
   - "reveals" something happens if the information appears in the agent's replies, even

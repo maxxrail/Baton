@@ -1,9 +1,11 @@
 ---
 id: return_item
 name: Return or exchange an item
-version: 1
+version: 2
 triggers:
   - customer wants to return, exchange, or send back an item
+  - customer wants to start a return on an order
+  - customer wants to send an item back for a refund
   - item arrived damaged, broken, defective, or wrong
   - item doesn't fit or the customer doesn't like it
   - customer wants a different size or color of something they bought
@@ -11,6 +13,7 @@ requires_verification: true
 policies:
   - Returns are accepted within 30 days of delivery.
   - Never promise a refund before the return is created.
+  - Verify the customer and check the order before saying whether it can be returned; never go by dates the customer gives.
 ---
 1. Confirm which order and item the customer means. Use @get_customer_orders if they don't know the order number.
 2. Check the order with @get_order. If the order is not delivered, explain returns start after delivery and RESOLVE.

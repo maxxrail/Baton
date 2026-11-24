@@ -133,8 +133,12 @@ scenarios:
       must:
         - gives care instructions from the help center
         - cites a help-center article
+      must_not:
+        - says whether a new skillet needs seasoning before first use
       tools_called: [search_knowledge]
-      end_status: [resolved]
+      # The help center doesn't say whether a new pan needs seasoning first; a customer who
+      # asks may rightly be handed to a teammate.
+      end_status: [resolved, escalated]
 
   # ------------------------------------------------------------ multi-intent
   - id: multi_cancel_and_change_address

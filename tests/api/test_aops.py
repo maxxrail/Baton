@@ -27,7 +27,7 @@ def test_list_aops(client: TestClient) -> None:
     assert ids == sorted(ids)
     assert len(ids) == 8
     item = next(a for a in body["aops"] if a["id"] == "return_item")
-    assert item["ref"] == "return_item@1"
+    assert item["ref"] == "return_item@2"
     assert item["step_count"] == 6
     assert item["requires_verification"] is True
 
@@ -36,7 +36,7 @@ def test_get_aop_returns_graph_and_mermaid(client: TestClient) -> None:
     resp = client.get("/aops/return_item")
     assert resp.status_code == 200
     body = resp.json()
-    assert body["ref"] == "return_item@1"
+    assert body["ref"] == "return_item@2"
     assert body["mermaid"].startswith("flowchart TD\n")
     step2 = body["aop"]["steps"][1]
     assert step2["allowed_tools"] == ["get_order"]

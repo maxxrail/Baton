@@ -12,12 +12,14 @@ Every change is tested with simulated customers before it ships: an LLM persona 
 conversation with the real agent runtime, the outcome checks (which tools ran, how it ended)
 are graded in code from the traces, and an LLM judge grades the behaviour ("explains the 30-day
 policy", "never promises a refund"). The headline metric is **pass^k**: a scenario counts only
-if all k runs pass.
+if all k runs pass. What the simulations found and what changed: [docs/EVAL_REPORT.md](docs/EVAL_REPORT.md).
 
 | Suite | Scenarios | Result |
 |---|---:|---|
 | Offline, scripted (CI, every push): the model misbehaves on purpose, the runtime must stop it | 8 | **8/8 pass^k** |
-| Live, real model (49 scenarios, 12 adversarial, 8 help-center, 3 multi-intent, 5 non-English/messy) | 49 | not measured yet: see [docs/EVAL_REPORT.md](docs/EVAL_REPORT.md) |
+| Live, real model, baseline (`claude-sonnet-5-5`, k=3) | 49 | 49.0% pass^k, 62.6% pass rate |
+| Live, after the fixes the simulations found, on the 37 scenarios that completed in both runs | 37 | **59.5% -> 89.2% pass^k**, 66.7% -> 95.5% pass rate |
+| Judge vs. 45 human labels | 20 transcripts | 95.6% agreement (100% after a rubric fix tuned on the same set) |
 
 ```
 uv run baton-sim validate                                     # suites + coverage mix
@@ -144,7 +146,7 @@ picks `anthropic` or `fake`. It defaults to `anthropic` when `ANTHROPIC_API_KEY`
 | 02 | Agent runtime + guardrails | done |
 | 03 | Knowledge base (RAG) | done |
 | 04 | Channels + human handoff | done |
-| 05 | Simulations + eval harness | done (live numbers pending) |
+| 05 | Simulations + eval harness | done (12 scenarios to re-run, see EVAL_REPORT) |
 | 06 | Watchtower + insights | |
 | 07 | Ship it | |
 | 08 | *(stretch)* Voice + experiments | |

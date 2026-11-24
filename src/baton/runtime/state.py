@@ -59,6 +59,10 @@ class ConversationState(BaseModel):
     owned_orders: list[str] = Field(default_factory=list)
     orders_with_refunds: list[str] = Field(default_factory=list)
     auto_refunded_cents: int = 0
+    # Side effects the store confirmed ("paused subscription sub_0001"), so a later turn
+    # knows they happened. History sent to the model is text only; without this the agent
+    # second-guessed its own success after a procedure ended.
+    completed_actions: list[str] = Field(default_factory=list)
     # Help-center chunks returned by the most recent `search_knowledge`, so a follow-up answer
     # in the next turn is grounding-checked against the same passages (Part 03).
     kb_evidence: list[int] = Field(default_factory=list)
@@ -81,6 +85,9 @@ class ConversationState(BaseModel):
     def start_procedure(self, aop_id: str, version: int) -> None:
         self.aop_id, self.aop_version, self.current_step = aop_id, version, 1
 
+    def record_completed(self, action: str) -> None:
+        self.completed_actions = ([*self.completed_actions, action])[-10:]
+
     def end_procedure(self) -> None:
         self.aop_id = self.aop_version = self.current_step = None
 
@@ -90,8 +97,9 @@ class ConversationState(BaseModel):
         if has_refunds and order_number not in self.orders_with_refunds:
             self.orders_with_refunds.append(order_number)
 
-    def summary(self) -> str:
-        """The state as the model sees it in the system prompt."""
+    def summary(self, max_failed_verifications: int | None = None) -> str:
+        """The state as the model sees it in the system prompt. With the limit, the model is
+        told how many verification attempts are left (it miscounted them otherwise)."""
         if self.verified:
             name = f" ({self.customer_name})" if self.customer_name else ""
             identity = f"verified as customer {self.customer_ref}{name}"
@@ -100,7 +108,8 @@ class ConversationState(BaseModel):
         lines = [
             f"- Channel: {self.channel}",
             f"- Customer identity: {identity}",
-            f"- Failed verification attempts: {len(self.failed_verifications)}",
+            "- Failed verification attempts: "
+            + _attempts(len(self.failed_verifications), max_failed_verifications),
             f"- Turn: {self.turn_count}",
         ]
         if self.lookup_candidates and not self.verified:
@@ -110,7 +119,17 @@ class ConversationState(BaseModel):
             lines.append("- Known: " + ", ".join(f"{k}={v}" for k, v in sorted(self.slots.items())))
         if self.owned_orders:
             lines.append("- This customer's orders seen so far: " + ", ".join(self.owned_orders))
+        if self.completed_actions:
+            done = "; ".join(self.completed_actions)
+            lines.append(f"- Done in this conversation (confirmed by the store): {done}")
         return "\n".join(lines)
+
+
+def _attempts(failed: int, limit: int | None) -> str:
+    if limit is None:
+        return str(failed)
+    left = max(limit - failed, 0)
+    return f"{failed} of {limit} ({left} left before a teammate takes over)"
 
 
 def credential_key(order_number: str, zip_code: str) -> str:
