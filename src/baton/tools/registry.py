@@ -8,7 +8,10 @@ Flags:
 - `side_effect`: the tool changes something in the store (cancel, refund, ...).
 - `requires_verification`: the runtime blocks the tool until the customer has passed
   `verify_customer` in this conversation. Everything that reads or changes account data has it;
-  only the two identity tools themselves don't.
+  only the two identity tools and the help-center search don't.
+
+`search_knowledge` (Part 03) searches the public help center, not the store. The runtime offers
+it on every step of every procedure (see `baton.runtime.guardrails.allowed_tools`).
 """
 
 from collections.abc import Iterable, Iterator
@@ -186,6 +189,21 @@ NORTHWIND_TOOLS: tuple[ToolDefinition, ...] = (
 )
 
 
+KNOWLEDGE_TOOL = _tool(
+    "search_knowledge",
+    "Search the Northwind help center (policies, shipping, returns, products, care, loyalty, "
+    "subscriptions, payments). Returns the best-matching passages with their article id and "
+    "last-updated date. Answer only from these passages and cite each one you use as "
+    "[kb:article_id]. If `covered` is false or no passage answers the question, say you're not "
+    "sure and offer a teammate instead of guessing. If two passages disagree, the one updated "
+    "most recently is the current policy.",
+    s.SearchKnowledgeIn,
+    s.SearchKnowledgeOut,
+    side_effect=False,
+    requires_verification=False,
+)
+
+
 def default_registry() -> ToolRegistry:
-    """The Northwind tool set."""
-    return ToolRegistry(NORTHWIND_TOOLS)
+    """The Northwind tool set: the store tools plus the help-center search."""
+    return ToolRegistry((*NORTHWIND_TOOLS, KNOWLEDGE_TOOL))

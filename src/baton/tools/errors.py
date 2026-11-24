@@ -17,6 +17,7 @@ SAFE_MESSAGES: dict[str, str] = {
     "SERVICE_UNAVAILABLE": "The store system isn't responding right now. Please try again shortly.",
     "NOT_FOUND": "Nothing was found with those details.",
     "UNKNOWN_ERROR": "Something went wrong looking that up.",
+    "KNOWLEDGE_UNAVAILABLE": "The help center can't be searched right now.",
     # Mock commerce codes (see src/mock_commerce/README.md).
     "INVALID_LOOKUP": "Provide either an email address or a phone number.",
     "CUSTOMER_NOT_FOUND": "No account was found with those details.",

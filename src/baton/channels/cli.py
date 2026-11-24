@@ -5,7 +5,8 @@
 
 The agent runs in this process with the real runtime, tools and guardrails; tools call the
 mock store at MOCK_COMMERCE_URL and conversations are saved to DATABASE_URL. `--trace` prints
-what each turn did: route, step movement, tool calls, guardrail decisions, tokens and latency.
+what each turn did: route, step movement, tool calls, help-center searches, the grounding
+check, guardrail decisions, tokens and latency. Citations print as footnotes.
 
 Needs a real model (ANTHROPIC_API_KEY). With BATON_LLM=fake it exits with a clear message.
 """
@@ -21,8 +22,9 @@ from sqlalchemy.orm import Session, sessionmaker
 
 from baton.aop.compiler import AOPCompileError, compile_aops
 from baton.api.logging import configure_logging
+from baton.channels.citations import render_for_channel
 from baton.config import get_settings
-from baton.db.models import Trace
+from baton.db.models import KBChunk, Trace
 from baton.runtime.agent import Agent
 from baton.runtime.factory import AgentUnavailableError, build_agent, session_factory_for
 
@@ -55,6 +57,14 @@ def render_trace(payload: JsonDict) -> str:
         else:
             outcome = f"error {tool.get('error_code')}"
         lines.append(f"  tool     {tool.get('name')}({tool.get('args')}) -> {outcome}")
+    for search in _items(payload, "knowledge_searches"):
+        covered = "covered" if search.get("covered") else "NOT covered"
+        lines.append(f"  kb       {search.get('query')!r} -> {search.get('articles')} ({covered})")
+    for check in _items(payload, "grounding"):
+        lines.append(f"  grounded {check.get('action')}: {check.get('reason')}")
+        removed = check.get("removed")
+        for sentence in removed if isinstance(removed, list) else []:
+            lines.append(f"    removed {str(sentence)[:120]!r}")
     guardrails = _items(payload, "guardrails")
     for g in guardrails:
         if g.get("action") != "allow":
@@ -98,7 +108,7 @@ def run_chat(
         if not text:
             continue
         reply = agent.handle_turn(cid, text)
-        print(f"agent> {reply.text}", file=out)
+        print(f"agent> {render_for_channel(reply.text, reply.citations, 'cli')}", file=out)
         if show_trace:
             print(render_trace(_trace(agent.sessions, reply.trace_id)), file=out)
         if reply.status != "open":
@@ -120,7 +130,7 @@ def _preflight(sessions: sessionmaker[Session], store_url: str) -> str | None:
     has_state = inspector.has_table("conversations") and any(
         c["name"] == "state" for c in inspector.get_columns("conversations")
     )
-    if not has_state:
+    if not has_state or not inspector.has_table("kb_chunks"):
         return "the database isn't migrated: run `uv run alembic upgrade head`"
     try:
         httpx.get(f"{store_url}/healthz", timeout=2.0).raise_for_status()
@@ -147,6 +157,13 @@ def main(argv: list[str] | None = None) -> int:
     if problem:
         print(f"baton-chat: {problem}", file=sys.stderr)
         return 2
+    with sessions() as session:
+        if session.query(KBChunk.id).first() is None:
+            print(
+                "baton-chat: warning: the help center isn't indexed, so policy questions will "
+                "get 'I'm not sure'. Run `uv run baton-kb ingest`.",
+                file=sys.stderr,
+            )
     print(f"Northwind Goods support | model {settings.baton_model}")
     run_chat(agent, _stdin_lines(), sys.stdout, show_trace=args.trace)
     return 0

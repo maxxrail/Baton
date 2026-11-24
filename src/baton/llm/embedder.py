@@ -1,6 +1,7 @@
 """Embedders turn text into vectors for retrieval.
 
 `HashingEmbedder` is the default: deterministic, offline and dependency-light (numpy only).
+`VoyageEmbedder` (in `baton.llm.voyage`) is the optional real provider.
 It uses the "hashing trick": each token and token bigram is hashed into one of `dim` buckets
 with a +/-1 sign, counts are log-scaled, and the vector is L2-normalised so a dot product is
 cosine similarity. It's a bag-of-words model, not semantic, but good enough for a help center.
@@ -21,6 +22,9 @@ _TOKEN_RE = re.compile(r"[a-z0-9]+")
 
 class Embedder(Protocol):
     dim: int
+    # Identifies the model *and* its settings. Stored with every KB chunk, so switching
+    # embedders re-embeds the whole index instead of mixing incompatible vectors.
+    name: str
 
     def embed(self, texts: list[str]) -> Vector:
         """Return a `(len(texts), dim)` float32 array of L2-normalised rows."""
@@ -36,6 +40,7 @@ class HashingEmbedder:
         if dim <= 0:
             raise ValueError("dim must be positive")
         self.dim = dim
+        self.name = f"hashing-v1-{dim}"
 
     def _bucket(self, feature: str) -> tuple[int, float]:
         # blake2b is stable across processes and platforms (unlike Python's salted hash()).

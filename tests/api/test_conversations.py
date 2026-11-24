@@ -10,10 +10,12 @@ from baton.aop.compiler import compile_aops
 from baton.api.app import create_app
 from baton.config import Settings
 from baton.db import Base, make_engine, make_session_factory
+from baton.knowledge.base import KnowledgeBase
 from baton.runtime.agent import Agent
 from baton.runtime.state import ConversationBusyError
 from baton.tools.client import CommerceClient
 from baton.tools.northwind import NorthwindTools
+from tests.knowledge.judge import judge, supported_if
 from tests.runtime.support import ScriptedLLM, call, say
 
 REPO = Path(__file__).resolve().parents[2]
@@ -119,3 +121,31 @@ def test_message_during_a_running_turn_is_409(
     resp = api.post(f"/conversations/{cid}/messages", json={"text": "hello?"})
     assert resp.status_code == 409
     assert "still being written" in resp.json()["detail"]
+
+
+def test_reply_carries_resolvable_citations(
+    llm: ScriptedLLM,
+    commerce: CommerceClient,
+    sessions: sessionmaker[Session],
+    knowledge: KnowledgeBase,
+) -> None:
+    bundle = compile_aops(REPO / "aops", prompts_dir=REPO / "prompts")
+    tools = NorthwindTools(commerce, knowledge=knowledge)
+    agent = Agent(bundle, llm, tools, sessions, prompts_dir=REPO / "prompts")
+    client = TestClient(create_app(SETTINGS, bundle, agent=agent))
+    cid = client.post("/conversations", json={"channel": "web"}).json()["id"]
+    llm.route_to = "general_question"
+    llm.grounding = judge(supported_if(**{"6-10 business days": "kb:shipping-international"}))
+    llm.push(
+        call(("search_knowledge", {"query": "Canada shipping time"})),
+        say("Shipping to Canada takes 6-10 business days [kb:shipping-international]."),
+    )
+    body = client.post(f"/conversations/{cid}/messages", json={"text": "Canada shipping?"}).json()
+    assert body["text"].endswith("[kb:shipping-international].")  # stored channel-neutral
+    assert body["citations"] == [
+        {
+            "article_id": "shipping-international",
+            "title": "International orders and shipping to Canada",
+            "url": "https://help.northwind.example/articles/shipping-international",
+        }
+    ]

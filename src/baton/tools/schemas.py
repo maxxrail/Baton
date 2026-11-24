@@ -5,7 +5,7 @@ external system, and Baton should only depend on the shape of its HTTP API. All 
 cents, matching the store API.
 """
 
-from datetime import datetime
+from datetime import date, datetime
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
@@ -171,3 +171,26 @@ class Loyalty(BaseModel):
     points_balance: int
     lifetime_points: int
     tier: Literal["bronze", "silver", "gold"]
+
+
+# ---------------------------------------------------------------- help center (Part 03)
+
+
+class SearchKnowledgeIn(_In):
+    query: str = Field(min_length=2, max_length=300, description="the customer's question")
+
+
+class KnowledgeResult(BaseModel):
+    chunk_id: int
+    article_id: str
+    title: str
+    section: str
+    updated_at: date
+    text: str
+    cite_as: str = Field(description="put this after each sentence that uses this result")
+
+
+class SearchKnowledgeOut(BaseModel):
+    covered: bool = Field(description="false: the help center probably doesn't answer this")
+    results: list[KnowledgeResult]
+    note: str

@@ -58,3 +58,28 @@ def test_render_trace_shows_escalation() -> None:
     assert "error None" in view
     assert "refund_limit: escalate - over limit" in view
     assert "handoff  over limit" in view
+
+
+def test_render_trace_shows_searches_and_grounding() -> None:
+    view = render_trace(
+        {
+            "aop_ref": "general_question@2",
+            "tool_calls": [],
+            "guardrails": [{"guardrail": "grounding", "action": "rewrite", "reason": "trimmed"}],
+            "knowledge_searches": [
+                {"query": "price match", "covered": False, "articles": ["promo-codes"]}
+            ],
+            "grounding": [
+                {
+                    "action": "abstained",
+                    "reason": "1 claim(s), none supported by the evidence",
+                    "removed": ["We price match within 14 days."],
+                }
+            ],
+            "reply_source": "abstention",
+        }
+    )
+    assert "kb       'price match' -> ['promo-codes'] (NOT covered)" in view
+    assert "grounded abstained: 1 claim(s), none supported" in view
+    assert "removed 'We price match within 14 days.'" in view
+    assert "reply from abstention" in view

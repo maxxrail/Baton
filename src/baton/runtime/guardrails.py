@@ -32,6 +32,8 @@ Action = Literal["allow", "block", "rewrite", "escalate"]
 
 # Tools usable at any step of any procedure: they only establish who the customer is.
 IDENTITY_TOOLS = frozenset({"lookup_customer", "verify_customer"})
+# The help-center search is public and read-only, so every procedure may use it (Part 03).
+KNOWLEDGE_TOOL = "search_knowledge"
 # Tools whose success means money went back to the customer this turn.
 REFUND_TOOLS = frozenset({"create_refund", "cancel_order"})
 
@@ -71,9 +73,10 @@ def _escalate(guardrail: str, reason: str, tool: str | None = None) -> Guardrail
 def allowed_tools(
     aop: CompiledAOP | None, step: CompiledStep | None, registry: ToolRegistry
 ) -> list[str]:
-    """Tools that may run right now: the current step's `@refs`, the identity tools, and the
+    """Tools that may run right now: the current step's `@refs`, the identity tools, the
     read-only tools referenced anywhere in the active procedure (so the agent can look up an
-    order the customer names at step 1 instead of forcing a step jump to read data).
+    order the customer names at step 1 instead of forcing a step jump to read data), and the
+    help-center search, which every procedure may use.
 
     Side-effecting tools are only ever allowed on the step that references them.
     """
@@ -84,6 +87,7 @@ def allowed_tools(
         names.extend(t for t in s.allowed_tools if not registry.get(t).side_effect)
     if aop.requires_verification or any(registry.get(t).requires_verification for t in names):
         names.extend(sorted(IDENTITY_TOOLS))
+    names.append(KNOWLEDGE_TOOL)
     return [n for n in dict.fromkeys(names) if n in registry]
 
 
@@ -385,13 +389,16 @@ def _mask_unknown_pii(text: str, customer_text: str) -> tuple[str, list[str]]:
     return PHONE_RE.sub(phone, EMAIL_RE.sub(email, text)), masked
 
 
-def _truncate(text: str, limit: int) -> str:
+def truncate(text: str, limit: int) -> str:
     if len(text) <= limit:
         return text
     cut = text[: limit - 1]
     sentence_end = max(cut.rfind(". "), cut.rfind("! "), cut.rfind("? "), cut.rfind("\n"))
     if sentence_end > limit // 2:
         cut = cut[: sentence_end + 1]
+    # Never end inside a bracket: a half citation tag ("[kb:shipping-intern") would be shown
+    # raw instead of rendered.
+    cut = re.sub(r"\s*\[[^\]\n]*$", "", cut)
     return cut.rstrip() + "…"
 
 
@@ -430,7 +437,7 @@ def check_reply(text: str, ctx: ReplyContext, config: GuardrailConfig) -> ReplyC
 
     limit = config.max_reply_chars.get(ctx.channel, 1200)
     if len(text) > limit:
-        text = _truncate(text, limit)
+        text = truncate(text, limit)
         decisions.append(
             GuardrailDecision(
                 guardrail="length",

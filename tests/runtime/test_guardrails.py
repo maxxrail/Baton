@@ -63,9 +63,15 @@ def test_no_procedure_means_no_tools() -> None:
     assert allowed_tools(None, None, REGISTRY) == []
 
 
-def test_general_question_offers_no_identity_tools(bundle: AOPBundle) -> None:
+def test_general_question_offers_only_the_help_center(bundle: AOPBundle) -> None:
     aop = bundle.get("general_question")
-    assert allowed_tools(aop, aop.step(1), REGISTRY) == []
+    assert allowed_tools(aop, aop.step(1), REGISTRY) == ["search_knowledge"]
+
+
+def test_every_step_of_every_procedure_can_search_the_help_center(bundle: AOPBundle) -> None:
+    for aop in bundle.aops.values():
+        for step in aop.steps:
+            assert "search_knowledge" in allowed_tools(aop, step, REGISTRY), (aop.id, step.number)
 
 
 def test_tool_not_on_step_is_blocked(bundle: AOPBundle) -> None:
@@ -300,3 +306,12 @@ def test_length_cap_per_channel() -> None:
     assert any(d.guardrail == "length" and d.action == "rewrite" for d in sms.decisions)
     email = check_reply(long, _ctx(channel="email"), CONFIG)
     assert email.text == long
+
+
+def test_truncation_never_leaves_half_a_citation_tag() -> None:
+    from baton.runtime.guardrails import truncate
+
+    text = "word " * 50 + "end [kb:shipping-international] more text"
+    out = truncate(text, 270)
+    assert out.endswith("…")
+    assert "[kb:" not in out

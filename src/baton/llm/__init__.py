@@ -19,6 +19,7 @@ from baton.llm.types import (
     ToolUseBlock,
     Usage,
 )
+from baton.llm.voyage import DEFAULT_VOYAGE_MODEL, EmbeddingError, VoyageEmbedder
 
 
 class LLMConfigError(RuntimeError):
@@ -40,15 +41,22 @@ def get_llm(settings: Settings | None = None) -> LLMClient:
 
 
 def get_embedder(settings: Settings | None = None) -> Embedder:
-    """The configured embedder. Only the offline hashing embedder exists so far."""
-    del settings
-    return HashingEmbedder()
+    """The configured embedder: offline hashing by default, Voyage with `BATON_EMBEDDER=voyage`."""
+    settings = settings or get_settings()
+    if settings.baton_embedder == "hashing":
+        return HashingEmbedder()
+    key = settings.voyage_api_key.get_secret_value() if settings.voyage_api_key else ""
+    if not key:
+        raise LLMConfigError("BATON_EMBEDDER=voyage requires VOYAGE_API_KEY to be set")
+    return VoyageEmbedder(key, model=settings.baton_embed_model)
 
 
 __all__ = [
+    "DEFAULT_VOYAGE_MODEL",
     "AnthropicClient",
     "ContentBlock",
     "Embedder",
+    "EmbeddingError",
     "FakeLLM",
     "FakeLLMExhaustedError",
     "HashingEmbedder",
@@ -65,6 +73,7 @@ __all__ = [
     "ToolSpec",
     "ToolUseBlock",
     "Usage",
+    "VoyageEmbedder",
     "get_embedder",
     "get_llm",
 ]

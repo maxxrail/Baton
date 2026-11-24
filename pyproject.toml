@@ -22,6 +22,7 @@ dependencies = [
 [project.scripts]
 baton-aop = "baton.aop.cli:main"
 baton-chat = "baton.channels.cli:main"
+baton-kb = "baton.knowledge.cli:main"
 
 [dependency-groups]
 dev = [

@@ -11,11 +11,17 @@ from pathlib import Path
 
 import pytest
 from fastapi.testclient import TestClient
+from sqlalchemy.orm import Session, sessionmaker
 
 from baton.config import get_settings
+from baton.knowledge.base import KnowledgeBase
+from baton.knowledge.ingest import ingest
+from baton.knowledge.retrieve import Retriever
+from baton.llm import HashingEmbedder
 from baton.tools.client import CommerceClient
 from mock_commerce.app import create_app as create_mock_commerce
 from mock_commerce.db import make_session_factory as make_mc_session_factory
+from tests.kb_support import KB_DIR, make_kb_sessions
 
 _LOOPBACK = {"127.0.0.1", "::1", "localhost"}
 _real_connect = socket.socket.connect
@@ -69,3 +75,27 @@ def store_http(tmp_path: Path) -> Iterator[TestClient]:
 @pytest.fixture
 def commerce(store_http: TestClient) -> CommerceClient:
     return CommerceClient(store_http)
+
+
+# ---------------------------------------------------------------- help center (Part 03)
+
+
+@pytest.fixture(scope="session")
+def kb_sessions(tmp_path_factory: pytest.TempPathFactory) -> sessionmaker[Session]:
+    """The repo's help center, ingested once per test session (tests must not write to it)."""
+    sessions = make_kb_sessions(tmp_path_factory.mktemp("kb") / "kb.db")
+    with sessions() as session:
+        ingest(session, KB_DIR, HashingEmbedder())
+        session.commit()
+    return sessions
+
+
+@pytest.fixture(scope="session")
+def retriever(kb_sessions: sessionmaker[Session]) -> Retriever:
+    with kb_sessions() as session:
+        return Retriever.load(session, HashingEmbedder())
+
+
+@pytest.fixture(scope="session")
+def knowledge(kb_sessions: sessionmaker[Session]) -> KnowledgeBase:
+    return KnowledgeBase(kb_sessions, HashingEmbedder())

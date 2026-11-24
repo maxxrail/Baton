@@ -4,6 +4,26 @@ All notable changes to Baton. Format: [Keep a Changelog](https://keepachangelog.
 
 ## [Unreleased]
 
+## [Part 03] - 2026-11-24 — Knowledge base (RAG) with citations
+### Added
+- 28 Northwind help-center articles in `data/kb/` (shipping by region, Canada, costs, processing, tracking, returns, exchanges, refunds, damaged items, warranty, sizing, care, loyalty, subscriptions, payments, gift cards, promo codes, support, account, coffee freshness). Two deliberate old-vs-new conflicts: `return-policy` vs `return-policy-2024` and `shipping-costs` vs `free-shipping-offer-2025`.
+- `baton.knowledge`: strict frontmatter loader; heading-aware chunker (~300–500 tokens, heading paths kept, oversized sections split at paragraphs); incremental ingest into `kb_chunks` (migration `0004`) keyed by a content hash that includes the embedder name; hybrid retrieval (BM25 + embedding cosine, reciprocal-rank fusion, top-5) with a newer-policy-wins rule and a query-coverage signal for abstention; optional LLM reranker (`BATON_KB_RERANK`); `KnowledgeBase` facade.
+- `search_knowledge` tool, offered on every step of every procedure, needing no identity verification. `general_question` (v2) answers from it.
+- Grounding guardrail (`baton.knowledge.grounding`, `prompts/grounding.md`): the reply is split into sentences in code, an LLM judge labels each sentence via structured output, and code removes unsupported claims (adding an offer of a teammate) or replaces the reply with an abstention. Citations are added for supported claims and stripped when they point at articles that weren't retrieved. The check fails closed on any judge error.
+- `[kb:article_id]` citations: `AgentReply.citations` (id, title, URL) in the API response, and a channel renderer (`baton.channels.citations`: markdown links for web, footnotes for CLI/email, one link for SMS).
+- Traces record every knowledge search (query, covered, articles, chunk ids), every grounding outcome (verdicts, removed sentences, citations added/stripped, evidence ids, prompt version) and the reply's citations. `baton-chat --trace` shows them.
+- `baton-kb ingest | search` CLI. `scripts/eval_retrieval.py` + `evals/retrieval_qa.yaml` (40 questions, 8 unanswerable) + `evals/thresholds.yaml`. CI runs the eval, which fails below recall@5 0.85. Result: recall@5 0.969, MRR 0.768, abstention accuracy 0.900.
+- Optional `VoyageEmbedder` (`BATON_EMBEDDER=voyage`, `VOYAGE_API_KEY`) over plain httpx.
+- Sample live transcript `docs/samples/chat-knowledge.md`.
+
+### Changed
+- `Embedder` protocol gains `name` (stored per chunk, so switching embedders forces a re-embed).
+- `ConversationState.kb_evidence` keeps the last search's chunk ids so follow-up answers are grounded against them.
+- **Fix (found live):** text the model writes in the same response as tool calls (often the answer itself, alongside `advance_step(RESOLVE)`) is now part of the reply, but only if every tool call in that response succeeded. Before, only the final text-only response was sent, so answers could be silently dropped. The model is told the draft will be sent, repeats aren't sent twice, and output guardrails see the combined text.
+- Abstentions keep runtime-verified facts: an escalation reply, or the side effects the store confirmed this turn.
+- `truncate` never ends inside a `[...]` tag, and on SMS the offer of a teammate is never truncated away.
+- `kb_chunks` uses `sqlite_autoincrement`, so chunk ids are never reused after a re-ingest.
+
 ## [Part 02] - 2026-11-23 — Agent runtime + guardrails
 ### Added
 - Northwind tool implementations (`baton.tools.northwind`) over an httpx `CommerceClient`: 5 s timeout, GETs retried once on 5xx/timeouts (POSTs never, so a refund can't be paid twice), store errors mapped to `ToolError(code, customer_safe_message)`. Calls are scoped to the verified customer: another customer's order or subscription reads as not found, `customer_id` arguments must match, and lookup results mask contact details.

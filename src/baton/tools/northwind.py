@@ -14,6 +14,9 @@ Scoping rules, enforced here because they need the store's data:
   one that doesn't exist, so the agent can't be used to probe other accounts.
 - `lookup_customer` runs before verification, so it masks the contact details it returns.
   The id and first name are enough to continue to `verify_customer`.
+
+`search_knowledge` doesn't touch the store: it searches the help center (`KnowledgeBase`). It
+needs no identity, and without a knowledge base it reports `KNOWLEDGE_UNAVAILABLE`.
 """
 
 from collections.abc import Callable
@@ -21,6 +24,9 @@ from dataclasses import dataclass
 
 from pydantic import BaseModel, ValidationError
 
+from baton.knowledge.base import KnowledgeBase
+from baton.knowledge.retrieve import KnowledgeIndexError
+from baton.llm.voyage import EmbeddingError
 from baton.runtime.redact import redact
 from baton.tools import schemas as s
 from baton.tools.client import CommerceClient, path_part
@@ -53,9 +59,15 @@ Handler = Callable[[BaseModel, ToolContext], BaseModel]
 
 
 class NorthwindTools:
-    def __init__(self, client: CommerceClient, registry: ToolRegistry | None = None) -> None:
+    def __init__(
+        self,
+        client: CommerceClient,
+        registry: ToolRegistry | None = None,
+        knowledge: KnowledgeBase | None = None,
+    ) -> None:
         self.client = client
         self.registry = registry or default_registry()
+        self.knowledge = knowledge
         self._handlers: dict[str, Handler] = {
             "lookup_customer": self._lookup_customer,
             "verify_customer": self._verify_customer,
@@ -70,6 +82,7 @@ class NorthwindTools:
             "resume_subscription": self._subscription_action("resume"),
             "cancel_subscription": self._subscription_action("cancel"),
             "get_loyalty": self._get_loyalty,
+            "search_knowledge": self._search_knowledge,
         }
         missing = set(self.registry.names()) - set(self._handlers)
         if missing:
@@ -209,3 +222,38 @@ class NorthwindTools:
         assert isinstance(args, s.CustomerIdIn)
         me = self._check_customer(args.customer_id, ctx)
         return s.Loyalty.model_validate(self.client.get(f"/customers/{path_part(me)}/loyalty"))
+
+    # ------------------------------------------------------------------ help center
+
+    def _search_knowledge(self, args: BaseModel, ctx: ToolContext) -> BaseModel:
+        assert isinstance(args, s.SearchKnowledgeIn)
+        if self.knowledge is None:
+            raise ToolError("KNOWLEDGE_UNAVAILABLE")
+        try:
+            found = self.knowledge.search(args.query)
+        except (KnowledgeIndexError, EmbeddingError):  # index stale or embedder down
+            raise ToolError("KNOWLEDGE_UNAVAILABLE") from None
+        results = [
+            s.KnowledgeResult(
+                chunk_id=h.chunk.id,
+                article_id=h.chunk.article_id,
+                title=h.chunk.title,
+                section=h.chunk.section,
+                updated_at=h.chunk.updated_at,
+                text=h.chunk.text,
+                cite_as=h.chunk.citation,
+            )
+            for h in found.hits
+        ]
+        if not results:
+            note = "Nothing in the help center matches. Say you're not sure and offer a teammate."
+        elif found.covered:
+            note = "Answer only from these passages and cite each one you use as [kb:article_id]."
+        else:
+            note = (
+                "These passages probably don't answer the question. Unless one clearly does, "
+                "say you're not sure and offer a teammate; don't stretch a near match."
+            )
+        return s.SearchKnowledgeOut(
+            covered=found.covered and bool(results), results=results, note=note
+        )

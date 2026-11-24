@@ -36,9 +36,20 @@ class Settings(BaseSettings):
     # a running total above it in one conversation, are escalated to a human.
     baton_refund_auto_limit_cents: int = Field(default=10_000, ge=0)
 
-    # Where the customer's procedures and our versioned prompt files live.
+    # Where the customer's procedures, help-center articles and our prompt files live.
     aops_dir: Path = REPO_ROOT / "aops"
     prompts_dir: Path = REPO_ROOT / "prompts"
+    kb_dir: Path = REPO_ROOT / "data" / "kb"
+
+    # Knowledge base. `hashing` is offline and needs no key; `voyage` needs VOYAGE_API_KEY.
+    # Changing the embedder means re-running `baton-kb ingest` (it re-embeds everything).
+    baton_embedder: Literal["hashing", "voyage"] = "hashing"
+    voyage_api_key: SecretStr | None = None
+    baton_embed_model: str = "voyage-3.5"
+    # Re-order the top retrieval candidates with an LLM call (off by default: costs a call).
+    baton_kb_rerank: bool = False
+    # Where `[kb:article_id]` citations link to when a channel renders them.
+    baton_kb_base_url: str = "https://help.northwind.example/articles/"
 
     log_level: str = "INFO"
 

@@ -17,12 +17,22 @@ from sqlalchemy.orm import Session
 
 from baton.aop.router import RouteDecision
 from baton.db.models import Trace
+from baton.knowledge.grounding import GroundingOutcome
 from baton.runtime.guardrails import GuardrailDecision
 from baton.runtime.redact import redact_value
 
 SECRET_KEYS = frozenset({"zip", "line1"})
 
-LLMPurpose = Literal["route", "agent", "rewrite", "handoff"]
+LLMPurpose = Literal["route", "agent", "rewrite", "handoff", "grounding"]
+
+
+class KnowledgeSearchTrace(BaseModel):
+    """One `search_knowledge` call: what was asked and which passages came back, in order."""
+
+    query: str
+    covered: bool
+    articles: list[str]
+    chunk_ids: list[int]
 
 
 class LLMCallTrace(BaseModel):
@@ -62,12 +72,19 @@ class TurnTrace(BaseModel):
     llm_calls: list[LLMCallTrace] = Field(default_factory=list)
     tool_calls: list[ToolCallTrace] = Field(default_factory=list)
     guardrails: list[GuardrailDecision] = Field(default_factory=list)
+    knowledge_searches: list[KnowledgeSearchTrace] = Field(default_factory=list)
+    grounding: list[GroundingOutcome] = Field(
+        default_factory=list, description="every grounding check run on a reply this turn"
+    )
+    citations: list[str] = Field(default_factory=list, description="article ids in the reply")
     input_tokens: int = 0
     output_tokens: int = 0
     latency_ms: float = 0.0
     status: str = "open"
     escalation_reason: str | None = None
-    reply_source: Literal["llm", "rewrite", "fallback", "escalation", "holding"] = "llm"
+    reply_source: Literal["llm", "rewrite", "fallback", "escalation", "holding", "abstention"] = (
+        "llm"
+    )
     rejected_replies: list[str] = Field(
         default_factory=list, description="drafts an output guardrail blocked, for debugging"
     )

@@ -1,0 +1,97 @@
+# Retrieval eval: customer questions -> the help-center article(s) that answer them.
+#
+#   uv run python -m scripts.eval_retrieval
+#
+# `expected` lists every article that answers the question; recall@5 counts how many of them
+# are in the top 5. `expected: []` marks a question the help center does NOT answer: the
+# retriever should report `covered: false` and the agent should abstain.
+#
+# Questions are phrased the way customers write, not copied from article headings. Written
+# before tuning the retriever; don't edit them to make the numbers go up.
+questions:
+  # ---------------------------------------------------------------- shipping
+  - question: how long does shipping to Canada take?
+    expected: [shipping-international]
+  - question: I'm in Seattle, when would a standard order get to me?
+    expected: [shipping-times-us]
+  - question: is there free shipping and what's the minimum?
+    expected: [shipping-costs]
+  - question: do I have to pay customs or import fees on an order to Toronto?
+    expected: [shipping-international]
+  - question: can you send my package to a PO box?
+    expected: [shipping-times-us]
+  - question: do you deliver to Australia?
+    expected: [shipping-international]
+  # ---------------------------------------------------------------- orders
+  - question: my order hasn't shipped yet, how long do you take to pack orders?
+    expected: [order-processing-times]
+  - question: tracking hasn't moved in days, what should I do?
+    expected: [tracking-your-order]
+  - question: the carrier says it was delivered but there's nothing at my door
+    expected: [tracking-your-order]
+  - question: can I add another item to an order I already placed?
+    expected: [cancel-or-change-order]
+  # ---------------------------------------------------------------- returns and refunds
+  - question: how many days do I have to send something back?
+    expected: [return-policy]
+  - question: can I return a candle I already burned?
+    expected: [return-policy]
+  - question: who pays for the return label?
+    expected: [return-policy]
+  - question: I want a different size of the robe, how do exchanges work?
+    expected: [exchanges]
+  - question: how long until the refund shows up on my credit card?
+    expected: [refund-timing]
+  - question: my mug arrived cracked, what do I do?
+    expected: [damaged-or-defective-items]
+  - question: I got a gift from Northwind and want to return it
+    expected: [return-policy]
+  # ---------------------------------------------------------------- products and care
+  - question: my frying pan's coating is peeling after a year, is that covered?
+    expected: [warranty]
+  - question: what size flat sheet fits a queen bed?
+    expected: [sizing-guide-bedding]
+  - question: I'm a women's size 8 shoe, which slippers should I order?
+    expected: [sizing-guide-robes-slippers]
+  - question: how do I get rust off my skillet?
+    expected: [care-cast-iron]
+  - question: can I use fabric softener on the towels?
+    expected: [care-linens-towels]
+  - question: can the gold rim plates go in the microwave?
+    expected: [care-ceramics-glassware]
+  - question: how fresh is the coffee when it arrives?
+    expected: [coffee-and-tea-freshness]
+  # ---------------------------------------------------------------- loyalty, subscriptions, payments
+  - question: how many points do I need for gold status?
+    expected: [loyalty-program]
+  - question: how much are my reward points worth?
+    expected: [loyalty-redeeming-points]
+  - question: when does my coffee subscription charge my card?
+    expected: [subscription-billing]
+  - question: can I skip just one delivery of my tea subscription?
+    expected: [subscription-billing, subscriptions-faq]
+  - question: do you take Apple Pay?
+    expected: [payment-methods]
+  - question: does the gift card expire?
+    expected: [gift-cards]
+  - question: can I use two discount codes on one order?
+    expected: [promo-codes]
+  - question: what are your support hours?
+    expected: [contact-support]
+  # ---------------------------------------------------------------- not in the help center
+  - question: do you price match if I find it cheaper somewhere else?
+    expected: []
+  - question: is there a student discount?
+    expected: []
+  - question: can you gift wrap my order?
+    expected: []
+  - question: can I get my name engraved on the knife?
+    expected: []
+  - question: do you have wholesale pricing for restaurants?
+    expected: []
+  - question: are you hiring? I'd like to apply for a job
+    expected: []
+  - question: what's the wattage of the electric kettle?
+    expected: []
+  - question: do you have an affiliate program for bloggers?
+    expected: []
