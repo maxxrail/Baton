@@ -51,6 +51,37 @@ class Settings(BaseSettings):
     # Where `[kb:article_id]` citations link to when a channel renders them.
     baton_kb_base_url: str = "https://help.northwind.example/articles/"
 
+    # ---- Channels (Part 04) ----
+    # The public base URL of this API (what Twilio and email providers call), e.g.
+    # https://baton.example.com. Twilio signs the URL it called, so behind a proxy the
+    # signature check needs this. Empty means "use the URL of the incoming request".
+    baton_public_url: str = ""
+    # Where the customer-facing web app lives; SMS replies that don't fit link here.
+    baton_web_url: str = "http://localhost:5173"
+
+    # Shared secret for the ops console (real auth in Part 07). Unset means the console and
+    # the operator APIs refuse every request (503), rather than being open.
+    baton_console_secret: SecretStr | None = None
+    # Signs the "full answer" links in long SMS replies (see baton.channels.links). Unset
+    # means long SMS replies are cut without a link.
+    baton_link_secret: SecretStr | None = None
+
+    # SMS via Twilio. Without an auth token the inbound webhook refuses requests (503).
+    twilio_account_sid: str = ""
+    twilio_auth_token: SecretStr | None = None
+    twilio_from_number: str = ""
+    sms_provider: Literal["console", "twilio"] = "console"
+
+    # Email. Inbound is a generic JSON webhook guarded by a shared secret header.
+    email_provider: Literal["console", "smtp", "resend"] = "console"
+    email_from: str = "support@northwind.example"
+    email_webhook_secret: SecretStr | None = None
+    resend_api_key: SecretStr | None = None
+    smtp_host: str = ""
+    smtp_port: int = 587
+    smtp_username: str = ""
+    smtp_password: SecretStr | None = None
+
     log_level: str = "INFO"
 
     @model_validator(mode="after")

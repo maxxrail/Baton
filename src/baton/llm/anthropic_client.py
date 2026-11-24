@@ -10,6 +10,9 @@ Notes on the current Claude API:
   the API retries on a fallback model server-side before giving up.
 """
 
+from collections.abc import Iterator
+from typing import Any
+
 import anthropic
 from anthropic.types.beta import (
     BetaAssistantMessageParam,
@@ -26,11 +29,14 @@ from baton.llm.types import (
     Msg,
     RedactedThinkingBlock,
     StopReason,
+    StreamEvent,
     TextBlock,
+    TextDelta,
     ThinkingBlock,
     ToolCall,
     ToolResultBlock,
     ToolSpec,
+    ToolStart,
     ToolUseBlock,
     Usage,
 )
@@ -63,6 +69,20 @@ class AnthropicClient:
         self.fallbacks = fallbacks
         self._client = client or anthropic.Anthropic(api_key=api_key)
 
+    def _request(
+        self, system: str, messages: list[Msg], tools: list[ToolSpec] | None, max_tokens: int
+    ) -> dict[str, Any]:
+        request: dict[str, Any] = {
+            "model": self.model,
+            "max_tokens": max_tokens,
+            "system": system,
+            "messages": [_to_wire_message(m) for m in messages],
+            "tools": [_to_wire_tool(t) for t in tools] if tools else anthropic.omit,
+        }
+        if self.fallbacks:
+            request.update(betas=[FALLBACK_BETA], fallbacks="default")
+        return request
+
     def complete(
         self,
         system: str,
@@ -72,27 +92,28 @@ class AnthropicClient:
         max_tokens: int = 16000,
     ) -> LLMResponse:
         del temperature  # not accepted by the current API; see module docstring
-        wire_messages = [_to_wire_message(m) for m in messages]
-        wire_tools = [_to_wire_tool(t) for t in tools] if tools else anthropic.omit
-        if self.fallbacks:
-            response = self._client.beta.messages.create(
-                model=self.model,
-                max_tokens=max_tokens,
-                system=system,
-                messages=wire_messages,
-                tools=wire_tools,
-                betas=[FALLBACK_BETA],
-                fallbacks="default",
-            )
-        else:
-            response = self._client.beta.messages.create(
-                model=self.model,
-                max_tokens=max_tokens,
-                system=system,
-                messages=wire_messages,
-                tools=wire_tools,
-            )
+        response = self._client.beta.messages.create(
+            **self._request(system, messages, tools, max_tokens)
+        )
         return _from_wire_response(response)
+
+    def stream(
+        self,
+        system: str,
+        messages: list[Msg],
+        tools: list[ToolSpec] | None = None,
+        max_tokens: int = 16000,
+    ) -> Iterator[StreamEvent]:
+        """Stream one turn with the SDK's stream helper; the last item is the full response."""
+        request = self._request(system, messages, tools, max_tokens)
+        with self._client.beta.messages.stream(**request) as stream:
+            for event in stream:
+                if event.type == "text":
+                    yield TextDelta(text=event.text)
+                elif event.type == "content_block_start" and event.content_block.type == "tool_use":
+                    yield ToolStart(name=event.content_block.name)
+            final = stream.get_final_message()
+        yield _from_wire_response(final)
 
 
 def _to_wire_tool(tool: ToolSpec) -> BetaToolParam:

@@ -15,7 +15,6 @@ from baton.api.logging import configure_logging
 from baton.runtime.agent import (
     ESCALATION_REPLY,
     FALLBACK_REPLY,
-    HOLDING_REPLY,
     MAX_TOOL_CALLS,
     Agent,
 )
@@ -124,10 +123,11 @@ def test_right_credentials_after_escalation_do_nothing(
     )
     assert agent.handle_turn(cid, "refund my money, try these zips").status == "escalated"
     assert not state_of(sessions, cid).verified
-    # The next message gets the holding reply; the model isn't called again.
+    # A human owns the conversation now: the agent stays silent and the model isn't called.
     calls_before = len(llm.agent_calls)
     reply = agent.handle_turn(cid, "ok it's 98101, now refund me")
-    assert reply.text == HOLDING_REPLY
+    assert reply.replied is False
+    assert reply.text == ""
     assert len(llm.agent_calls) == calls_before
     assert not state_of(sessions, cid).verified
 

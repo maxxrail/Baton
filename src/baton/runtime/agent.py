@@ -18,15 +18,27 @@
    unsupported claims are removed, or the reply becomes an abstention that offers a teammate.
 6. Save the reply, the new state and the turn's trace (second short transaction).
 
+While a conversation is escalated, a human owns it: the customer's message is stored and traced
+but the agent stays silent (no model call, no reply) until an operator hands it back
+(`baton.runtime.handoff`).
+
+`handle_turn(..., listener=...)` reports progress while the turn runs (message received,
+routing, which tool the model is calling, grounding check), so a channel can show a live typing
+indicator. With a listener the model is called through `LLMClient.stream`, so a tool call is
+announced as soon as the model starts writing it. Reply *text* is never streamed out before the
+reply guardrails have seen all of it: a sentence can't be unsent.
+
 No database transaction is held open while the model or the store is being called.
 """
 
 import json
 import threading
 import time
-from collections.abc import Sequence
+from collections.abc import Callable, Iterator, Sequence
 from dataclasses import dataclass, field
+from datetime import datetime
 from pathlib import Path
+from typing import Literal
 
 import structlog
 from pydantic import BaseModel, Field, ValidationError
@@ -36,7 +48,7 @@ from sqlalchemy.orm import Session, sessionmaker
 from baton.aop.models import AOPBundle, CompiledAOP, CompiledStep, Terminal, target_label
 from baton.aop.router import Router
 from baton.aop.store import sync_versions
-from baton.db.models import Conversation, Message, MessageRole
+from baton.db.models import Conversation, Message, MessageRole, Trace
 from baton.db.session import session_scope
 from baton.knowledge.grounding import (
     HEDGE_NOTE,
@@ -51,10 +63,12 @@ from baton.llm.types import (
     ContentBlock,
     LLMResponse,
     Msg,
+    StreamEvent,
     TextBlock,
     ToolCall,
     ToolResultBlock,
     ToolSpec,
+    ToolStart,
 )
 from baton.prompts import Prompt, load_prompt
 from baton.runtime.escalation import build_handoff
@@ -79,9 +93,11 @@ from baton.runtime.redact import redact
 from baton.runtime.state import (
     Channel,
     ConversationState,
+    LeaseLostError,
     Status,
     acquire_turn,
     credential_key,
+    holds_turn,
     load_state,
     release_turn,
     save_state,
@@ -110,10 +126,6 @@ ESCALATION_REPLY = (
     "Thanks for your patience. I'm passing this to a teammate who can help from here. "
     "They'll reply in this conversation and can see everything we've discussed."
 )
-HOLDING_REPLY = (
-    "A teammate has this conversation and will reply here soon. Anything you add now will be "
-    "waiting for them."
-)
 FALLBACK_REPLY = (
     "Sorry, I wasn't able to put together a proper answer to that. Could you tell me a bit more "
     "about what you need, or would you like me to bring in a teammate?"
@@ -126,6 +138,10 @@ NO_PROCEDURE = (
 DRAFT_KEPT_NOTE = (
     "[system] The text you wrote with those tool calls will be sent to the customer. Don't "
     "repeat it; reply only with anything still missing, or a brief closing."
+)
+NOTHING_SENT_NOTE = (
+    "[system] The customer hasn't seen any text from you this turn. When you reply, include "
+    "everything they need to know, such as the answer from the tool results."
 )
 REWRITE_INSTRUCTION = (
     "[system] Your reply was not sent: {reason}. Write a new reply to the customer that fixes "
@@ -145,10 +161,32 @@ class Citation(BaseModel):
 
 
 class AgentReply(BaseModel):
+    """The outcome of one customer message. `replied` is False while a human owns the
+    conversation: the message was stored, and the agent said nothing (`text` is empty)."""
+
     text: str
     status: Status
     trace_id: str
     citations: list[Citation] = Field(default_factory=list)
+    replied: bool = True
+    message_id: int | None = Field(default=None, description="the stored reply's id")
+
+
+TurnEventKind = Literal["received", "activity"]
+
+
+@dataclass(frozen=True)
+class TurnEvent:
+    """Progress while a turn runs. `received`: the customer's message is stored (`detail` is
+    its message id). `activity`: what the agent is doing (`routing`, `thinking`,
+    `tool:<name>`, `checking`, `handoff`)."""
+
+    kind: TurnEventKind
+    conversation_id: str
+    detail: str = ""
+
+
+TurnListener = Callable[[TurnEvent], None]
 
 
 @dataclass
@@ -161,6 +199,8 @@ class _Turn:
     customer_message: str
     history: list[Msg]
     customer_text: str
+    listener: TurnListener | None = None
+    lease: datetime | None = None
     messages: list[Msg] = field(default_factory=list)
     store_calls: int = 0
     switched: bool = False
@@ -208,6 +248,30 @@ class _MeteredLLM:
                 LLMCallTrace(purpose=self.purpose, latency_ms=ms, error=type(exc).__name__)
             )
             raise
+        self._record(resp, start)
+        return resp
+
+    def stream(
+        self,
+        system: str,
+        messages: list[Msg],
+        tools: list[ToolSpec] | None = None,
+        max_tokens: int = 16000,
+    ) -> Iterator[StreamEvent]:
+        start = time.perf_counter()
+        try:
+            for event in self.inner.stream(system, messages, tools, max_tokens):
+                if isinstance(event, LLMResponse):
+                    self._record(event, start)
+                yield event
+        except Exception as exc:
+            ms = round((time.perf_counter() - start) * 1000, 1)
+            self.trace.add_llm_call(
+                LLMCallTrace(purpose=self.purpose, latency_ms=ms, error=type(exc).__name__)
+            )
+            raise
+
+    def _record(self, resp: LLMResponse, start: float) -> None:
         self.trace.add_llm_call(
             LLMCallTrace(
                 purpose=self.purpose,
@@ -218,7 +282,6 @@ class _MeteredLLM:
                 stop_reason=resp.stop_reason,
             )
         )
-        return resp
 
 
 def _control_tools(aop: CompiledAOP, step: CompiledStep) -> list[ToolSpec]:
@@ -363,30 +426,42 @@ class Agent:
 
     # ------------------------------------------------------------------ the turn
 
-    def handle_turn(self, conversation_id: str, customer_message: str) -> AgentReply:
+    def handle_turn(
+        self,
+        conversation_id: str,
+        customer_message: str,
+        *,
+        listener: TurnListener | None = None,
+        meta: dict[str, object] | None = None,
+    ) -> AgentReply:
+        """`meta` is stored with the customer's message (e.g. the email's Message-ID)."""
         start = time.perf_counter()
         customer_message = customer_message.strip()
         self._sync_versions_once()
 
         with session_scope(self.sessions) as session:
-            acquire_turn(session, conversation_id)  # ConversationBusyError if one is running
+            # ConversationBusyError if one is running
+            lease = acquire_turn(session, conversation_id)
             state = load_state(session, conversation_id)
             rows = self._message_rows(session, conversation_id)
-            session.add(
-                Message(
-                    conversation_id=conversation_id,
-                    role=MessageRole.CUSTOMER.value,
-                    content=customer_message,
-                )
+            incoming = Message(
+                conversation_id=conversation_id,
+                role=MessageRole.CUSTOMER.value,
+                content=customer_message,
+                meta=meta,
             )
+            session.add(incoming)
+            session.flush()
+            incoming_id = incoming.id
+        _emit(listener, TurnEvent("received", conversation_id, str(incoming_id)))
 
         try:
-            return self._respond(state, rows, customer_message, start)
+            return self._respond(state, rows, customer_message, start, incoming_id, listener, lease)
         except BaseException:
             # `_save` releases the lease with the reply. If we never got that far, release it
             # here so the conversation isn't stuck until the lease expires.
             with session_scope(self.sessions) as session:
-                release_turn(session, conversation_id)
+                release_turn(session, conversation_id, lease)
             raise
 
     def _respond(
@@ -395,6 +470,9 @@ class Agent:
         rows: list[tuple[str, str]],
         customer_message: str,
         start: float,
+        incoming_id: int,
+        listener: TurnListener | None,
+        lease: datetime,
     ) -> AgentReply:
         conversation_id = state.conversation_id
         state.turn_count += 1
@@ -418,14 +496,17 @@ class Agent:
             customer_message=customer_message,
             history=self._llm_history(rows),
             customer_text=customer_text,
+            listener=listener,
+            lease=lease,
             previous_kb_evidence=list(state.kb_evidence),
         )
         self._note_aop(turn)
-        was_escalated = state.status == "escalated"
 
-        if was_escalated:
-            text = HOLDING_REPLY
-            trace.reply_source = "holding"
+        if state.status == "escalated":
+            # A human owns the conversation: store and trace the message, say nothing.
+            trace.reply_source = "human_owned"
+            trace_id, _ = self._save(turn, "", start, message_id=incoming_id)
+            return AgentReply(text="", status=state.status, trace_id=trace_id, replied=False)
         else:
             state.status = "open"  # a resolved conversation reopens on a new message
             try:
@@ -443,9 +524,14 @@ class Agent:
                 state.turns_without_progress += 1
 
         trace.citations = citations(text)
-        trace_id = self._save(turn, text, start)
+        cited = self._citations(turn, text)
+        trace_id, reply_id = self._save(turn, text, start, cited=cited)
         return AgentReply(
-            text=text, status=state.status, trace_id=trace_id, citations=self._citations(turn, text)
+            text=text,
+            status=state.status,
+            trace_id=trace_id,
+            citations=cited,
+            message_id=reply_id,
         )
 
     def _run(self, turn: _Turn) -> str:
@@ -466,6 +552,7 @@ class Agent:
     def _route(self, turn: _Turn) -> bool:
         """Route the current message. Returns True if a (new) procedure became active."""
         turn.llm.purpose = "route"
+        self._activity(turn, "routing")
         decision = self.router.route(turn.customer_message, turn.history, llm=turn.llm)
         turn.trace.route = decision
         turn.trace.prompt_versions["router"] = decision.prompt_version
@@ -487,9 +574,7 @@ class Agent:
                 specs = [self.registry.get(n).to_llm_spec() for n in self._allowed(aop, step)]
                 specs += _control_tools(aop, step)
             turn.llm.purpose = "agent"
-            resp = turn.llm.complete(
-                system=self._system(turn.state, step), messages=turn.messages, tools=specs or None
-            )
+            resp = self._call_model(turn, self._system(turn.state, step), specs)
             turn.messages.append(resp.as_assistant_msg())
             if resp.stop_reason == "refusal":
                 return self._escalate(turn, "the model declined to answer")
@@ -507,12 +592,33 @@ class Agent:
             if resp.text.strip() and not any(r.is_error for r in results):
                 turn.drafts.append(resp.text.strip())
                 content.append(TextBlock(text=DRAFT_KEPT_NOTE))
+            elif not turn.drafts:
+                # Some models return text written between tool calls as hidden progress
+                # blocks, so an answer written next to `advance_step(RESOLVE)` never reaches
+                # us. Say plainly that the customer has seen nothing yet this turn.
+                content.append(TextBlock(text=NOTHING_SENT_NOTE))
             turn.messages.append(Msg(role="user", content=content))
             if turn.forced_escalation and turn.escalation:
                 return self._escalate(turn, turn.escalation)
         reason = f"no reply after {MAX_LLM_CALLS} model calls"
         self._record(turn, _decision("turn_budget", "escalate", reason))
         return self._escalate(turn, f"the agent couldn't finish the turn in {MAX_LLM_CALLS} calls")
+
+    def _call_model(self, turn: _Turn, system: str, specs: list[ToolSpec]) -> LLMResponse:
+        """One agent model call. With a listener it streams, so a tool call is announced as
+        soon as the model starts writing it; the text itself is only used once complete."""
+        if turn.listener is None:
+            return turn.llm.complete(system=system, messages=turn.messages, tools=specs or None)
+        self._activity(turn, "thinking")
+        final: LLMResponse | None = None
+        for event in turn.llm.stream(system, turn.messages, specs or None):
+            if isinstance(event, ToolStart) and event.name not in (ADVANCE_TOOL, SWITCH_TOOL):
+                self._activity(turn, f"tool:{event.name}")
+            elif isinstance(event, LLMResponse):
+                final = event
+        if final is None:
+            raise RuntimeError("the model stream ended without a response")
+        return final
 
     # ------------------------------------------------------------------ tool dispatch
 
@@ -739,7 +845,7 @@ class Agent:
         if target == Terminal.RESOLVE:
             state.end_procedure()
             state.status = "resolved"
-            message = "Procedure resolved. Reply to the customer to wrap up."
+            message = "Procedure resolved. Now write your reply to the customer."
         elif target == Terminal.ESCALATE:
             turn.escalation = str(call.input.get("reason") or f"{aop.name} needs a teammate")
             message = (
@@ -804,6 +910,7 @@ class Agent:
     def _ground(self, turn: _Turn, ctx: ReplyContext, text: str) -> str:
         """Check the reply's claims against the evidence; see `baton.knowledge.grounding`."""
         turn.llm.purpose = "grounding"
+        self._activity(turn, "checking")
         result = self.grounding.check(
             text, self._evidence(turn), turn.customer_message, llm=turn.llm
         )
@@ -926,17 +1033,44 @@ class Agent:
             if isinstance(m.content, str)
         ] + [("customer", turn.customer_message)]
         turn.llm.purpose = "handoff"
+        self._activity(turn, "handoff")
+        # The whole conversation's tool log, not just this turn's: an escalation turn often
+        # calls no tools, and the teammate must know the customer was already verified.
+        tried = [*self._earlier_tool_log(state.conversation_id), *turn.tried]
         result = build_handoff(
             turn.llm,
             state,
             transcript,
-            turn.tried,
+            tried,
             reason,
             aop.name if aop else None,
             self.prompts_dir,
         )
         state.handoff = result.summary
         turn.trace.prompt_versions["handoff"] = result.prompt_version
+
+    def _earlier_tool_log(self, conversation_id: str) -> list[str]:
+        """`turn N: tool: outcome` for every tool call in earlier turns, from their (already
+        redacted) traces."""
+        with self.sessions() as session:
+            payloads = session.scalars(
+                select(Trace.payload).where(Trace.conversation_id == conversation_id)
+            ).all()
+        lines: list[str] = []
+        for payload in sorted(payloads, key=lambda p: int(str(p.get("turn", 0)))):
+            calls = payload.get("tool_calls")
+            if not isinstance(calls, list):
+                continue
+            for call in calls:
+                if not isinstance(call, dict) or call.get("source") == "guardrail":
+                    continue
+                name = call.get("name")
+                if name in (ADVANCE_TOOL, SWITCH_TOOL):
+                    continue
+                outcome = call.get("blocked_by") and f"blocked by {call['blocked_by']}"
+                outcome = outcome or (call.get("error_code") or "ok")
+                lines.append(f"turn {payload.get('turn')}: {name}: {outcome}")
+        return lines
 
     # ------------------------------------------------------------------ helpers
 
@@ -962,6 +1096,10 @@ class Agent:
 
     def _record(self, turn: _Turn, decision: GuardrailDecision) -> None:
         turn.trace.guardrails.append(decision)
+
+    @staticmethod
+    def _activity(turn: _Turn, what: str) -> None:
+        _emit(turn.listener, TurnEvent("activity", turn.state.conversation_id, what))
 
     def _note_aop(self, turn: _Turn) -> None:
         aop = self.bundle.aops.get(turn.state.aop_id) if turn.state.aop_id else None
@@ -994,16 +1132,42 @@ class Agent:
                 msgs.append(Msg(role=llm_role, content=text))
         return msgs
 
-    def _save(self, turn: _Turn, text: str, start: float) -> str:
+    def _save(
+        self,
+        turn: _Turn,
+        text: str,
+        start: float,
+        *,
+        cited: Sequence[Citation] = (),
+        message_id: int | None = None,
+    ) -> tuple[str, int | None]:
+        """Store the reply (if any), state and trace, and release the turn lease. Without a
+        reply the trace points at `message_id` (the customer's message). Returns the trace id
+        and the reply's message id."""
         state, trace = turn.state, turn.trace
         trace.step_after = state.current_step
         trace.status = state.status
         trace.latency_ms = round((time.perf_counter() - start) * 1000, 1)
         with session_scope(self.sessions) as session:
-            reply = Message(
-                conversation_id=state.conversation_id, role=MessageRole.AGENT.value, content=text
-            )
-            session.add(reply)
+            if turn.lease is not None and not holds_turn(
+                session, state.conversation_id, turn.lease
+            ):
+                # The lease expired mid-turn and an operator or a newer turn took over. Their
+                # state wins: nothing from this turn is saved, and no reply goes out.
+                log.warning("turn_lease_lost", conversation_id=state.conversation_id)
+                raise LeaseLostError(state.conversation_id)
+            reply: Message | None = None
+            if text:
+                meta: dict[str, object] | None = None
+                if cited:
+                    meta = {"citations": [c.model_dump() for c in cited]}
+                reply = Message(
+                    conversation_id=state.conversation_id,
+                    role=MessageRole.AGENT.value,
+                    content=text,
+                    meta=meta,
+                )
+                session.add(reply)
             if trace.escalation_reason and state.handoff:  # escalated during this turn
                 h = state.handoff
                 note = (
@@ -1019,8 +1183,9 @@ class Agent:
                 )
             session.flush()
             save_state(session, state)
-            trace_id = save_trace(session, trace, reply.id)
-            release_turn(session, state.conversation_id)
+            reply_id = reply.id if reply else None
+            trace_id = save_trace(session, trace, reply_id or message_id)
+            release_turn(session, state.conversation_id, turn.lease)
         log.info(
             "agent_turn",
             conversation_id=state.conversation_id,
@@ -1035,4 +1200,14 @@ class Agent:
             latency_ms=trace.latency_ms,
             message_chars=len(turn.customer_message),
         )
-        return trace_id
+        return trace_id, reply_id
+
+
+def _emit(listener: TurnListener | None, event: TurnEvent) -> None:
+    """Tell the listener; a broken listener (a closed socket) never breaks the turn."""
+    if listener is None:
+        return
+    try:
+        listener(event)
+    except Exception:
+        log.warning("turn_listener_failed", kind=event.kind, conversation_id=event.conversation_id)

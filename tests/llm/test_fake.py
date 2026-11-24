@@ -65,3 +65,17 @@ def test_as_assistant_msg_builds_blocks_from_tool_calls() -> None:
     assert msg.role == "assistant"
     assert isinstance(msg.content, list)
     assert [b.type for b in msg.content] == ["text", "tool_use"]
+
+
+def test_stream_replays_the_scripted_response_in_chunks() -> None:
+    from baton.llm.types import TextDelta, ToolStart
+
+    response = LLMResponse(
+        text="x" * 50, tool_calls=[ToolCall(id="1", name="get_order")], stop_reason="tool_use"
+    )
+    events = list(FakeLLM([response]).stream("s", [Msg(role="user", content="hi")]))
+    deltas = [e for e in events if isinstance(e, TextDelta)]
+    assert "".join(d.text for d in deltas) == "x" * 50
+    assert len(deltas) > 1
+    assert [e.name for e in events if isinstance(e, ToolStart)] == ["get_order"]
+    assert events[-1] == response

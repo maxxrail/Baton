@@ -13,7 +13,7 @@ from datetime import UTC, datetime, timedelta
 from typing import Literal
 
 from pydantic import BaseModel, Field
-from sqlalchemy import or_, update
+from sqlalchemy import or_, select, update
 from sqlalchemy.orm import Session
 
 from baton.db.models import Conversation, ConversationStatus
@@ -69,6 +69,8 @@ class ConversationState(BaseModel):
 
     escalation_reason: str | None = None
     handoff: HandoffSummary | None = None
+    # The operator who took the conversation over in the console (Part 04), if any.
+    assignee: str | None = None
 
     @property
     def aop_ref(self) -> str | None:
@@ -124,40 +126,58 @@ class ConversationBusyError(RuntimeError):
     """Another turn is still running on this conversation."""
 
 
+class LeaseLostError(RuntimeError):
+    """The turn ran past its lease and someone else (an operator, or a newer turn) claimed the
+    conversation. The turn's results are discarded rather than written over theirs."""
+
+
 TURN_LEASE = timedelta(minutes=5)
 
 
-def acquire_turn(session: Session, conversation_id: str, now: datetime | None = None) -> None:
+def acquire_turn(session: Session, conversation_id: str, now: datetime | None = None) -> datetime:
     """Claim the conversation for one turn, or raise `ConversationBusyError`.
 
     A conditional UPDATE, so it's atomic on SQLite and Postgres alike and works across
     processes: only one caller can move the lease from "free or expired" to "held". Without
     it two concurrent turns would both load the same state (e.g. `auto_refunded_cents=0`),
     both pass the refund limit, and the last save would win.
+
+    Returns the lease's expiry, which doubles as the holder's token: `holds_turn` and
+    `release_turn` check it, so a turn whose lease expired can't save over (or release) a
+    lease someone else has claimed since.
     """
     now = now or datetime.now(UTC)
+    lease = now + TURN_LEASE
     claimed = session.execute(
         update(Conversation)
         .where(
             Conversation.id == conversation_id,
             or_(Conversation.turn_lease_until.is_(None), Conversation.turn_lease_until < now),
         )
-        .values(turn_lease_until=now + TURN_LEASE)
+        .values(turn_lease_until=lease)
         .execution_options(synchronize_session=False)
     )
     if claimed.rowcount == 1:  # type: ignore[attr-defined]
-        return
+        return lease
     if session.get(Conversation, conversation_id) is None:
         raise ConversationNotFoundError(conversation_id)
     raise ConversationBusyError(conversation_id)
 
 
-def release_turn(session: Session, conversation_id: str) -> None:
+def holds_turn(session: Session, conversation_id: str, lease: datetime) -> bool:
+    current = session.execute(
+        select(Conversation.turn_lease_until).where(Conversation.id == conversation_id)
+    ).scalar_one_or_none()
+    return current is not None and current == lease
+
+
+def release_turn(session: Session, conversation_id: str, lease: datetime | None = None) -> None:
+    """Free the lease; with `lease`, only if it is still that one."""
+    query = update(Conversation).where(Conversation.id == conversation_id)
+    if lease is not None:
+        query = query.where(Conversation.turn_lease_until == lease)
     session.execute(
-        update(Conversation)
-        .where(Conversation.id == conversation_id)
-        .values(turn_lease_until=None)
-        .execution_options(synchronize_session=False)
+        query.values(turn_lease_until=None).execution_options(synchronize_session=False)
     )
 
 

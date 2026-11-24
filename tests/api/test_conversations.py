@@ -19,7 +19,8 @@ from tests.knowledge.judge import judge, supported_if
 from tests.runtime.support import ScriptedLLM, call, say
 
 REPO = Path(__file__).resolve().parents[2]
-SETTINGS = Settings(_env_file=None, baton_llm="fake")  # type: ignore[call-arg]
+SETTINGS = Settings(_env_file=None, baton_llm="fake", baton_console_secret="ops-secret")  # type: ignore[call-arg]
+OPS = {"Authorization": "Bearer ops-secret"}
 
 
 @pytest.fixture
@@ -61,12 +62,12 @@ def test_conversation_round_trip(api: TestClient, llm: ScriptedLLM) -> None:
     assert body["text"].startswith("Thanks!")
     assert body["trace_id"]
 
-    detail = api.get(f"/conversations/{cid}").json()
+    detail = api.get(f"/conversations/{cid}", headers=OPS).json()
     assert [m["role"] for m in detail["messages"]] == ["customer", "agent"]
     assert detail["state"]["aop_id"] == "where_is_my_order"
     assert detail["state"]["verified"] is False
 
-    traces = api.get(f"/conversations/{cid}/traces").json()
+    traces = api.get(f"/conversations/{cid}/traces", headers=OPS).json()
     assert [t["id"] for t in traces] == [body["trace_id"]]
     assert traces[0]["payload"]["aop_ref"] == "where_is_my_order@1"
 
@@ -75,14 +76,15 @@ def test_customer_hint_is_kept_in_state(api: TestClient) -> None:
     cid = api.post("/conversations", json={"channel": "email", "customer_hint": "a@b.co"}).json()[
         "id"
     ]
-    state = api.get(f"/conversations/{cid}").json()["state"]
+    state = api.get(f"/conversations/{cid}", headers=OPS).json()["state"]
     assert state["channel"] == "email"
     assert state["slots"] == {"customer_hint": "a@b.co"}
 
 
 def test_unknown_conversation_is_404(api: TestClient) -> None:
-    assert api.get("/conversations/nope").status_code == 404
-    assert api.get("/conversations/nope/traces").status_code == 404
+    assert api.get("/conversations/nope", headers=OPS).status_code == 404
+    assert api.get("/conversations/nope/traces", headers=OPS).status_code == 404
+    assert api.get("/conversations/nope/messages").status_code == 404
     assert api.post("/conversations/nope/messages", json={"text": "hi"}).status_code == 404
 
 
@@ -113,7 +115,7 @@ def test_message_during_a_running_turn_is_409(
 ) -> None:
     cid = api.post("/conversations", json={}).json()["id"]
 
-    def busy(conversation_id: str, text: str) -> None:
+    def busy(conversation_id: str, text: str, **kwargs: object) -> None:
         raise ConversationBusyError(conversation_id)
 
     agent = api.app.state.get_agent()  # type: ignore[attr-defined]
@@ -149,3 +151,26 @@ def test_reply_carries_resolvable_citations(
             "url": "https://help.northwind.example/articles/shipping-international",
         }
     ]
+
+
+def test_state_and_traces_are_operator_only(api: TestClient) -> None:
+    cid = api.post("/conversations", json={}).json()["id"]
+    assert api.get(f"/conversations/{cid}").status_code == 401
+    assert api.get(f"/conversations/{cid}/traces").status_code == 401
+    wrong = {"Authorization": "Bearer nope"}
+    assert api.get(f"/conversations/{cid}", headers=wrong).status_code == 401
+    # The customer's own transcript stays reachable with just the (unguessable) id.
+    assert api.get(f"/conversations/{cid}/messages").status_code == 200
+
+
+def test_transcript_hides_system_notes_and_renders_web_markdown(
+    api: TestClient, llm: ScriptedLLM
+) -> None:
+    cid = api.post("/conversations", json={}).json()["id"]
+    llm.route_to = "where_is_my_order"
+    api.post(f"/conversations/{cid}/messages", json={"text": "let me speak to a person"})
+    detail = api.get(f"/conversations/{cid}", headers=OPS).json()
+    assert "system" in [m["role"] for m in detail["messages"]]  # the handoff note
+    transcript = api.get(f"/conversations/{cid}/messages").json()
+    assert [m["role"] for m in transcript["messages"]] == ["customer", "agent"]
+    assert transcript["status"] == "escalated"

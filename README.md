@@ -10,20 +10,37 @@ fictional DTC home-goods brand, backed by a mock commerce API that ships in this
 
 ## Quickstart
 
-Needs [uv](https://docs.astral.sh/uv/). Works on Windows, macOS and Linux. No API key needed:
-without one, Baton uses an offline scripted LLM.
+Needs [uv](https://docs.astral.sh/uv/) and, for the web app, Node 20+. Works on Windows, macOS
+and Linux. Tests need no API key (they use an offline scripted LLM); chatting with the agent needs
+`ANTHROPIC_API_KEY`.
 
 ```
 uv sync                           # install (Python 3.12 is fetched if needed)
-cp .env.example .env              # optional; add ANTHROPIC_API_KEY for real model calls
+cp .env.example .env              # add ANTHROPIC_API_KEY for real model calls
 uv run alembic upgrade head       # create baton.db
 uv run baton-kb ingest            # index the help center (data/kb) for grounded answers
-uv run python -m scripts.dev      # Baton API on :8000, Northwind mock store on :8300
+cd web && npm install && cd ..    # the widget + console
+uv run python -m scripts.dev      # API :8000, mock store :8300, web app :5173
 ```
 
-Then open <http://localhost:8000/healthz>, <http://localhost:8000/aops> and
-<http://localhost:8300/docs>.
-If a port is taken: `uv run python -m scripts.dev --baton-port 8001`.
+Then open:
+
+- <http://localhost:5173/demo-store.html>: a fake Northwind store with the chat widget embedded
+  (one `<script src="/widget.js">` tag). Try "where is NW-10002? I'm ava.thompson@example.com,
+  zip 98101", "do you ship to Canada?", or press **Talk to a human**.
+- <http://localhost:5173/console>: the ops console. Log in with any name and the console secret
+  (`dev-console-secret` unless you set `BATON_CONSOLE_SECRET`). Live inbox, per-turn traces,
+  take over / reply / hand back, AOP graphs and a draft validator.
+
+If a port is taken: `uv run python -m scripts.dev --baton-port 8001` (the web app follows it).
+
+Email and SMS without Twilio or a mail provider (signed exactly like the real webhooks; outgoing
+replies are printed by the API):
+
+```
+uv run python -m scripts.simulate_inbound --channel sms --from "+15555550123" --text "where is my order"
+uv run python -m scripts.simulate_inbound --channel email --from ava.thompson@example.com --subject "Shipping to Canada?" --text "How long does it take?"
+```
 
 AOPs (support procedures in plain-English Markdown, see [`aops/README.md`](aops/README.md)):
 
@@ -49,8 +66,9 @@ uv run python -m scripts.dev      # terminal 1
 uv run baton-chat --trace         # terminal 2: route, steps, tools, KB searches, grounding, guardrails
 ```
 
-Or over HTTP: `POST /conversations`, then `POST /conversations/{id}/messages {"text": "..."}`.
-Every turn's trace is at `GET /conversations/{id}/traces`. Replies cite help-center
+Or over HTTP: `POST /conversations`, then `POST /conversations/{id}/messages {"text": "..."}`
+(or the widget's WebSocket, `/ws/chat/{id}`). Every turn's trace is at
+`GET /conversations/{id}/traces` (operator-only: `Authorization: Bearer <BATON_CONSOLE_SECRET>`). Replies cite help-center
 articles as `[kb:article_id]`, and the response's `citations` list gives each one's title and URL.
 Recorded sessions: [`docs/samples/chat-return.md`](docs/samples/chat-return.md) (return flow) and
 [`docs/samples/chat-knowledge.md`](docs/samples/chat-knowledge.md) (grounded answers and abstention).
@@ -62,6 +80,7 @@ uv run pytest -q
 uv run ruff check . && uv run ruff format --check .
 uv run mypy src
 uv run pre-commit run --all-files
+cd web && npm test && npm run build
 ```
 
 ## What's in the box so far
@@ -77,12 +96,15 @@ uv run pre-commit run --all-files
 | Knowledge (RAG) | `src/baton/knowledge/`, `data/kb/` | 28 help-center articles, heading-aware chunking, incremental ingest, hybrid BM25 + embedding retrieval with reciprocal-rank fusion, newer-policy-wins ranking, optional LLM reranker. **recall@5 0.969, MRR 0.768** on 32 answerable questions (offline embedder) |
 | Grounding guardrail | `src/baton/knowledge/grounding.py` | An LLM judge labels each sentence of a help-center answer; code removes unsupported claims, or replaces the reply with "I'm not sure" plus an offer of a teammate. Fails closed. Citations must resolve to retrieved articles |
 | Conversations API + CLI | `src/baton/api/conversations.py`, `src/baton/channels/cli.py` | `POST /conversations`, `POST /conversations/{id}/messages`, `GET .../traces`; `baton-chat --trace` |
+| Channels | `src/baton/channels/`, `src/baton/api/{chat,channels}.py` | One `ConversationService` path from web chat (WebSocket + HTTP fallback), email (JSON webhook, threaded by Message-ID, quoted history stripped) and SMS (Twilio webhook with signature validation, STOP/HELP) into the same agent. Replies formatted per channel: markdown + citation links, plain text + footnotes + signature, ≤ 2 SMS segments with a link to the full answer |
+| Human handoff | `src/baton/runtime/handoff.py`, `src/baton/api/console.py` | Once escalated the agent stays silent; a teammate takes over, replies through the customer's own channel, then resolves or returns the conversation to the AI. Operator actions share the agent's turn lease |
+| Web app | `web/` | React + Vite + TS + Tailwind. `/widget` (floating chat, typing indicator showing what the agent is doing, citations as links, "talk to a human") with a `widget.js` embed snippet; `/console` (live inbox, conversation + handoff summary, trace panel, take over, AOP browser with Mermaid). Shared-secret login |
 | AOP API | `src/baton/api/aops.py` | `GET /aops`, `GET /aops/{id}` (graph + Mermaid), `POST /aops/validate` |
-| Database | `src/baton/db/`, `migrations/` | SQLAlchemy 2.0 + Alembic: `conversations` (with JSON runtime state), `messages`, `traces`, `aop_versions`, `kb_chunks`. SQLite locally, Postgres via `DATABASE_URL` |
+| Database | `src/baton/db/`, `migrations/` | SQLAlchemy 2.0 + Alembic: `conversations` (with JSON runtime state), `messages`, `traces`, `aop_versions`, `kb_chunks`, `channel_threads`, `sms_opt_outs`. SQLite locally, Postgres via `DATABASE_URL` |
 | LLM layer | `src/baton/llm/` | `LLMClient` protocol, `AnthropicClient` (official SDK), `FakeLLM` for offline tests, `HashingEmbedder` (default) and optional `VoyageEmbedder` |
 | Northwind mock store | `src/mock_commerce/` | Customers, orders, returns, refunds, subscriptions, loyalty. Rules enforced server-side. See its [README](src/mock_commerce/README.md) |
 | Seed data | `data/seed/` | Deterministic, with deliberate tricky cases (expired return window, partial refund, shared phone) |
-| CI | `.github/workflows/ci.yml` | ruff, mypy, pytest on Ubuntu and Windows, plus gitleaks |
+| CI | `.github/workflows/ci.yml` | ruff, mypy, pytest on Ubuntu and Windows, Vitest + web build, plus gitleaks |
 
 Configuration is all environment variables. See [`.env.example`](.env.example). `BATON_LLM`
 picks `anthropic` or `fake`. It defaults to `anthropic` when `ANTHROPIC_API_KEY` is set and to
@@ -96,7 +118,7 @@ picks `anthropic` or `fake`. It defaults to `anthropic` when `ANTHROPIC_API_KEY`
 | 01 | AOP language + compiler | done |
 | 02 | Agent runtime + guardrails | done |
 | 03 | Knowledge base (RAG) | done |
-| 04 | Channels + human handoff | |
+| 04 | Channels + human handoff | done |
 | 05 | Simulations + eval harness | |
 | 06 | Watchtower + insights | |
 | 07 | Ship it | |

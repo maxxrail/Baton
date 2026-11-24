@@ -10,7 +10,7 @@
 """
 
 from collections import deque
-from collections.abc import Callable
+from collections.abc import Callable, Iterator
 from pathlib import Path
 
 from sqlalchemy import select
@@ -19,7 +19,8 @@ from sqlalchemy.orm import Session, sessionmaker
 from baton.aop.router import ROUTE_TOOL
 from baton.db import Message, Trace
 from baton.knowledge.grounding import GROUNDING_TOOL
-from baton.llm import LLMResponse, Msg, ToolCall, ToolSpec, Usage
+from baton.llm import LLMResponse, Msg, StreamEvent, ToolCall, ToolSpec, Usage
+from baton.llm.types import stream_response
 from baton.runtime.escalation import HANDOFF_TOOL
 from baton.runtime.state import ConversationState, load_state
 
@@ -63,6 +64,8 @@ class ScriptedLLM:
         self.agent_calls: list[tuple[str, list[Msg], list[ToolSpec] | None]] = []
         self.route_calls = 0
         self.handoff_calls = 0
+        self.handoff_prompts: list[str] = []
+        self.streamed = 0
 
     def push(self, *responses: LLMResponse) -> None:
         self.script.extend(responses)
@@ -84,6 +87,7 @@ class ScriptedLLM:
             )
         if HANDOFF_TOOL in names:
             self.handoff_calls += 1
+            self.handoff_prompts.append(system)
             if self.handoff is None:
                 return say("I'd rather not.")
             return LLMResponse(
@@ -99,6 +103,17 @@ class ScriptedLLM:
         if not self.script:
             raise AssertionError(f"agent script exhausted after {len(self.agent_calls)} calls")
         return self.script.popleft()
+
+    def stream(
+        self,
+        system: str,
+        messages: list[Msg],
+        tools: list[ToolSpec] | None = None,
+        max_tokens: int = 16000,
+    ) -> Iterator[StreamEvent]:
+        """Channels call the agent with a listener, which makes it stream: same script."""
+        self.streamed += 1
+        yield from stream_response(self.complete(system, messages, tools, max_tokens=max_tokens))
 
     @property
     def last_tools(self) -> set[str]:

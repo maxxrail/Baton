@@ -6,6 +6,30 @@ All notable changes to Baton. Format: [Keep a Changelog](https://keepachangelog.
 ### Changed
 - The Northwind mock store now defaults to port 8300 (was 8100): `scripts/dev.py`, the `MOCK_COMMERCE_URL` default and `.env.example`. Override with `--mock-port`.
 
+## [Part 04] - 2026-11-24 — Channels + human handoff console
+### Added
+- Channel adapter interface (`baton.channels.base`): inbound normalisation and per-channel reply formatting. Web: markdown with numbered citation links. Email: plain text, footnote citations, signature. SMS: at most 2 segments (GSM-7/UCS-2 aware, smart punctuation mapped to GSM), cut at a word with a signed, expiring link to the full transcript (`baton.channels.links`, `BATON_LINK_SECRET`).
+- `ConversationService` (`baton.channels.service`): one path from web, email and SMS into `Agent.handle_turn` and back out through the conversation's own channel, with live events on an in-process `EventHub`.
+- Web chat: `WS /ws/chat/{id}` (typing activity, replies, status) with the HTTP fallback; `LLMClient.stream()` (Anthropic + `FakeLLM`), used to announce which tool the agent is calling. Reply text is sent only after the reply guardrails.
+- Email: `POST /channels/email/inbound` (generic JSON, `X-Baton-Webhook-Secret`), threading by `In-Reply-To`/`References` (sender must match) and by subject for provider-authenticated senders, quoted-history stripping, retry dedupe. Console, Resend and SMTP senders.
+- SMS: `POST /channels/sms/inbound` with Twilio signature validation (403 on mismatch, `BATON_PUBLIC_URL` for proxies), STOP/START/HELP, opt-out suppression, `MessageSid` dedupe. Console and Twilio senders.
+- Human handoff (`baton.runtime.handoff`): take over, reply as `human_agent` through the original channel, resolve or return to the AI. Operator actions share the agent's turn lease.
+- Console API (`/ops/...`, `WS /ws/ops`) with shared-secret login (`BATON_CONSOLE_SECRET`, signed HttpOnly SameSite=Strict cookie, Origin checks) and bearer auth for scripts.
+- Web app (`web/`, React + Vite + TS + Tailwind): `/widget` chat with "talk to a human", `public/widget.js` iframe embed, `demo-store.html`, `/console` (live inbox, conversation + handoff summary, trace panel, take over / reply / hand back, AOP browser with Mermaid and draft validation). Vitest tests; CI job for `npm test` + `npm run build`.
+- `scripts/simulate_inbound.py` (signed SMS and email webhooks for demos); `scripts/dev.py` also starts Vite and fills dev-only defaults for unset channel secrets.
+- Migration `0005`: `conversations.contact`/`subject`, `messages.meta`, `channel_threads`, `sms_opt_outs`.
+
+### Changed
+- An escalated conversation is human-owned: the agent stores and traces customer messages but no longer sends the fixed holding reply (`reply_source="human_owned"`, `AgentReply.replied=False`).
+- `GET /conversations/{id}` and `/traces` are operator-only; customers read `GET /conversations/{id}/messages`. `POST /conversations/{id}/messages` accepts web conversations only and returns the rendered `body`.
+- `acquire_turn` returns a lease token; a turn that outlived its lease raises `LeaseLostError` instead of saving over whoever claimed the conversation since.
+- Agent replies store their citations in `messages.meta`; `AgentReply` gains `message_id` and `replied`.
+
+### Fixed (found in the browser check)
+- The widget crashed when opened in current Chrome (`scrollIntoView` returns a Promise, which an effect returned to React).
+- Handoff notes were written from the escalation turn's tool log only, so a verified customer could be described as unverified. The note writer now gets the verified state and the whole conversation's tool log.
+- An answer written next to a tool call could be lost when the model returns that text as a hidden progress block. The runtime now tells the model when the customer has seen nothing yet this turn.
+
 ## [Part 03] - 2026-11-24 — Knowledge base (RAG) with citations
 ### Added
 - 28 Northwind help-center articles in `data/kb/` (shipping by region, Canada, costs, processing, tracking, returns, exchanges, refunds, damaged items, warranty, sizing, care, loyalty, subscriptions, payments, gift cards, promo codes, support, account, coffee freshness). Two deliberate old-vs-new conflicts: `return-policy` vs `return-policy-2024` and `shipping-costs` vs `free-shipping-offer-2025`.
