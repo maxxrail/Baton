@@ -40,7 +40,7 @@ def test_run_chat_with_trace(agent: Agent, llm: ScriptedLLM) -> None:
 def test_render_trace_shows_escalation() -> None:
     view = render_trace(
         {
-            "aop_ref": "refund_request@1",
+            "aop_ref": "refund_request@2",
             "step_before": 6,
             "step_after": 6,
             "status": "escalated",

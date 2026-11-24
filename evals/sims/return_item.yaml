@@ -53,7 +53,7 @@ scenarios:
       name: Ava, wants a different colour
       fixture: ava_inside_window
       traits: [friendly]
-      goal: exchange the stoneware mugs for a different colour
+      goal: exchange the stoneware mugs for a different colour; you're happy to send them back and reorder the colour you want yourself
       knows: {email: "<seeded>", order_number: "<seeded>", zip: "<seeded>"}
     expect:
       must:

@@ -151,7 +151,7 @@ def test_max_turns_stops_the_conversation_without_an_unused_persona_call(
     assert result.passed
 
 
-def test_done_ends_the_run_and_the_closing_line_is_not_sent(
+def test_a_goodbye_is_sent_as_the_last_message_then_the_run_ends(
     bundle: AOPBundle, box: Sandbox
 ) -> None:
     sc = Scenario.model_validate(
@@ -166,8 +166,22 @@ def test_done_ends_the_run_and_the_closing_line_is_not_sent(
         sc, 1, box
     )
     assert result.stop_reason == "persona_done"
+    # "ok thanks bye" reaches the agent (so it can close the request); no further persona call.
+    assert [t.customer for t in result.turns] == ["hello", "ok thanks bye"]
+    assert result.persona_closing == ""
+
+
+def test_a_bare_done_ends_the_run_without_another_message(bundle: AOPBundle, box: Sandbox) -> None:
+    sc = Scenario.model_validate(
+        {
+            "id": "brief",
+            "aop": "general_question",
+            "persona": {"name": "p", "goal": "g"},
+            "expect": {"end_status": ["open"]},
+        }
+    )
+    result = _sim(bundle, models_for=_talker(["hello", "[DONE]"])).run_conversation(sc, 1, box)
     assert [t.customer for t in result.turns] == ["hello"]
-    assert result.persona_closing == "ok thanks bye"
 
 
 def test_escalation_ends_the_run_immediately(bundle: AOPBundle, box: Sandbox) -> None:
@@ -181,7 +195,7 @@ def test_traces_and_usage_are_recorded_per_turn(bundle: AOPBundle, box: Sandbox)
     result = _sim(bundle).run_conversation(_ci("ci_return_inside_window"), 1, box)
     assert len(result.turns) == 3
     assert all(t.trace.get("conversation_id") for t in result.turns)
-    assert result.turns[1].trace["aop_ref"] == "return_item@1"
+    assert result.turns[1].trace["aop_ref"] == "return_item@2"
     assert result.tool_calls == 4  # lookup, verify, get_order, create_return (no control tools)
     assert result.tool_errors == 0
     assert result.agent_usage.input_tokens > 0

@@ -197,10 +197,15 @@ def check_refund(
 
 _HUMAN = re.compile(
     r"\b(?:talk|speak|chat)\s+(?:to|with)\s+(?:a\s+|an\s+|your\s+|some\s*one\s+|a\s+real\s+)?"
-    r"(?:human|person|someone|real\s+person|agent|representative|rep|manager|supervisor)\b"
+    r"(?:human|person|someone|real\s+person|agent|representative|rep|manager|supervisor"
+    r"|teammate)\b"
     r"|\b(?:human|live|real)\s+(?:agent|person|support|representative)\b"
-    r"|\b(?:get|transfer)\s+me\s+(?:to\s+)?(?:a\s+)?(?:human|person|agent|representative)\b"
-    r"|^\s*(?:human|agent|representative)\s*[.!?]*\s*$",
+    r"|\b(?:get|transfer|pass|put|connect|hand)\s+me\s+(?:to|through\s+to|over\s+to|with)?\s*"
+    r"(?:a\s+|an\s+|the\s+|your\s+)?(?:human|person|agent|representative|teammate|manager)\b"
+    r"|^\s*(?:human|agent|representative)\s*[.!?]*\s*$"
+    # Spanish and French, the other languages in the simulation suite.
+    r"|\bhablar\s+con\s+(?:una\s+persona|un\s+agente|alguien|un\s+humano|un\s+compañero)"
+    r"|\bparler\s+(?:à|a|avec)\s+(?:une\s+personne|un\s+conseiller|quelqu'un|un\s+humain)",
     re.IGNORECASE,
 )
 

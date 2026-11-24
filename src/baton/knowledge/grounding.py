@@ -25,7 +25,7 @@ never an unchecked answer.
 
 Evidence = the KB chunks retrieved this turn (and in the previous search), plus what the agent
 legitimately knows from elsewhere: this turn's account tool results, the conversation state
-and the active procedure's policies. Only KB sources produce citations.
+and the active procedure's policies and steps. Only KB sources produce citations.
 """
 
 import json
@@ -41,6 +41,7 @@ from pydantic import BaseModel, Field, ValidationError
 from baton.llm.client import LLMClient
 from baton.llm.types import Msg, ToolSpec
 from baton.prompts import load_prompt
+from baton.runtime.language import register
 
 GROUNDING_TOOL = "report_grounding"
 KB_PREFIX = "kb:"
@@ -52,13 +53,21 @@ _LOOSE_CITATION_RE = re.compile(r"\[\s*kb\s*:\s*([A-Za-z0-9][A-Za-z0-9_-]*)\s*\]
 _BOUNDARY_RE = re.compile(r"(?<=[.!?])[\"')]*(?:\s*\[kb:[a-z0-9-]+\])*[ \t]+|\n+")
 _TRAILING_PUNCT_RE = re.compile(r"([.!?][\"')]*)\s*$")
 
-ABSTAIN_REPLY = (
+ABSTAIN_REPLY = register(
     "I'm not sure about that, and I'd rather not guess: I couldn't confirm it in our help "
-    "center. Would you like me to bring in a teammate who can find out?"
+    "center. Would you like me to bring in a teammate who can find out?",
+    es="No estoy seguro de eso y prefiero no adivinar: no he podido confirmarlo en nuestro "
+    "centro de ayuda. ¿Quiere que le pase con un compañero del equipo que pueda averiguarlo?",
+    fr="Je n'en suis pas sûr et je préfère ne pas deviner : je n'ai pas pu le vérifier dans "
+    "notre centre d'aide. Voulez-vous que je fasse appel à un membre de l'équipe ?",
 )
-HEDGE_NOTE = (
+HEDGE_NOTE = register(
     "I couldn't confirm the rest in our help center, so I've left it out rather than guess. "
-    "I can bring in a teammate if you'd like."
+    "I can bring in a teammate if you'd like.",
+    es="No he podido confirmar el resto en nuestro centro de ayuda, así que lo he omitido para "
+    "no adivinar. Si lo desea, puedo pasarle con un compañero del equipo.",
+    fr="Je n'ai pas pu vérifier le reste dans notre centre d'aide, je l'ai donc laissé de côté "
+    "plutôt que de deviner. Je peux faire appel à un membre de l'équipe si vous le souhaitez.",
 )
 _EVIDENCE_CHARS = 2500
 

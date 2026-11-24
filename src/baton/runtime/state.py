@@ -90,8 +90,9 @@ class ConversationState(BaseModel):
         if has_refunds and order_number not in self.orders_with_refunds:
             self.orders_with_refunds.append(order_number)
 
-    def summary(self) -> str:
-        """The state as the model sees it in the system prompt."""
+    def summary(self, max_failed_verifications: int | None = None) -> str:
+        """The state as the model sees it in the system prompt. With the limit, the model is
+        told how many verification attempts are left (it miscounted them otherwise)."""
         if self.verified:
             name = f" ({self.customer_name})" if self.customer_name else ""
             identity = f"verified as customer {self.customer_ref}{name}"
@@ -100,7 +101,8 @@ class ConversationState(BaseModel):
         lines = [
             f"- Channel: {self.channel}",
             f"- Customer identity: {identity}",
-            f"- Failed verification attempts: {len(self.failed_verifications)}",
+            "- Failed verification attempts: "
+            + _attempts(len(self.failed_verifications), max_failed_verifications),
             f"- Turn: {self.turn_count}",
         ]
         if self.lookup_candidates and not self.verified:
@@ -111,6 +113,13 @@ class ConversationState(BaseModel):
         if self.owned_orders:
             lines.append("- This customer's orders seen so far: " + ", ".join(self.owned_orders))
         return "\n".join(lines)
+
+
+def _attempts(failed: int, limit: int | None) -> str:
+    if limit is None:
+        return str(failed)
+    left = max(limit - failed, 0)
+    return f"{failed} of {limit} ({left} left before a teammate takes over)"
 
 
 def credential_key(order_number: str, zip_code: str) -> str:

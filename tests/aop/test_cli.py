@@ -44,7 +44,7 @@ def test_missing_directory_fails(tmp_path: Path, capsys: pytest.CaptureFixture[s
 def test_show_prints_steps_and_transitions(capsys: pytest.CaptureFixture[str]) -> None:
     assert main(["--dir", str(AOPS), "show", "return_item"]) == 0
     out = capsys.readouterr().out
-    assert out.startswith("return_item@1  Return or exchange an item")
+    assert out.startswith("return_item@2  Return or exchange an item")
     assert "-> RESOLVE  (if the order is not delivered)" in out
     assert "tools: create_return" in out
     assert "step prompt" not in out

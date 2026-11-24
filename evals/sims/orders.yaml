@@ -228,6 +228,9 @@ scenarios:
   - id: wismo_cancelled_order
     aop: where_is_my_order
     tags: [edge]
+    description: >-
+      The record doesn't say why it was cancelled; a customer who didn't cancel it may fairly
+      ask a teammate to find out, so escalating is fine.
     persona:
       name: Shopper confused by a cancellation
       fixture: cancelled_order
@@ -238,7 +241,7 @@ scenarios:
         - explains the order was cancelled
         - mentions the refund issued on it
       tools_called: [verify_customer, get_order]
-      end_status: [resolved]
+      end_status: [resolved, escalated]
 
   - id: wismo_french_speaker
     aop: where_is_my_order

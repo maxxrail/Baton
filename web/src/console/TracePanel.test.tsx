@@ -13,7 +13,7 @@ describe("TracePanel on adversarial traces", () => {
     const turns = screen.getAllByTestId("trace-turn");
     expect(turns).toHaveLength(2);
     expect(within(turns[0]).getByText("Turn 1")).toBeTruthy();
-    expect(within(turns[0]).getAllByText("refund_request@1").length).toBeGreaterThan(0);
+    expect(within(turns[0]).getAllByText("refund_request@2").length).toBeGreaterThan(0);
     expect(within(turns[0]).getByText(/step – → 6/)).toBeTruthy();
     expect(within(turns[1]).getByText("escalated")).toBeTruthy();
   });

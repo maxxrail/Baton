@@ -323,7 +323,7 @@ def test_invalid_advance_step_is_rejected_and_logged(
     llm.route_to = "cancel_order"
     llm.push(
         call(advance(4, "customer is in a hurry")),  # 1 -> 4 is not an edge
-        call(advance("ESCALATE")),  # neither is ESCALATE from step 1
+        call(advance("RESOLVE")),  # neither is RESOLVE from step 1
         say("Which order would you like to cancel?"),
     )
     agent.handle_turn(cid, "cancel my order")
@@ -333,13 +333,31 @@ def test_invalid_advance_step_is_rejected_and_logged(
     (trace,) = traces_of(sessions, cid)
     rejected = [g for g in trace["guardrails"] if g["guardrail"] == "step_transition"]
     assert [g["action"] for g in rejected] == ["block", "block"]
-    assert "allowed: step 2" in rejected[0]["reason"]
+    assert "step 2" in rejected[0]["reason"].split("allowed:")[1]
     logs = [
         json.loads(line) for line in capsys.readouterr().out.splitlines() if line.startswith("{")
     ]
     warning = next(e for e in logs if e["event"] == "invalid_step_transition")
     assert warning["level"] == "warning"
     assert warning["target"] == "4"
+
+
+def test_escalate_is_allowed_from_any_step(
+    agent: Agent, llm: ScriptedLLM, sessions: sessionmaker[Session]
+) -> None:
+    """Found by simulation: a customer asked for a teammate mid-return, the procedure only
+    escalates from step 3, and the agent told them the handoff had failed. Handing off is the
+    safe direction, so it is always a valid exit."""
+    cid = agent.start_conversation("web")
+    llm.route_to = "cancel_order"
+    llm.push(
+        call(advance("ESCALATE", "customer wants a person")),
+        say("I've passed this to a teammate, who will follow up here."),
+    )
+    reply = agent.handle_turn(cid, "I need help cancelling something")
+    assert reply.status == "escalated"
+    (trace,) = traces_of(sessions, cid)
+    assert ("step_transition", "allow") in decisions(trace)
 
 
 def test_tool_budget_per_turn(

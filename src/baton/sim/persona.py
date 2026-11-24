@@ -5,7 +5,8 @@ traces: only what the agent wrote to it, exactly like a real customer. Roles are
 its model: the agent's replies are the `user` messages and the persona's own lines are the
 `assistant` messages.
 
-The persona ends the conversation by writing `[DONE]` (optionally after a closing line).
+The persona ends the conversation by writing `[DONE]`, optionally after a closing line, which the
+simulator delivers to the agent as the last message (a real customer says "thanks, that's all").
 """
 
 from dataclasses import dataclass, field
@@ -28,7 +29,7 @@ SILENT_CUE = "(The assistant hasn't replied: a human teammate will take over.)"
 class PersonaLine:
     text: str  # what the customer sends; empty when they ended the conversation
     done: bool
-    closing: str = ""  # anything written alongside [DONE]; it isn't sent to the agent
+    closing: str = ""  # written alongside [DONE]; sent to the agent as the last message
     usage: Usage = field(default_factory=Usage)
 
 

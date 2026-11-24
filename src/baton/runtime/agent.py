@@ -89,6 +89,7 @@ from baton.runtime.guardrails import (
     truncate,
     wants_human,
 )
+from baton.runtime.language import detect_language, localize, register
 from baton.runtime.redact import redact
 from baton.runtime.state import (
     Channel,
@@ -122,15 +123,30 @@ AGENT_PROMPT, BRAND_PROMPT = "agent", "brand"
 ADVANCE_TOOL, SWITCH_TOOL = "advance_step", "switch_procedure"
 
 # Customer-facing messages the runtime sends itself (not model output).
-ESCALATION_REPLY = (
+# Each is registered with its translations (`baton.runtime.language`): the model answers in the
+# customer's language, so these must too.
+ESCALATION_REPLY = register(
     "Thanks for your patience. I'm passing this to a teammate who can help from here. "
-    "They'll reply in this conversation and can see everything we've discussed."
+    "They'll reply in this conversation and can see everything we've discussed.",
+    es="Gracias por su paciencia. Le paso esta conversación a un compañero del equipo que "
+    "puede ayudarle a partir de aquí. Le responderá en esta misma conversación y podrá ver todo "
+    "lo que hemos hablado.",
+    fr="Merci de votre patience. Je transmets votre demande à un membre de l'équipe qui pourra "
+    "vous aider. Il vous répondra dans cette conversation et verra tout ce que nous avons échangé.",
 )
-FALLBACK_REPLY = (
+FALLBACK_REPLY = register(
     "Sorry, I wasn't able to put together a proper answer to that. Could you tell me a bit more "
-    "about what you need, or would you like me to bring in a teammate?"
+    "about what you need, or would you like me to bring in a teammate?",
+    es="Lo siento, no he podido darle una respuesta adecuada. ¿Puede contarme un poco más sobre "
+    "lo que necesita, o prefiere que le pase con un compañero del equipo?",
+    fr="Désolé, je n'ai pas pu vous donner une réponse correcte. Pouvez-vous m'en dire un peu "
+    "plus sur votre besoin, ou préférez-vous que je fasse appel à un membre de l'équipe ?",
 )
-ERROR_REPLY = "Sorry, something went wrong on our side. Please try again in a moment."
+ERROR_REPLY = register(
+    "Sorry, something went wrong on our side. Please try again in a moment.",
+    es="Lo siento, algo ha fallado por nuestra parte. Vuelva a intentarlo en un momento.",
+    fr="Désolé, un problème est survenu de notre côté. Veuillez réessayer dans un instant.",
+)
 NO_PROCEDURE = (
     "## Current procedure\nNone yet. Greet the customer briefly and ask what they need help "
     "with. Don't answer questions about orders or accounts until a procedure is active."
@@ -291,7 +307,9 @@ def _control_tools(aop: CompiledAOP, step: CompiledStep) -> list[ToolSpec]:
             name=ADVANCE_TOOL,
             description=(
                 "Move the procedure forward when the current step is done. `target` is a step "
-                f"number, RESOLVE or ESCALATE. Allowed from this step: {', '.join(exits)}."
+                f"number, RESOLVE or ESCALATE. Allowed from this step: {', '.join(exits)}. "
+                "ESCALATE (hand off to a teammate) is always allowed, e.g. when the customer "
+                "asks for a person."
             ),
             input_schema={
                 "type": "object",
@@ -522,6 +540,8 @@ class Agent:
                 state.turns_without_progress = 0
             else:
                 state.turns_without_progress += 1
+            # Runtime-written sentences (escalation, hedge, fallback) in the customer's language.
+            text = localize(text, detect_language(turn.customer_text))
 
         trace.citations = citations(text)
         cited = self._citations(turn, text)
@@ -815,7 +835,9 @@ class Agent:
                 guardrail="step_transition", action="block", reason="no procedure is active"
             )
             return self._blocked_call(turn, call, decision)
-        exits = {t.target for t in step.transitions}
+        # Handing off to a teammate is always allowed: it's the safe direction, and a customer
+        # who asks for a person mid-procedure must not be told the handoff "failed".
+        exits = {t.target for t in step.transitions} | {Terminal.ESCALATE}
         if target is None or target not in exits:
             allowed = ", ".join(target_label(t) for t in exits)
             decision = GuardrailDecision(
@@ -842,15 +864,22 @@ class Agent:
         if isinstance(target, Terminal) or target > step.number:
             turn.progress = True
         turn.trace.tool_calls.append(ToolCallTrace(name=call.name, args=call.input, ok=True))
+        # The procedure ends with a terminal exit, and its step leaves the system prompt with it.
+        # Repeat the step here so the reply still does what the step says ("tell them tracking
+        # is emailed", "it takes 5-10 business days"): simulations found those being dropped.
+        step_note = f" Step {step.number} said: {step.text}"
         if target == Terminal.RESOLVE:
             state.end_procedure()
             state.status = "resolved"
-            message = "Procedure resolved. Now write your reply to the customer."
+            message = (
+                "Procedure resolved. Now write your reply to the customer, including everything "
+                f"the last step asks you to tell them.{step_note}"
+            )
         elif target == Terminal.ESCALATE:
             turn.escalation = str(call.input.get("reason") or f"{aop.name} needs a teammate")
             message = (
                 "Escalation recorded; a teammate will take over. Tell the customer, briefly, "
-                "that a teammate will follow up here and why."
+                f"that a teammate will follow up here and why.{step_note}"
             )
         else:
             assert isinstance(target, int)
@@ -964,10 +993,13 @@ class Agent:
                     Evidence(f"kb:{chunk.article_id}", chunk.title, text, chunk.updated_at)
                 )
         evidence.extend(turn.account_evidence)
-        evidence.append(Evidence("state", "Conversation state", turn.state.summary()))
+        limit = self.config.max_failed_verifications
+        evidence.append(Evidence("state", "Conversation state", turn.state.summary(limit)))
         for aop in turn.procedures.values():
-            if aop.policies:
-                evidence.append(Evidence("procedure", aop.name, "\n".join(aop.policies)))
+            # Policies and step text are the business's own instructions ("the label is
+            # emailed"), so a reply may state them without a help-center article.
+            lines = list(aop.policies) + [f"Step {s.number}: {s.text}" for s in aop.steps]
+            evidence.append(Evidence("procedure", aop.name, "\n".join(lines)))
         return evidence
 
     def _kb_chunk(self, chunk_id: int) -> IndexedChunk | None:
@@ -1090,7 +1122,7 @@ class Agent:
         return self.agent_prompt.render(
             brand=self.brand_prompt.text.strip(),
             refund_limit=_dollars(self.config.refund_auto_limit_cents),
-            state=state.summary(),
+            state=state.summary(self.config.max_failed_verifications),
             procedure=step.prompt if step else NO_PROCEDURE,
         )
 
