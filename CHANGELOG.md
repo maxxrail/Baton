@@ -6,6 +6,20 @@ All notable changes to Baton. Format: [Keep a Changelog](https://keepachangelog.
 ### Changed
 - The Northwind mock store now defaults to port 8300 (was 8100): `scripts/dev.py`, the `MOCK_COMMERCE_URL` default and `.env.example`. Override with `--mock-port`.
 
+## [Part 05] - 2026-11-24 — Simulations + eval harness
+### Added
+- `baton.sim`: simulated customers against the real agent runtime. Suite format (`evals/sims/*.yaml`, strict Pydantic models) with seed fixtures and `<seeded>` placeholders resolved from `data/seed/`; persona player (`prompts/persona.md`, never sees the agent's prompt or tools, ends with `[DONE]`); simulator with a per-worker sandbox (in-process mock store + Baton DB) reset to the seed before every run under a frozen clock, a store fingerprint per run, and a thread pool (`--concurrency`).
+- Grading: deterministic checks in code from traces (`tools_called` / `tools_not_called` = at least one / no successful call, `end_status`, agent errors), and an LLM judge (`prompts/judge.md`, `report_verdicts` tool) that reports whether each `must` / `must_not` behaviour occurred; code decides pass/fail, and missing or malformed judge output fails closed.
+- Metrics: pass rate, pass^k, mean turns, tool error rate, escalation rate, p50/p95 turn latency, tokens and estimated cost per conversation (`baton.sim.pricing`), whole-run cost.
+- `baton-sim` CLI: `validate` (shape, fixtures, AOPs, tools, coverage mix from `evals/thresholds.yaml`), `run` (`--suite --filter --runs --concurrency --scripted --gate --out`), `compare A B` (regressions first, exit 1), `table` (Markdown results), `calibrate` (judge agreement, `--gate`), `generate --aop --n` (LLM-drafted scenarios validated and written to `evals/sims/generated/` for review).
+- Output per run in `evals/reports/sim-<timestamp>/`: `results.json`, `summary.json` and a self-contained, fully escaped `report.html` (summary, per-scenario drill-down, transcripts with tool calls, judge rationales, linked per-turn traces).
+- 49 live scenarios across all 8 AOPs (12 adversarial, 8 help-center incl. 2 unanswerable, 3 multi-intent, 5 non-English/messy); 8 scripted offline scenarios in `evals/sims/ci/`, several of which make the model misbehave so the runtime's guardrails must stop it.
+- `evals/judge_calibration.yaml`: 20 hand-labelled transcripts (45 labels) and a calibration harness.
+- Console: `/ops/sims` API (list runs, run detail, report served with a strict CSP, one-at-a-time background rerun of a scenario) and a **Simulations** tab at `/console/simulations`.
+- CI: `baton-sim validate` and the offline scripted suite with `--gate` on every push (report uploaded as an artifact); manual `Simulations (live)` workflow (`workflow_dispatch`, `ANTHROPIC_API_KEY` secret) with calibration and the live gate.
+- Settings: `BATON_SIM_PERSONA_MODEL`, `BATON_SIM_JUDGE_MODEL`, `SIM_REPORTS_DIR`, `SIM_SUITE_DIR`.
+- `docs/EVAL_REPORT.md` (method, offline results; live sections pending).
+
 ## [Part 04] - 2026-11-24 — Channels + human handoff console
 ### Added
 - Channel adapter interface (`baton.channels.base`): inbound normalisation and per-channel reply formatting. Web: markdown with numbered citation links. Email: plain text, footnote citations, signature. SMS: at most 2 segments (GSM-7/UCS-2 aware, smart punctuation mapped to GSM), cut at a word with a signed, expiring link to the full transcript (`baton.channels.links`, `BATON_LINK_SECRET`).

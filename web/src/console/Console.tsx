@@ -1,5 +1,5 @@
 // The ops console: log in, watch the inbox live, open a conversation (messages, handoff,
-// traces), take over and reply, and browse/validate AOPs.
+// traces), take over and reply, browse/validate AOPs, and review simulation runs.
 //
 // Live updates come from /ws/ops: every event names a conversation, and the console simply
 // re-reads the inbox (and the open conversation if it's the one that changed). Simple, and a
@@ -19,6 +19,7 @@ import {
 } from "../lib/api";
 import { AopBrowser } from "./AopBrowser";
 import { ConversationView } from "./ConversationView";
+import { Simulations } from "./Simulations";
 
 type Auth = { state: "checking" } | { state: "out"; reason?: string } | { state: "in"; name: string };
 
@@ -192,9 +193,23 @@ function Inbox({ operator }: { operator: string }) {
   );
 }
 
+const TABS = ["inbox", "aops", "simulations"] as const;
+type Tab = (typeof TABS)[number];
+const TAB_LABELS: Record<Tab, string> = { inbox: "Inbox", aops: "AOPs", simulations: "Simulations" };
+
+export function tabFromPath(pathname: string): Tab {
+  const rest = pathname.replace(/^\/console\/?/, "").split("/")[0];
+  return (TABS as readonly string[]).includes(rest) ? (rest as Tab) : "inbox";
+}
+
 export function Console() {
   const [auth, setAuth] = useState<Auth>({ state: "checking" });
-  const [tab, setTab] = useState<"inbox" | "aops">("inbox");
+  const [tab, setTabState] = useState<Tab>(tabFromPath(window.location.pathname));
+  // Each tab has its own URL (/console, /console/aops, /console/simulations) so it can be linked.
+  const setTab = (t: Tab) => {
+    setTabState(t);
+    window.history.replaceState(null, "", t === "inbox" ? "/console" : `/console/${t}`);
+  };
 
   useEffect(() => {
     api<{ name: string }>("/ops/me").then(
@@ -216,9 +231,9 @@ export function Console() {
     <div className="min-h-screen bg-paper text-stone-800">
       <header className="flex h-14 items-center gap-6 bg-nw-800 px-4 text-white">
         <span className="font-semibold">Baton console</span>
-        {(["inbox", "aops"] as const).map((t) => (
+        {TABS.map((t) => (
           <button key={t} type="button" onClick={() => setTab(t)} className={`text-sm ${tab === t ? "underline underline-offset-4" : "text-nw-100"}`}>
-            {t === "inbox" ? "Inbox" : "AOPs"}
+            {TAB_LABELS[t]}
           </button>
         ))}
         <span className="ml-auto text-sm text-nw-100">{auth.name}</span>
@@ -226,7 +241,13 @@ export function Console() {
           Log out
         </button>
       </header>
-      {tab === "inbox" ? <Inbox operator={auth.name} /> : <div className="p-4"><AopBrowser /></div>}
+      {tab === "inbox" && <Inbox operator={auth.name} />}
+      {tab === "aops" && (
+        <div className="p-4">
+          <AopBrowser />
+        </div>
+      )}
+      {tab === "simulations" && <Simulations />}
     </div>
   );
 }

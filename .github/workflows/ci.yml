@@ -52,6 +52,20 @@ jobs:
       - name: Retrieval eval (recall@5 gate in evals/thresholds.yaml)
         run: uv run python -m scripts.eval_retrieval
 
+      - name: Simulation suites validate (shape, fixtures, coverage mix)
+        run: uv run baton-sim validate
+
+      - name: Simulations, offline (scripted models, gate in evals/thresholds.yaml)
+        run: uv run baton-sim run --suite evals/sims/ci --scripted --gate --out evals/reports
+
+      - name: Upload the simulation report
+        if: always() && matrix.os == 'ubuntu-latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: sim-report-scripted
+          path: evals/reports/
+          if-no-files-found: ignore
+
       - name: Alembic upgrade on a fresh database
         env:
           DATABASE_URL: sqlite:///./ci_fresh.db

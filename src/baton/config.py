@@ -51,6 +51,15 @@ class Settings(BaseSettings):
     # Where `[kb:article_id]` citations link to when a channel renders them.
     baton_kb_base_url: str = "https://help.northwind.example/articles/"
 
+    # ---- Simulations (Part 05) ----
+    # Models for the simulated customer and the judge; empty means BATON_MODEL.
+    baton_sim_persona_model: str = ""
+    baton_sim_judge_model: str = ""
+    # Where `baton-sim run` writes `sim-<timestamp>/` (results.json + report.html).
+    sim_reports_dir: Path = REPO_ROOT / "evals" / "reports"
+    # The suite the console's "rerun" uses.
+    sim_suite_dir: Path = REPO_ROOT / "evals" / "sims"
+
     # ---- Channels (Part 04) ----
     # The public base URL of this API (what Twilio and email providers call), e.g.
     # https://baton.example.com. Twilio signs the URL it called, so behind a proxy the
