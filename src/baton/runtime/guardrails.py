@@ -216,6 +216,22 @@ def wants_human(message: str) -> bool:
     return bool(_HUMAN.search(message))
 
 
+_CLOSING = re.compile(
+    r"\b(?:thanks|thank\s+you|thx|ty|that'?s\s+all|that'?s\s+it|all\s+set|bye|goodbye"
+    r"|nothing\s+else|gracias|eso\s+es\s+todo|adi[oó]s|merci|c'est\s+tout|au\s+revoir)\b",
+    re.IGNORECASE,
+)
+CLOSING_MAX_WORDS = 25
+
+
+def is_closing(message: str) -> bool:
+    """A goodbye ("thanks, that's all"), not a new request: short, no question, and a closing
+    phrase. Used to keep a resolved conversation resolved."""
+    if "?" in message or len(message.split()) > CLOSING_MAX_WORDS:
+        return False
+    return bool(_CLOSING.search(message))
+
+
 def check_progress(state: ConversationState, config: GuardrailConfig) -> GuardrailDecision:
     if state.turns_without_progress >= config.max_turns_without_progress:
         return _escalate(

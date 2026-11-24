@@ -130,3 +130,21 @@ def test_grounding_evidence_includes_the_procedures_steps(agent: Agent) -> None:
     procedure = next(e for e in evidence if e.source == "procedure")
     assert "label is emailed" in procedure.text
     assert "Returns are accepted within 30 days of delivery." in procedure.text
+
+
+@pytest.mark.parametrize(
+    ("text", "closing"),
+    [
+        ("great, thanks, that's all", True),
+        ("That's all I needed.", True),
+        ("Muchas gracias, eso es todo", True),
+        ("merci, au revoir", True),
+        ("one more q", False),
+        ("thanks! where is my other order?", False),
+        ("I want to cancel my tyre order", False),  # "ty" inside a word doesn't count
+    ],
+)
+def test_is_closing(text: str, closing: bool) -> None:
+    from baton.runtime.guardrails import is_closing
+
+    assert is_closing(text) is closing

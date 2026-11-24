@@ -86,6 +86,7 @@ from baton.runtime.guardrails import (
     check_reply,
     check_tool_call,
     check_verification_attempts,
+    is_closing,
     truncate,
     wants_human,
 )
@@ -308,8 +309,9 @@ def _control_tools(aop: CompiledAOP, step: CompiledStep) -> list[ToolSpec]:
             description=(
                 "Move the procedure forward when the current step is done. `target` is a step "
                 f"number, RESOLVE or ESCALATE. Allowed from this step: {', '.join(exits)}. "
-                "ESCALATE (hand off to a teammate) is always allowed, e.g. when the customer "
-                "asks for a person."
+                "ESCALATE is also always allowed when the customer asks for a person. Otherwise "
+                "follow the step's own exits; if they want something this procedure doesn't "
+                "cover, call switch_procedure instead of escalating."
             ),
             input_schema={
                 "type": "object",
@@ -526,7 +528,8 @@ class Agent:
             trace_id, _ = self._save(turn, "", start, message_id=incoming_id)
             return AgentReply(text="", status=state.status, trace_id=trace_id, replied=False)
         else:
-            state.status = "open"  # a resolved conversation reopens on a new message
+            was_resolved = state.status == "resolved"
+            state.status = "open"  # a resolved conversation reopens on a new request...
             try:
                 text = self._run(turn)
             except Exception as exc:
@@ -540,6 +543,12 @@ class Agent:
                 state.turns_without_progress = 0
             else:
                 state.turns_without_progress += 1
+            # ...but not on "thanks, that's all": a goodbye that started no procedure and
+            # handed nothing off leaves it resolved (found by simulation: goodbyes reopened
+            # finished conversations).
+            reopened = was_resolved and state.status == "open" and state.aop_id is None
+            if reopened and not turn.escalation and is_closing(turn.customer_message):
+                state.status = "resolved"
             # Runtime-written sentences (escalation, hedge, fallback) in the customer's language.
             text = localize(text, detect_language(turn.customer_text))
 
@@ -811,6 +820,7 @@ class Agent:
         if outcome.ok and tool.side_effect:
             turn.progress = True
             turn.completed.append(_done(call, out))
+            state.record_completed(turn.completed[-1])
         if outcome.ok and call.name in REFUND_TOOLS:
             if call.name == "create_refund":
                 amount = s.CreateRefundIn.model_validate(call.input).amount_cents

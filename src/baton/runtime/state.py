@@ -59,6 +59,10 @@ class ConversationState(BaseModel):
     owned_orders: list[str] = Field(default_factory=list)
     orders_with_refunds: list[str] = Field(default_factory=list)
     auto_refunded_cents: int = 0
+    # Side effects the store confirmed ("paused subscription sub_0001"), so a later turn
+    # knows they happened. History sent to the model is text only; without this the agent
+    # second-guessed its own success after a procedure ended.
+    completed_actions: list[str] = Field(default_factory=list)
     # Help-center chunks returned by the most recent `search_knowledge`, so a follow-up answer
     # in the next turn is grounding-checked against the same passages (Part 03).
     kb_evidence: list[int] = Field(default_factory=list)
@@ -80,6 +84,9 @@ class ConversationState(BaseModel):
 
     def start_procedure(self, aop_id: str, version: int) -> None:
         self.aop_id, self.aop_version, self.current_step = aop_id, version, 1
+
+    def record_completed(self, action: str) -> None:
+        self.completed_actions = ([*self.completed_actions, action])[-10:]
 
     def end_procedure(self) -> None:
         self.aop_id = self.aop_version = self.current_step = None
@@ -112,6 +119,9 @@ class ConversationState(BaseModel):
             lines.append("- Known: " + ", ".join(f"{k}={v}" for k, v in sorted(self.slots.items())))
         if self.owned_orders:
             lines.append("- This customer's orders seen so far: " + ", ".join(self.owned_orders))
+        if self.completed_actions:
+            done = "; ".join(self.completed_actions)
+            lines.append(f"- Done in this conversation (confirmed by the store): {done}")
         return "\n".join(lines)
 
 

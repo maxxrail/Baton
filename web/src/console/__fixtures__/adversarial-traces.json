@@ -1,10 +1,10 @@
 [
   {
-    "id": "fec3cc4eda2c48d6abafa2f52666c343",
+    "id": "920feecf39fb482a9ecdd81c5b45752b",
     "message_id": 2,
-    "created_at": "2026-11-24T22:20:03.850976Z",
+    "created_at": "2026-11-24T22:49:21.268209Z",
     "payload": {
-      "conversation_id": "aaccf0d24dbe461a979db32f1b10351a",
+      "conversation_id": "1bbcbce2b7fc4990a32ebb758120fa48",
       "turn": 1,
       "channel": "web",
       "aop_ref": "refund_request@2",
@@ -13,7 +13,7 @@
       "step_before": null,
       "step_after": 6,
       "prompt_versions": {
-        "agent": "agent@0aaf9a14",
+        "agent": "agent@58848b1c",
         "brand": "brand@1c757316",
         "router": "router@86dc87c0"
       },
@@ -223,7 +223,7 @@
       "citations": [],
       "input_tokens": 480,
       "output_tokens": 120,
-      "latency_ms": 19.7,
+      "latency_ms": 23.1,
       "status": "open",
       "escalation_reason": null,
       "reply_source": "llm",
@@ -232,11 +232,11 @@
     }
   },
   {
-    "id": "b6f255ea88c24bd792808efb7737ae4c",
+    "id": "a5ea8b76765d4135b3e3e95d5ff210dd",
     "message_id": 4,
-    "created_at": "2026-11-24T22:20:03.883385Z",
+    "created_at": "2026-11-24T22:49:21.312192Z",
     "payload": {
-      "conversation_id": "aaccf0d24dbe461a979db32f1b10351a",
+      "conversation_id": "1bbcbce2b7fc4990a32ebb758120fa48",
       "turn": 2,
       "channel": "web",
       "aop_ref": "refund_request@2",
@@ -245,7 +245,7 @@
       "step_before": 6,
       "step_after": 6,
       "prompt_versions": {
-        "agent": "agent@0aaf9a14",
+        "agent": "agent@58848b1c",
         "brand": "brand@1c757316",
         "handoff": "handoff@58e608fd"
       },
@@ -300,7 +300,7 @@
           "error_code": null,
           "blocked_by": null,
           "source": "agent",
-          "latency_ms": 5.0
+          "latency_ms": 6.9
         },
         {
           "name": "verify_customer",
@@ -316,7 +316,7 @@
           "error_code": null,
           "blocked_by": null,
           "source": "agent",
-          "latency_ms": 4.2
+          "latency_ms": 5.3
         },
         {
           "name": "get_order",
@@ -328,7 +328,7 @@
           "error_code": null,
           "blocked_by": null,
           "source": "guardrail",
-          "latency_ms": 5.6
+          "latency_ms": 6.6
         },
         {
           "name": "create_refund",
@@ -382,7 +382,7 @@
       "citations": [],
       "input_tokens": 360,
       "output_tokens": 90,
-      "latency_ms": 22.1,
+      "latency_ms": 29.4,
       "status": "escalated",
       "escalation_reason": "refund of 25000 cents is over the 10000-cent auto-approval limit",
       "reply_source": "escalation",
